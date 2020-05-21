@@ -1,18 +1,15 @@
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
-import 'package:mobilecache/features/data/models/doctor_model.dart';
 
 class Login extends Equatable {
-  final DoctorModel doctor;
-  final bool success;
-  final String error;
+  final String agentName;
+  final String password;
 
   Login({
-    @required this.doctor,
-    @required this.success,
-    @required this.error,
+    @required this.agentName,
+    @required this.password,
   });
 
   @override
-  List<Object> get props => [doctor, success, error];
+  List<Object> get props => [agentName, password];
 }

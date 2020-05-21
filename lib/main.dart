@@ -1,7 +1,7 @@
+import 'package:cardiompp/features/presentation/pages/loged_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobilecache/features/presentation/pages/loged_page.dart';
-import 'features/presentation/blocs/login_bloc/bloc.dart';
+import 'features/presentation/blocs/login_bloc/login_bloc.dart';
 import 'features/presentation/pages/login_page.dart';
 
 void main() => runApp(MyApp());

@@ -1,18 +1,18 @@
 import 'package:cardiompp/features/domain/entities/doctor.dart';
 import 'package:flutter/material.dart';
 
-class LogedPage extends StatefulWidget {
-  static const routeName = 'HOME_PAGE';
+class InitialPage extends StatefulWidget {
+  static const routeName = 'INITIAL_PAGE';
   final Doctor doctor;
   final String title;
 
-  LogedPage({Key key, this.doctor, this.title}) : super(key: key);
+  InitialPage({Key key, this.doctor, this.title}) : super(key: key);
 
   @override
-  _LogedPageState createState() => _LogedPageState();
+  _InitialPageState createState() => _InitialPageState();
 }
 
-class _LogedPageState extends State<LogedPage> {
+class _InitialPageState extends State<InitialPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +20,7 @@ class _LogedPageState extends State<LogedPage> {
       title: Text("Loged in"),
       ),
       body: Center(
-        child: Text("${widget.doctor.email}"),
+        child: Text("Here we have the initial page"),
       ),
     );
   }

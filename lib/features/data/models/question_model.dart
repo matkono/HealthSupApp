@@ -1,4 +1,4 @@
-import 'package:mobilecache/features/domain/entities/question.dart';
+import 'package:cardiompp/features/domain/entities/question.dart';
 import 'package:meta/meta.dart';
 
 class QuestionModel extends Question {

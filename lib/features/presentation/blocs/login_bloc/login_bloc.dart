@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:mobilecache/features/domain/entities/doctor.dart';
-import 'package:mobilecache/features/domain/usecases/get_doctor_data.dart';
-import 'bloc.dart';
+import 'package:cardiompp/features/domain/entities/doctor.dart';
+import 'package:cardiompp/features/domain/usecases/doctor_usecase.dart';
+import 'package:equatable/equatable.dart';
+
+part 'login_event.dart';
+part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   @override
@@ -16,7 +19,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       try {
         yield LoginStartState();
         final doctor =
-            await authenticateLogin(event.crm, event.email, event.password);
+            await authenticateLogin(event.email, event.password);
 
         if (doctor == null) {
           yield LoginErrorState(message: "Email or password incorrect");
@@ -30,18 +33,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  Future<Doctor> authenticateLogin(String crm, String email, String password) {
+  Future<Doctor> authenticateLogin(String email, String password) {
     return Future.delayed(Duration(seconds: 2), () async {
-      GetDoctorLogin verifyData = GetDoctorLogin();
-      print("anthentication");
+      DoctorUseCase verifyData = DoctorUseCase();
+      print("<<< AuthenticationAPI >>>");
 
-      final bool result = await verifyData.call(Params(crm: crm, email: email, password: password));
-      
-      print('Result Bloc');
-      print(result);
+      final bool result = await verifyData.call(Params(email: email, password: password));
 
       if(result) {
-        return Doctor(crm: crm, email: email);
+        return Doctor(email: email);
       }
       
       return null;

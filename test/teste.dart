@@ -1,3 +1,224 @@
+// abstract class LoginRemoteDataSource {
+//   Future<String> makeLogin(LoginUserModel user);
+//   Future<bool> recoverPassword(String email);
+// }
+
+// class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
+//   final http.Client client;
+//   final Settings settings;
+
+//   LoginRemoteDataSourceImpl({@required this.client, @required this.settings});
+//   @override
+//   Future<String> makeLogin(LoginUserModel user) async {
+//     http.Response response;
+//     try {
+//       response = await client.post(
+//         settings.getUrl("rest-auth/login/"),
+//         headers: settings.getHeaders(),
+//         body: json.encode(user.toJson()),
+//       );
+//     } catch (e, stacktrace) {
+//       print(e.toString());
+//       print((response == null) ? "Response is null" : response.body);
+//       di.sl<SentryClient>().captureException(
+//         exception: e.toString(),
+//         stackTrace: stacktrace.toString(),
+//       );
+//       throw ServerException();
+//     }
+//     if (response.statusCode == 200) {
+//       return json.decode(utf8.decode(response.bodyBytes))["key"];
+//     } else if (response.statusCode == 201) {
+//       throw EmailNotVerifiedException(email: user.user);
+//     } else if (response.statusCode == 400) {
+//       throw ExceptionConverter.convertMapToException(
+//           json.decode(utf8.decode(response.bodyBytes)), user.user);
+//     } else {
+//       throw ServerException();
+//     }
+//   }
+
+//   Future<bool> recoverPassword(String email) async {
+//     http.Response response;
+//     try {
+//       response = await client.post(
+//         settings.getUrl("rest-auth/password/reset/"),
+//         headers: settings.getHeaders(),
+//         body: json.encode({'email': email}),
+//       );
+//     } catch (e, stacktrace) {
+//       print(e.toString());
+//       print((response == null) ? "Response is null" : response.body);
+//       di.sl<SentryClient>().captureException(
+//         exception: e.toString(),
+//         stackTrace: stacktrace.toString(),
+//       );
+//       throw ServerException();
+//     }
+//     if (response.statusCode == 200) {
+//       return true;
+//     } else {
+//       throw ServerException();
+//     }
+//   }
+// }
+
+// ----------------------------------
+
+
+// class Settings {
+//   static const String _DEBUG_MODE = "debug";
+//   static const String _RELEASE_MODE = "release";
+//   static final String _baseUrlRelease =
+//       "Sua url de release";
+//   static final String _baseUrlDevelop = "http://10.0.2.2:8000/";
+
+//   static final String _mode = _RELEASE_MODE;
+
+//   final SharedPreferences sharedPreferences;
+
+//   Settings({@required this.sharedPreferences});
+
+//   String getUrl(String params) {
+//     String baseUrl = (_mode == _DEBUG_MODE) ? _baseUrlDevelop : _baseUrlRelease;
+
+//     if (params == null) return null;
+//     return "$baseUrl$params";
+//   }
+
+//   Map<String, String> getHeaders({bool withToken = false, bool isJson = true}) {
+//     Map<String, String> headers = {
+//       'Content-Type': 'application/json',
+      
+//     };
+
+//     if (withToken && sharedPreferences.containsKey("CACHED_USER_TOKEN")) {
+//       headers.addAll({
+//         'Authorization': "token ${sharedPreferences.get("CACHED_USER_TOKEN")}"
+//       });
+//     }
+
+//     return headers;
+//   }
+
+//   Future<String> getUserToken() async {
+//     return sharedPreferences.get("CACHED_USER_TOKEN");
+//   }
+// }
+
+// ----------------------
+
+// if (withToken && sharedPreferences.containsKey("CACHED_USER_TOKEN")) {
+//       headers.addAll({
+//         'Authorization': "token ${sharedPreferences.get("CACHED_USER_TOKEN")}"
+//       });
+//     }
+
+// long lastUpdate = ${sharedPreferences.get("LAST_UPDATE");
+// long currentDate = DateTime.now().toMilisecondsSinceEpoc
+
+// If (lastUpdate == null !! currenteDate - lastUpdate > 30*60*1000) {
+//  sharedPreferences.putString ("CACHED_USER_TOKEN", seuMetodoDePegarToken());
+
+// sharedPreferences.putString ("LAST_UPDATE", DateTime.now(). millisecondsSinceEpoc);
+// }
+
+
+// ---------------------------- COOKIES ---------------------------- //
+
+import 'dart:io';
+
+import 'dart:convert';
+import 'package:cookie_jar/cookie_jar.dart';
+
+
+var cj = new CookieJar();
+
+class Session {
+  static HttpClient client = new HttpClient()
+    ..badCertificateCallback = (_certificateCheck);
+
+
+  static Future<String> apiGet(String url) async {
+    HttpClientRequest request = await client.getUrl(Uri.parse(url));
+
+    _setHeadersCookies(request, url);
+
+    HttpClientResponse response = await request.close();
+
+    _updateCookies(response, url);
+
+    return await response.transform(utf8.decoder).join();
+  }
+
+  static Future<String> apiPost(String url, dynamic data) async {
+    HttpClientRequest request = await client.postUrl(Uri.parse(url));
+
+    _setHeadersCookies(request, url);
+
+    request.add(utf8.encode(json.encode(data)));
+
+    HttpClientResponse response = await request.close();
+
+    _updateCookies(response, url);
+
+    return await response.transform(utf8.decoder).join();
+  }
+
+  static void _setHeadersCookies(HttpClientRequest request, String url) {
+    request.headers.set('content-type', 'application/json');
+    request.cookies.addAll(cj.loadForRequest(Uri.parse(url)));
+  }
+
+  static void _updateCookies(HttpClientResponse response, String url) {
+    cj.saveFromResponse(Uri.parse(url), response.cookies);
+  }
+
+  static bool _certificateCheck(X509Certificate cert, String host, int port) =>
+      host == 'local.domain.ext';
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import 'package:cardiompp/core/connection/dio_connectivity_request_retrier.dart';
 import 'package:cardiompp/core/connection/retry_interceptor.dart';
 import 'package:cardiompp/features/presentation/blocs/login_bloc/login_bloc.dart';
@@ -39,6 +260,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  var crmController = TextEditingController();
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
 
@@ -48,10 +270,9 @@ class _LoginPageState extends State<LoginPage> {
 
     void _authenticate() {
       final signInEvent = SignInEvent(
-        // email: emailController.text,
-        // password: passwordController.text,
-        email: 'mateusft@gmail.com',
-        password: '123456789',
+        crm: crmController.text,
+        email: emailController.text,
+        password: passwordController.text,
       );
       bloc.add(signInEvent);
     }
@@ -105,6 +326,39 @@ class _LoginPageState extends State<LoginPage> {
                 padding: EdgeInsets.only(top: 50.0),
                 child: Column(
                   children: <Widget>[
+                    Align(
+                      alignment: Alignment.centerLeft / 1.5,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width / 2,
+                        height: 50.0,
+                        padding: EdgeInsets.only(
+                          top: 4.0,
+                          left: 16.0,
+                          right: 16.0,
+                          bottom: 4.0,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 15.0,
+                            ),
+                          ],
+                        ),
+                        child: TextField(
+                          controller: crmController,
+                          decoration: InputDecoration(
+                            icon: Icon(
+                              Icons.security,
+                              color: Colors.grey,
+                            ),
+                            hintText: 'CRM',
+                          ),
+                        ),
+                      ),
+                    ),
                     Container(
                       padding: EdgeInsets.only(top: 30.0),
                       child: Column(
@@ -177,7 +431,6 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                                 hintText: 'Password',
                               ),
-                              obscureText: true,
                             ),
                           ),
                         ],
@@ -186,8 +439,7 @@ class _LoginPageState extends State<LoginPage> {
                     Align(
                       alignment: Alignment.centerRight,
                       child: Padding(
-                        padding:
-                            EdgeInsets.only(right: 32.0, top: 20.0, bottom: 50),
+                        padding: EdgeInsets.only(right: 32.0, top: 20.0),
                         child: Text(
                           'Forgot Password?',
                           style: TextStyle(
@@ -198,27 +450,18 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.only(),
-                      height: MediaQuery.of(context).size.height / 30,
-                      child: Column(
-                        children: <Widget>[
-                          widget.errorMessage == null
-                              ? SizedBox()
-                              : Text(widget.errorMessage),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(top: 6.0, left: 60, right: 60),
+                      padding: EdgeInsets.only(top: 60.0),
                       child: FlatButton(
-                        color: Colors.lightBlue[300],
                         child: Column(
                           children: <Widget>[
+                            widget.errorMessage == null
+                                ? SizedBox()
+                                : Text(widget.errorMessage),
                             Container(
-                              padding: EdgeInsets.only(),
-                            ),
-                            Container(
-                              width: MediaQuery.of(context).size.width / 1.0,
+                              decoration: BoxDecoration(
+                                color: Colors.lightBlue[300],
+                              ),
+                              width: MediaQuery.of(context).size.width / 1.32,
                               height: MediaQuery.of(context).size.height / 13,
                               child: Align(
                                 alignment: Alignment.center,
@@ -244,8 +487,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     Container(
-                      height: MediaQuery.of(context).size.height / 7.5,
-                      padding: EdgeInsets.only(top: 50.0),
+                      padding: EdgeInsets.only(top: 25.0),
                       child: Text(
                         "Don't have an account? Register!",
                         style: TextStyle(fontSize: 17.0),

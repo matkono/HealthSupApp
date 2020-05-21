@@ -1,16 +1,14 @@
-import 'package:equatable/equatable.dart';
+part of 'login_bloc.dart';
 
 abstract class LoginEvent extends Equatable {
   const LoginEvent();
 }
 
 class SignInEvent extends LoginEvent {
-  final String crm;
   final String email;
   final String password;
 
   SignInEvent({
-    this.crm,
     this.email,
     this.password,
   });
