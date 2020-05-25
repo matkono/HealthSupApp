@@ -1,14 +1,12 @@
-part of 'login_bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 
-abstract class LoginEvent extends Equatable {
-  const LoginEvent();
-}
-
-class SignInEvent extends LoginEvent {
+class LoginApp extends Equatable {
   final String email;
   final String password;
 
-  SignInEvent({
+
+  LoginApp({
     @required this.email,
     @required this.password,
   });
