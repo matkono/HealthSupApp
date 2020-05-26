@@ -1,45 +1,71 @@
-import 'dart:convert';
-import 'dart:io';
-import 'package:cardiompp/features/data/models/question_model.dart';
-import 'package:path/path.dart' as path;
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-Future<File> _localPath() async {
-
-  var cacheManager = CustomCacheManager();
-
-  final cache = cacheManager.getFilePath();
-  var filePath = cache;
-  print('Should return the instance of class that contain the path');
-  print(filePath);
-  return File(
-      '/data/user/0/com.example.mobilecache/cache/jsonCache/myJson.json');
+abstract class LocalDataSource {
+  Future<String> getTokenSharedPreferences(String key);
+  Future<int> getTimeTokenSharedPreferences(String key);
+  Future<void> setSharedPreferences(Map<String, dynamic> bodyResponse);
+  Future<bool> validateTokenTime(String key);
 }
 
-  Future<List<QuestionModel>> readJsonFile() async {
-    final file = await _localPath();
-    var archive = List<QuestionModel>();
+class LocalDataSourceImpl implements LocalDataSource {
+  static final preferences = SharedPreferences.getInstance();
+  static final hostIP = '10.0.2.2';
+  static final String hostUrlDevelop = 'https://10.0.2.2:5001/api/v1/';
+  var tokenCurrentTime = DateTime.now().millisecondsSinceEpoch;
 
-    String contents = await file.readAsString();
+  @override
+  Future<String> getTokenSharedPreferences(String key) async {
+    var preferences = await SharedPreferences.getInstance();
 
-    var notesJson = json.decode(contents);
-    for (var noteJson in notesJson) {
-      archive.add(QuestionModel.fromJson(noteJson));
+    if (preferences.containsKey(key)) {
+      var getToken = preferences.getString(key);
+  
+      return getToken;
     }
-    return archive;
+    return null;
   }
 
   @override
-class CustomCacheManager extends BaseCacheManager {
-  static const key = 'jsonCache';
+  Future<int> getTimeTokenSharedPreferences(String key) async {
+    var preferences = await SharedPreferences.getInstance();
 
-  CustomCacheManager() : super(key);
+    if (preferences.containsKey(key)) {
+      int getToken = preferences.getInt(key);
+  
+      return getToken;
+    }
+    return null;
+  }
 
   @override
-  Future<String> getFilePath() async {
-    var dir = await getTemporaryDirectory();
-
-    return path.join(dir.path, key);
+  Future<void> setSharedPreferences(Map<String, dynamic> bodyResponse) async {
+    var preferences = await SharedPreferences.getInstance();
+    var token = bodyResponse['data']['token'];
+    preferences.setString('tokenJWT', token);
+    preferences.setInt('tokenCurrentTime', tokenCurrentTime);
   }
+
+  Future<bool> validateTokenTime(String key) async {
+    var preferences = await SharedPreferences.getInstance();
+    var timeNow = DateTime.now().millisecondsSinceEpoch;
+
+    if (preferences.containsKey(key)) {
+      var tokenTime = preferences.getInt(key);
+
+      print('tokenTime Armazenado: $tokenTime');
+      print('tokenTime Atual: $timeNow');
+
+      if (timeNow - tokenTime > 29*60*1000) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  Future<void> resetSharedPreferences() async {
+    var preferences = await SharedPreferences.getInstance();
+
+    preferences.clear();
+  }
+
 }

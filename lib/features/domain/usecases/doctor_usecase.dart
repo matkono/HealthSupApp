@@ -1,5 +1,5 @@
 import 'package:cardiompp/core/usecase/usecase.dart';
-import 'package:cardiompp/features/data/repositories/doctor_repository_impl.dart';
+import 'package:cardiompp/features/data/repositories/repository_impl.dart';
 import 'package:cardiompp/features/domain/entities/doctor.dart';
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
@@ -12,8 +12,14 @@ class DoctorUseCase implements UseCase<Doctor, Params> {
   @override
   Future<bool> call(Params params) async {
     final doctorRepository = new DoctorRepositoryImpl();
-    return await doctorRepository.getLoginDataFromDataSource(params.email, params.password);
+    return await doctorRepository.authenticationAPI(params.email, params.password);
   }
+
+  // @override
+  // Future<Either<Failure, bool>> call(Params params) async {
+  //   final doctorRepository = new DoctorRepositoryImpl();
+  //   return await doctorRepository.authenticationAPI(params.email, params.password);
+  // }
 }
 
 class Params extends Equatable {
