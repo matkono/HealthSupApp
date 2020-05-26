@@ -9,8 +9,8 @@ class SignInEvent extends LoginEvent {
   final String password;
 
   SignInEvent({
-    @required this.email,
-    @required this.password,
+    this.email,
+    this.password,
   });
 
   @override

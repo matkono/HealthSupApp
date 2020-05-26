@@ -44,15 +44,16 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final LoginBloc bloc = BlocProvider.of<LoginBloc>(context);
 
     void _authenticate() {
       final signInEvent = SignInEvent(
-        email: emailController.text,
-        password: passwordController.text,
-        // email: 'mateusft@gmail.com',
-        // password: '123456789',
+        // email: emailController.text,
+        // password: passwordController.text,
+        email: 'mateusft@gmail.com',
+        password: '123456789',
       );
-      BlocProvider.of<LoginBloc>(context).add(signInEvent);
+      bloc.add(signInEvent);
     }
 
     return Scaffold(

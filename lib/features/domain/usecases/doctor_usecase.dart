@@ -12,14 +12,8 @@ class DoctorUseCase implements UseCase<Doctor, Params> {
   @override
   Future<bool> call(Params params) async {
     final doctorRepository = new DoctorRepositoryImpl();
-    return await doctorRepository.authenticationAPI(params.email, params.password);
+    return await doctorRepository.getLoginDataFromDataSource(params.email, params.password);
   }
-
-  // @override
-  // Future<Either<Failure, bool>> call(Params params) async {
-  //   final doctorRepository = new DoctorRepositoryImpl();
-  //   return await doctorRepository.authenticationAPI(params.email, params.password);
-  // }
 }
 
 class Params extends Equatable {

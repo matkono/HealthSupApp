@@ -1,11 +1,11 @@
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
 
-class Authenticate extends Equatable {
+class Login extends Equatable {
   final String agentName;
   final String password;
 
-  Authenticate({
+  Login({
     @required this.agentName,
     @required this.password,
   });

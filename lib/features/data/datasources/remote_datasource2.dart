@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:cardiompp/features/data/datasources/settingsAPI.dart';
 import 'package:intl/intl.dart';
 import 'package:cardiompp/features/data/models/loginAPI_model.dart';
 import 'package:path/path.dart' as path;
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 @override
 class CustomCacheManager extends BaseCacheManager {
@@ -28,8 +28,7 @@ abstract class DoctorRemoteDataSource {
 }
 
 class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
-  var currentTime = DateTime.now().millisecondsSinceEpoch;
-  final SettingsAPI settingsAPI = new SettingsAPI();
+  var currentTime = DateFormat('yyyy-MM-dd – kk:mm').format(DateTime.now());
 
   Future<void> authenticatorAPI(LoginAPIModel user) async {
     HttpClient client = new HttpClient();
@@ -39,21 +38,73 @@ class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
       return isValidHost;
     });
 
-    String urlAuth = 'api/v1/authentication/';
+    String urlAuth = 'https://10.0.2.2:5001/api/v1/authentication/';
+
     Map map = user.toJson();
 
-    HttpClientRequest request = await client.postUrl(Uri.parse(settingsAPI.getUrl(urlAuth)));
+    HttpClientRequest request = await client.postUrl(Uri.parse(urlAuth));
 
-    await settingsAPI.setHeaders(request);
+    request.headers.set('Content-type', 'application/json');
     request.add(utf8.encode(json.encode(map)));
+
 
     HttpClientResponse response = await request.close();
 
     String body = await response.transform(utf8.decoder).join();
+
     var jsonDecoded = json.decode(body);
 
-    await settingsAPI.setSharedPreferences(jsonDecoded);
+    setSharedPreferences(jsonDecoded);
   }
+
+  Future<void> setSharedPreferences(Map<String, dynamic> bodyResponse) async {
+    var preferences = await SharedPreferences.getInstance();
+    var token = bodyResponse['data']['token'];
+
+    preferences.setString('tokenJWT', token);
+    preferences.setString('currentTime', currentTime);
+  }
+
+  Future<String> getSharedPreferences() async {
+    var preferences = await SharedPreferences.getInstance();
+
+    var getToken = preferences.getString('tokenJWT');
+
+    return getToken;
+  }
+
+  // Future<String> authenticationAPI(LoginAPIModel user) async {
+
+  //   HttpClient client = new HttpClient();
+  //   client.badCertificateCallback = ((X509Certificate cert, String host, int port) {
+  //     final isValidHost = host == "10.0.2.2";
+  //     return isValidHost;
+  //     });
+
+  //   String url ='https://10.0.2.2:5001/api/v1/authentication/';
+
+  //   var header = {
+  //     'accept': '*/*',
+  //     'Content-type': 'application/json',
+  //   };
+
+  //   Map map = {
+  //     "agentName" : "CardiomppApp" ,
+  //     "password" : "2e0f011c-a22d-4771-8c50-a9491b96dfea"
+  //   };
+
+  //   var request = await http.post(url, headers: header, body: json.encode(map));
+
+  //   var body = request.body;
+
+  //   var cookie = new ClientCookie('token', 'token',
+  //   new DateTime.now());
+
+  //   print('Cookie');
+  //   print(cookie);
+
+  //   return body;
+  // }
 
   @override
   Future<bool> getLoginDataFromAPI(String email, String password) async {
@@ -71,19 +122,10 @@ class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
 
     String urlLogin ='https://10.0.2.2:5001/api/v1/Doctor/login';
     
-    String tokenJWT = await settingsAPI.getTokenSharedPreferences('tokenJWT');
+    await authenticatorAPI(loginAPIModel);
+    
 
-    if (tokenJWT == null) {
-      print('Entrou aqui');
-      await authenticatorAPI(loginAPIModel);
-    } else if (settingsAPI.getTokenSharedPreferences('tokenJWT') != null) {
-        bool validateToken = await settingsAPI.validateTokenTime('tokenCurrentTime');
-        print(validateToken);
-        if (validateToken == true) {
-          await settingsAPI.resetSharedPreferences();
-          await authenticatorAPI(loginAPIModel);
-        }
-    }
+    String tokenJWT = await getSharedPreferences();
 
     Map login = {
       'email': email,
@@ -92,10 +134,10 @@ class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
 
     HttpClientRequest request = await client.postUrl(Uri.parse(urlLogin));
 
-    tokenJWT = await settingsAPI.getTokenSharedPreferences('tokenJWT');
     print('Token JWT: $tokenJWT');
 
-    await settingsAPI.setHeaders(request);
+    request.headers.set('Content-type', 'application/json');
+    request.headers.add('Authorization', 'Bearer  $tokenJWT');
     request.add(utf8.encode(json.encode(login)));
 
     HttpClientResponse response = await request.close();
@@ -104,17 +146,15 @@ class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
     var jsonLoginResponse = json.decode(body);
 
     print('statusCode: ' + response.statusCode.toString());
+    print('body: ' + body);
 
     if (response.statusCode == 200) {
-      print('body: ' + body);
       if (jsonLoginResponse['success'] == true && jsonLoginResponse['errors'] == null) {
         return true;
       }
+    } else {
+      return false;
     }
-    if (response.statusCode == 400) {
-      print(jsonLoginResponse['errors']);
-    }
-    return false;
   }
 
   @override

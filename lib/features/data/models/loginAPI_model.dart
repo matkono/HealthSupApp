@@ -1,7 +1,7 @@
-import 'package:cardiompp/features/domain/entities/authenticate.dart';
+import 'package:cardiompp/features/domain/entities/login.dart';
 import 'package:meta/meta.dart';
 
-class LoginAPIModel extends Authenticate {
+class LoginAPIModel extends Login {
 
   final String agentName;
   final String password;

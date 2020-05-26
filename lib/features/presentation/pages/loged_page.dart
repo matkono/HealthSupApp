@@ -20,8 +20,7 @@ class _LogedPageState extends State<LogedPage> {
       title: Text("Loged in"),
       ),
       body: Center(
-        // child: Text("${widget.doctor.email}"),
-          child: Text('data'),
+        child: Text("${widget.doctor.email}"),
       ),
     );
   }
