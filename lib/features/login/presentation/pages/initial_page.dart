@@ -1,4 +1,4 @@
-import 'package:cardiompp/features/domain/entities/doctor.dart';
+import 'package:cardiompp/features/login/domain/entities/doctor.dart';
 import 'package:flutter/material.dart';
 
 class InitialPage extends StatefulWidget {

@@ -1,18 +1,18 @@
-import 'package:cardiompp/features/domain/entities/authenticate.dart';
+import 'package:cardiompp/features/login/domain/entities/authenticate.dart';
 import 'package:meta/meta.dart';
 
-class LoginAPIModel extends Authenticate {
+class AuthenticateApiModel extends Authenticate {
 
   final String agentName;
   final String password;
 
-  LoginAPIModel({
+  AuthenticateApiModel({
     @required this.agentName,
     @required this.password,
   });
 
-  factory LoginAPIModel.fromJson(Map<String, dynamic> json) {
-    return LoginAPIModel(
+  factory AuthenticateApiModel.fromJson(Map<String, dynamic> json) {
+    return AuthenticateApiModel(
       agentName: json['agentName'],
       password: json['password'],
     );

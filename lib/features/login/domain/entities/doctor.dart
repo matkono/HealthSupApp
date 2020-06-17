@@ -6,16 +6,16 @@ class Doctor extends Equatable {
   final String crm;
   final String phone;
   final String email;
-  final String status;
+  final bool isActive;
 
   Doctor({
     this.name,
-    this.crm,
+    @required this.crm,
     this.phone,
     @required this.email,
-    this.status,
+    @required this.isActive,
   });
 
   @override
-  List<Object> get props => [name, crm, phone, email, status];
+  List<Object> get props => [name, crm, phone, email, isActive];
 }

@@ -1,4 +1,4 @@
-import 'package:cardiompp/features/domain/entities/loginApp.dart';
+import 'package:cardiompp/features/login/domain/entities/loginApp.dart';
 import 'package:meta/meta.dart';
 
 class LoginDoctorModel extends LoginApp {

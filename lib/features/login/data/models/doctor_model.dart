@@ -1,14 +1,14 @@
-import 'package:cardiompp/features/domain/entities/doctor.dart';
+import 'package:cardiompp/features/login/domain/entities/doctor.dart';
 import 'package:meta/meta.dart';
 
 class DoctorModel extends Doctor {
   DoctorModel({
-    @required String name,
+    String name,
     @required String crm,
-    @required String phone,
+    String phone,
     @required String email,
-    @required String status,
-  }) : super(name: name, crm: crm, phone: phone, email: email, status: status);
+    @required bool isActive,
+  }) : super(name: name, crm: crm, phone: phone, email: email, isActive: isActive);
 
   factory DoctorModel.fromJson(Map<String, dynamic> json) {
     return DoctorModel(
@@ -16,7 +16,7 @@ class DoctorModel extends Doctor {
       crm: json['crm'],
       phone: json['phone'],
       email: json['email'],
-      status: json['status'],
+      isActive: json['isActive'],
     );
   }
 
@@ -26,7 +26,7 @@ class DoctorModel extends Doctor {
       'crm': crm,
       'phone': phone,
       'email': email,
-      'status': status,
+      'isActive': isActive,
     };
   }
 }
