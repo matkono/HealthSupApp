@@ -1,0 +1,20 @@
+{
+    "NodeTypeCode": 300,
+    "Question": {
+    "QuestionCode": 1,
+    "Title": "Paciente gestante ou em pós parto?",
+    "PossibleAnswers":
+    [
+        {
+        "Id": 1,
+        "Value": "Sim"
+        },
+        {
+        "Id": 2,
+        "Value": "Não"
+        }
+    ],
+    "QuestionTypeCode": 100
+    },
+    "Decision": null
+}
