@@ -1,8 +1,8 @@
-import 'package:cardiompp/core/error/exception.dart';
-import 'package:cardiompp/core/error/failure.dart';
-import 'package:cardiompp/core/usecase/usecase.dart';
-import 'package:cardiompp/features/login/data/repositories/repository_impl.dart';
-import 'package:cardiompp/features/login/domain/entities/doctor.dart';
+import 'package:HealthSup/core/error/exception.dart';
+import 'package:HealthSup/core/error/failure.dart';
+import 'package:HealthSup/core/usecase/usecase.dart';
+import 'package:HealthSup/features/login/data/repositories/repository_impl.dart';
+import 'package:HealthSup/features/login/domain/entities/doctor.dart';
 import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';

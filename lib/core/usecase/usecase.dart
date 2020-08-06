@@ -1,4 +1,4 @@
-import 'package:cardiompp/core/error/failure.dart';
+import 'package:HealthSup/core/error/failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 

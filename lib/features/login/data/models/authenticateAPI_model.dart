@@ -1,4 +1,4 @@
-import 'package:cardiompp/features/login/domain/entities/authenticate.dart';
+import 'package:HealthSup/features/login/domain/entities/authenticate.dart';
 import 'package:meta/meta.dart';
 
 class AuthenticateApiModel extends Authenticate {
