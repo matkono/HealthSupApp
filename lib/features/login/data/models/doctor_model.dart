@@ -1,4 +1,4 @@
-import 'package:cardiompp/features/login/domain/entities/doctor.dart';
+import 'package:HealthSup/features/login/domain/entities/doctor.dart';
 import 'package:meta/meta.dart';
 
 class DoctorModel extends Doctor {

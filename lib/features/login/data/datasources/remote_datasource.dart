@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:cardiompp/core/error/exception.dart';
-import 'package:cardiompp/features/login/data/datasources/settingsAPI.dart';
-import 'package:cardiompp/features/login/data/models/authenticateAPI_model.dart';
-import 'package:cardiompp/features/login/data/models/doctor_model.dart';
-import 'package:cardiompp/features/login/data/models/loginApp_model.dart';
+import 'package:HealthSup/features/login/data/models/doctor_model.dart';
+import 'package:HealthSup/core/error/exception.dart';
+import 'package:HealthSup/features/login/data/datasources/settingsAPI.dart';
+import 'package:HealthSup/features/login/data/models/authenticateAPI_model.dart';
+import 'package:HealthSup/features/login/data/models/loginApp_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class DoctorRemoteDataSource {

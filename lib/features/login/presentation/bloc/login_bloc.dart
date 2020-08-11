@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:cardiompp/core/error/failure.dart';
-import 'package:cardiompp/features/login/domain/entities/doctor.dart';
-import 'package:cardiompp/features/login/domain/usecases/loginApp_usecase.dart';
+import 'package:HealthSup/core/error/failure.dart';
+import 'package:HealthSup/features/login/domain/entities/doctor.dart';
+import 'package:HealthSup/features/login/domain/usecases/loginApp_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +11,8 @@ part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  @override
+  LoginBloc(LoginState initialState) : super(initialState);
+
   LoginState get initialState => LoginInitial();
 
   @override

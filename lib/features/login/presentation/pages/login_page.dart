@@ -1,4 +1,4 @@
-import 'package:cardiompp/features/login/presentation/bloc/login_bloc.dart';
+import 'package:HealthSup/features/login/presentation/bloc/login_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,7 +37,7 @@ class _LoginPageState extends State<LoginPage> {
             }
           },
           child: BlocBuilder<LoginBloc, LoginState>(
-            bloc: BlocProvider.of<LoginBloc>(context),
+            cubit: BlocProvider.of<LoginBloc>(context),
             builder: (BuildContext context, LoginState state) {
               return Container(
                 child: Column(

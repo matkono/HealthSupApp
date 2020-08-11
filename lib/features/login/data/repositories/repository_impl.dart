@@ -1,9 +1,9 @@
-import 'package:cardiompp/core/error/failure.dart';
-import 'package:cardiompp/features/login/data/datasources/local_datasource.dart';
-import 'package:cardiompp/features/login/data/datasources/remote_datasource.dart';
-import 'package:cardiompp/features/login/data/models/authenticateAPI_model.dart';
-import 'package:cardiompp/features/login/domain/entities/doctor.dart';
-import 'package:cardiompp/features/login/domain/repositories/repository.dart';
+import 'package:HealthSup/core/error/failure.dart';
+import 'package:HealthSup/features/login/data/datasources/local_datasource.dart';
+import 'package:HealthSup/features/login/data/datasources/remote_datasource.dart';
+import 'package:HealthSup/features/login/data/models/authenticateAPI_model.dart';
+import 'package:HealthSup/features/login/domain/entities/doctor.dart';
+import 'package:HealthSup/features/login/domain/repositories/repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
