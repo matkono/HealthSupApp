@@ -20,18 +20,10 @@ class LoginIcon extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          // Align(
-          //   alignment: Alignment.center,
-            // child: Icon(
-            //   Icons.person,
-            //   size: 150.0,
-            //   color: Colors.blue,
-            // ),
+          // Image.asset('assets/images/HealthSupRender.png',
+          //   alignment: Alignment.bottomCenter,
+          //   height: 200,
           // ),
-          Image.asset('assets/images/HealthSupRender.png',
-            alignment: Alignment.bottomCenter,
-            height: 200,
-          ),
         ],
       ),
     );

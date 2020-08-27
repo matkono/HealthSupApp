@@ -30,7 +30,7 @@ class DecisionLayout extends StatelessWidget {
               ),
             ),
             alignment: Alignment.center,
-            height: MediaQuery.of(context).size.height / 4,
+            height: MediaQuery.of(context).size.height / 1.312,
             width: MediaQuery.of(context).size.width / 1.3,
           ),
         ),
