@@ -16,8 +16,11 @@ class _BasePageState extends State<BasePage> {
       child: Container(
         height: MediaQuery.of(context).size.height / 1.20,
         decoration: BoxDecoration(
-          color: Colors.white,
-        ),
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/Decoration.png'),
+                    fit: BoxFit.fill,
+                  ),
+                ),
         child: Column(
           children: <Widget>[
             Image.asset(
@@ -55,9 +58,8 @@ class _BasePageState extends State<BasePage> {
   }
 
   void addBodyWidget() {
-
     widgetView.add(bodyWidget(
-        'assets/images/picture2.png',
+        'assets/images/Illustration2.png',
         'Pra quem é o aplicativo?',
         'Lorem ipsum dolor sit amet, consectetur'
             'adipiscing elit. Suspendisse nonneque at'
@@ -65,7 +67,7 @@ class _BasePageState extends State<BasePage> {
             'Sed sapien ódio.'));
 
     widgetView.add(bodyWidget(
-        'assets/images/picture3.png',
+        'assets/images/Illustration3.png',
         'Gerencie seus atendimentos',
         'Lorem ipsum dolor sit amet, consectetur'
             'adipiscing elit. Suspendisse nonneque at'
@@ -73,7 +75,7 @@ class _BasePageState extends State<BasePage> {
             'Sed sapien ódio.'));
 
     widgetView.add(bodyWidget(
-        'assets/images/picture4.png',
+        'assets/images/Illustration4.png',
         'Como criar um cadastro no HealthSup?',
         'Lorem ipsum dolor sit amet, consectetur'
             'adipiscing elit. Suspendisse nonneque at'
@@ -84,27 +86,28 @@ class _BasePageState extends State<BasePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-        if (widgetKey.toString() == '0')
-          bodyWidget(
-          'assets/images/picture1.png',
-          'O que é o HealthSup?',
-          'Lorem ipsum dolor sit amet, consectetur'
-              'adipiscing elit. Suspendisse nonneque at'
-              'sapien placerat aliquam eget at turpis.'
-              'Sed sapien ódio.'),
-          Container(
-            width: MediaQuery.of(context).size.width / 1.2,
-            height: MediaQuery.of(context).size.height / 15,
-            child: RaisedButton(
-              color: Colors.blue,
-              child: Text(
-                'Próximo',
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
-              onPressed: () {
-                  if (widgetKey == 0) {
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            if (widgetKey.toString() == '0')
+              bodyWidget(
+                  'assets/images/Illustration1.png',
+                  'O que é o HealthSup?',
+                  'Lorem ipsum dolor sit amet, consectetur'
+                      'adipiscing elit. Suspendisse nonneque at'
+                      'sapien placerat aliquam eget at turpis.'
+                      'Sed sapien ódio.'),
+            Container(
+              width: MediaQuery.of(context).size.width / 1.2,
+              height: MediaQuery.of(context).size.height / 15,
+              child: RaisedButton(
+                color: Colors.blue,
+                child: Text(
+                  'Próximo',
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+                onPressed: () {
+                  if (widgetView.isEmpty) {
                     addBodyWidget();
                     print(widgetView);
                     widgetKey++;
@@ -115,13 +118,17 @@ class _BasePageState extends State<BasePage> {
                             builder: (context) => MedicalAppointment()));
                   }
                   if (widgetView.isNotEmpty) {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => BodyPage(widgetList: widgetView)));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                BodyPage(widgetList: widgetView, index: 0,)));
                   }
-              },
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

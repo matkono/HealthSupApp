@@ -12,3 +12,14 @@ class ServerFailure extends Failure {
   @override
   List<Object> get props => [failureMessage];
 }
+
+class NoInternetConnectionFailure extends Failure {
+  final String failureMessage;
+
+  NoInternetConnectionFailure({
+    this.failureMessage = 'No internet connection',
+  });
+  
+  @override
+  List<Object> get props => [failureMessage];
+}

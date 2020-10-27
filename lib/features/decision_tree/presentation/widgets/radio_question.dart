@@ -21,7 +21,6 @@ class RadioQuestionLoaded extends StatefulWidget {
 class _RadioQuestionLoadedState extends State<RadioQuestionLoaded> {
   int radioButton = 0;
   Answer finalAnswer = new Answer(answers: []);
-  int index;
   Map<PossibleAnswer, int> mapAnswer = {};
 
   Widget radioAnswer(BuildContext context, List<PossibleAnswer> possibleAnswers, Answer answer) {
@@ -30,10 +29,15 @@ class _RadioQuestionLoadedState extends State<RadioQuestionLoaded> {
       mapAnswer.addAll({
         PossibleAnswer(id: possibleAnswers[0].id, value: possibleAnswers[0].value): 0});
       answer.answers.add(possibleAnswers[0]);
-    }
 
+      for (int x = 1; x < possibleAnswers.length; x++) {
+        mapAnswer.addAll({
+          PossibleAnswer(id: possibleAnswers[x].id, value: possibleAnswers[x].value): x});
+      }
+    }
+    
     return SizedBox(
-      height: MediaQuery.of(context).size.height / 5,
+      height: MediaQuery.of(context).size.height / 2,
       child: ListView.builder(
         itemCount: possibleAnswers.length,
         itemBuilder: (context, index) {
@@ -44,7 +48,12 @@ class _RadioQuestionLoadedState extends State<RadioQuestionLoaded> {
               groupValue: radioButton,
               onChanged: (value) {
                 setState(() {
+                  print('radioButton BEFORE: $radioButton');
+                  print('value: $value');
+                  print('index: $index');
                   radioButton = value;
+                  print('radioButton AFTER: $radioButton');
+                  print('');
                   answer.answers.removeLast();
                   answer.answers.add(possibleAnswers[index]);
                 });
