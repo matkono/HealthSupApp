@@ -1,19 +1,14 @@
-import 'package:HealthSup/features/decision_tree/domain/entities/decision.dart';
-import 'package:HealthSup/features/decision_tree/domain/entities/question.dart';
+import 'package:HealthSup/features/decision_tree/domain/entities/data.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
 class Node extends Equatable {
-  final int nodeTypeCode;
-  final Question question;
-  final Decision decision;
+  final Data question;
 
   Node({
-    @required this.nodeTypeCode,
     @required this.question,
-    @required this.decision,
   });
 
   @override
-  List<Object> get props => [nodeTypeCode, question, decision];
+  List<Object> get props => [question];
 }

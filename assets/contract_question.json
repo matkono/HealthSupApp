@@ -1,28 +1,38 @@
 {
-    "NodeTypeCode": 300,
-    "Question": {
-    "QuestionCode": 1,
-    "Title": "Paciente gestante ou em pós parto?",
-    "PossibleAnswers":
-    [
+    "data": {
+      "questionId": 1,
+      "code": 200,
+      "title": "Paciente gestante ou em pós parto?",
+      "questionType": {
+        "id": 1,
+        "code": 0
+      },
+      "possibleAnswers": [
         {
-            "Id": 1,
-            "Value": "Opção 1"
+          "id": 1,
+          "code": 400,
+          "title": "Sim.",
+          "possibleAnswerGroup": {
+            "id": 1
+          }
         },
         {
-            "Id": 2,
-            "Value": "Opção 2"
-        },
-        {
-            "Id": 3,
-            "Value": "Opção 3"
-        },
-        {
-            "Id": 4,
-            "Value": "Opção 4"
+          "id": 2,
+          "code": 401,
+          "title": "Não.",
+          "possibleAnswerGroup": {
+            "id": 2
+          }
         }
-    ],
-    "QuestionTypeCode": 100
-    },
-    "Decision": null
-}
+      ],
+      "id": 1,
+      "isInitial": true,
+      "nodeType": {
+        "id": 1,
+        "code": 0
+      },
+      "decisionTree": {
+        "id": 1
+      }
+    }
+  }

@@ -29,14 +29,18 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         } else {
           final login = await authenticateLogin(event.email, event.password);
 
-          if (login.isRight() == true) {
-            yield LoginSuccessState();
-          } else {
-            yield LoginErrorState();
-          }
+          yield login.fold(
+            (failure) {
+              if (failure is ServerFailure)
+                return LoginErrorState(message2: failure.failureMessage);
+              else
+                return LoginErrorState(message2: "Email ou Senha inválidos");
+            },
+            (success) => LoginSuccessState(),
+          );
         }
       } catch (e) {
-        yield LoginErrorState();
+        yield LoginErrorState(message2: "Email ou Senha inválidos");
         print(e);
       }
     }

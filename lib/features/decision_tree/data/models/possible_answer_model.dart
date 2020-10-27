@@ -1,18 +1,30 @@
+import 'package:HealthSup/features/decision_tree/data/models/possible_answer_group_model.dart';
 import 'package:HealthSup/features/decision_tree/domain/entities/possible_answer.dart';
+import 'package:HealthSup/features/decision_tree/domain/entities/possible_answer_group.dart';
 import 'package:flutter/foundation.dart';
 
 class PossibleAnswerModel extends PossibleAnswer {
   PossibleAnswerModel({
     @required int id,
-    @required String value,
-  }) : super(id: id, value: value);
+    @required int code,
+    @required String title,
+    @required PossibleAnswerGroup possibleAnswerGroup,
+  }) : super(
+          id: id,
+          code: code,
+          title: title,
+          possibleAnswerGroup: possibleAnswerGroup,
+        );
 
   factory PossibleAnswerModel.fromJson(Map<String, dynamic> json) {
     if (json == null) return null;
 
     return PossibleAnswerModel(
-      id: json['Id'],
-      value: json['Value'],
+      id: json['id'],
+      code: json['code'],
+      title: json["title"],
+      possibleAnswerGroup:
+          PossibleAnswerGroupModel.fromJson(json["possibleAnswerGroup"]),
     );
   }
 

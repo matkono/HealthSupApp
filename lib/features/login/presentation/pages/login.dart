@@ -1,14 +1,11 @@
 import 'package:HealthSup/features/login/presentation/bloc/login_bloc.dart';
+import 'package:HealthSup/features/login/presentation/widgets/reset_password.dart';
 import 'package:HealthSup/features/tutorial/presentation/widgets/icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginPage extends StatefulWidget {
-  final String errorMessage;
-
-  LoginPage({this.errorMessage});
-
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -34,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
           listener: (BuildContext context, state) {
             if (state is LoginSuccessState) {
               setState(() {
-                Navigator.pushNamed(context, '/logged');
+                Navigator.pushNamed(context, '/home');
               });
             }
           },
@@ -68,8 +65,8 @@ class _LoginPageState extends State<LoginPage> {
                               key: _formKey,
                               child: Column(
                                 children: <Widget>[
-                                  Stack(alignment: Alignment.center, children: <
-                                      Widget>[
+                                  Stack(alignment: Alignment.center,
+                                  children: <Widget>[
                                     Container(
                                       width: MediaQuery.of(context).size.width /
                                           1.2,
@@ -227,7 +224,7 @@ class _LoginPageState extends State<LoginPage> {
                                         "Login",
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                          fontSize: 20.0,
+                                          fontSize: 25.0,
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
                                         ),
@@ -250,13 +247,24 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           Container(
-                            height: MediaQuery.of(context).size.height / 7.5,
-                            padding: EdgeInsets.only(top: 30.0),
-                            child: Text(
-                              "Esqueceu a senha?",
-                              style: TextStyle(fontSize: 17.0),
+                            padding: EdgeInsets.only(top: 40),
+                            child: FlatButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ResetPassword()),
+                                );
+                              },
+                              child: Text(
+                                'Esqueceu a senha?',
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.blue,
+                                ),
+                              ),
                             ),
-                          ),
+                          )
                         ],
                       ),
                     ],

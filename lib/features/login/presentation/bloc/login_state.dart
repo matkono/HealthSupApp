@@ -37,7 +37,9 @@ class LoginEmptyErrorState extends LoginState {
 }
 
 class LoginErrorState extends LoginState {
-  final String message2 = 'Email ou Senha inválidos';
+  final String message2;
+
+  LoginErrorState({@required this.message2});
 
   @override
   List<Object> get props => [message2];
