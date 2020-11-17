@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:HealthSup/features/login/data/models/doctor_model.dart';
@@ -18,30 +19,41 @@ class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
 
   Future<Map<dynamic, dynamic>> authenticatorAPI(
       AuthenticateApiModel user) async {
-    HttpClient client = new HttpClient();
-    client.badCertificateCallback =
-        ((X509Certificate cert, String host, int port) {
-      final isValidHost = host == settingsAPI.getUrl(null);
-      return isValidHost;
-    });
+    try {
+      HttpClient client = new HttpClient();
+      client.badCertificateCallback =
+          ((X509Certificate cert, String host, int port) {
+        final isValidHost = host == settingsAPI.getUrl(null);
+        return isValidHost;
+      });
 
-    // settingsAPI.CertificateHost(client);
+      // settingsAPI.CertificateHost(client);
+      String urlAuth = 'authentication/';
+      Map map = user.toJson();
+      print('estou aqui');
 
-    String urlAuth = 'authentication/';
+      var url = settingsAPI.getUrl(urlAuth);
+      print(url);
+      var uriParse = Uri.parse(url);
+      print(uriParse);
+      HttpClientRequest request =
+          await client.postUrl(uriParse).timeout(Duration(seconds: 5));
+      print('estou aqui 3');
+      await settingsAPI.setHeaders(request);
+      request.add(utf8.encode(json.encode(map)));
 
-    Map map = user.toJson();
+      HttpClientResponse response = await request.close();
+      String body = await response.transform(utf8.decoder).join();
+      Map jsonDecoded = json.decode(body);
 
-    HttpClientRequest request =
-        await client.postUrl(Uri.parse(settingsAPI.getUrl(urlAuth)));
-
-    await settingsAPI.setHeaders(request);
-    request.add(utf8.encode(json.encode(map)));
-
-    HttpClientResponse response = await request.close();
-    String body = await response.transform(utf8.decoder).join();
-    Map jsonDecoded = json.decode(body);
-  
-    return jsonDecoded;
+      return jsonDecoded;
+    } on TimeoutException catch (e) {
+      throw e;
+    } on SocketException catch (e) {
+      throw e;
+    } on Exception catch (_) {
+      throw ServerException();
+    }
   }
 
   @override
@@ -74,9 +86,10 @@ class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
       String body = await response.transform(utf8.decoder).join();
       Map jsonLoginResponse = json.decode(body);
       Map jsonData = jsonLoginResponse['data'];
-      
+
       if (jsonData == null) {
-        throw ServerException(exceptionMessage: jsonLoginResponse['errors'][0]['message']);
+        throw ServerException(
+            exceptionMessage: jsonLoginResponse['errors'][0]['message']);
       }
 
       if (response.statusCode == 200) {

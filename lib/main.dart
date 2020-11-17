@@ -1,6 +1,10 @@
 import 'package:HealthSup/features/decision_tree/presentation/bloc/decision_tree_bloc.dart';
 import 'package:HealthSup/features/decision_tree/presentation/pages/medical_appointment.dart';
 import 'package:HealthSup/features/login/presentation/bloc/login_bloc.dart';
+import 'package:HealthSup/features/login/presentation/pages/login.dart';
+import 'package:HealthSup/features/patient/presentation/bloc/patient_bloc.dart';
+import 'package:HealthSup/features/patient/presentation/overlays/pages/overlay.dart';
+import 'package:HealthSup/features/patient/presentation/pages/patient_homepage.dart';
 import 'package:HealthSup/features/tutorial/presentation/pages/base_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +16,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider<PatientBloc>(
+          create: (context) => PatientBloc(),
+        ),
         BlocProvider<LoginBloc>(
           create: (context) => LoginBloc(LoginInitial()),
         ),
@@ -20,10 +27,13 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        home: BasePage(),
+        home: OverlayHomePage(),
         debugShowCheckedModeBanner: false,
         routes: {
-          '/logged': (context) => MedicalAppointment(),
+          '/login': (context) => LoginPage(),
+          '/home': (context) => PatientHomePage(),
+          '/medicalAppointment': (context) => MedicalAppointment(),
+          '/overlay': (context) => OverlayHomePage(),
         },
       ),
     );

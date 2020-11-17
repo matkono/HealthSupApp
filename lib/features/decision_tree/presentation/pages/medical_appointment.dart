@@ -17,7 +17,6 @@ class MedicalAppointment extends StatefulWidget {
 }
 
 class _MedicalAppointmentState extends State<MedicalAppointment> {
-
   void initState() {
     super.initState();
   }
@@ -29,7 +28,8 @@ class _MedicalAppointmentState extends State<MedicalAppointment> {
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('assets/images/prancheta2.jpg'), fit: BoxFit.fill,
+              image: AssetImage('assets/images/prancheta2.jpg'),
+              fit: BoxFit.fill,
             ),
           ),
           child: SizedBox(
@@ -39,19 +39,22 @@ class _MedicalAppointmentState extends State<MedicalAppointment> {
                 listener: (BuildContext context, state) {},
                 child: BlocBuilder<DecisionTreeBloc, DecisionTreeState>(
                   builder: (BuildContext context, DecisionTreeState state) {
-                    if (state is DecisionTreeInitial) return StartDecisionTree();
+                    if (state is DecisionTreeInitial)
+                      return StartDecisionTree();
                     else if (state is LoadedDecisionTreeState)
-                      return (state.node.nodeTypeCode == 300 &&
-                              state.node.question.questionTypeCode == 100)
+                      return (state.node.question.nodeType.code == 0 &&
+                              state.node.question.questionType.code == 0)
                           ? RadioQuestionLoaded(
                               node: state.node,
                             )
-                          : (state.node.nodeTypeCode == 300 &&
-                                  state.node.question.questionTypeCode == 101)
+                          : (state.node.question.nodeType.code == 0 &&
+                                  state.node.question.questionType.code == 1)
                               ? CheckBoxQuestion(node: state.node)
                               : DecisionLayout(node: state.node);
-                    else if (state is ErrorDecisionTreeState) return ErrorLayout();
-                    else return Center(child: CircularProgressIndicator());
+                    else if (state is ErrorDecisionTreeState)
+                      return ErrorLayout();
+                    else
+                      return Center(child: CircularProgressIndicator());
                   },
                 ),
               ),

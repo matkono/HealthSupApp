@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 class AnswerModel extends Answer {
   AnswerModel({
     @required List<PossibleAnswerModel> answers,
-
   }) : super(answers: answers);
 
   factory AnswerModel.fromJson(Map<String, dynamic> json) {
@@ -50,7 +49,6 @@ class AnswerModel extends Answer {
     List<PossibleAnswerModel> list = [];
 
     for (dynamic i in json) {
-      // list.add(PossibleAnswerModel.fromJson(i));
       list.add(i);
     }
 

@@ -22,7 +22,7 @@ class DecisionLayout extends StatelessWidget {
             margin: EdgeInsets.only(top: 40),
             child: Center(
               child: Text(
-                node.decision.title,
+                node.question.title,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 21,
@@ -41,16 +41,19 @@ class DecisionLayout extends StatelessWidget {
               padding: EdgeInsets.only(top: 20, right: 20),
               child: FlatButton(
                 color: Colors.blue,
-                child: Text('Voltar',
+                child: Text(
+                  'Voltar',
                   style: TextStyle(
                     color: Colors.white,
                   ),
                 ),
                 onPressed: () async {
-                  (node.nodeTypeCode == 300 &&
-                          node.question.questionCode == 1)
-                      ? BlocProvider.of<DecisionTreeBloc>(context).add(InitialDecisionTreeEvent())
-                      : BlocProvider.of<DecisionTreeBloc>(context).add(StartDecisionTreeEvent());
+                  (node.question.nodeType.code == 300 &&
+                          node.question.questionId == 1)
+                      ? BlocProvider.of<DecisionTreeBloc>(context)
+                          .add(InitialDecisionTreeEvent())
+                      : BlocProvider.of<DecisionTreeBloc>(context)
+                          .add(StartDecisionTreeEvent());
                 },
               ),
             ),
@@ -58,14 +61,15 @@ class DecisionLayout extends StatelessWidget {
               padding: EdgeInsets.only(top: 20, left: 20),
               child: FlatButton(
                 color: Colors.blue,
-                child: Text('Avançar',
+                child: Text(
+                  'Avançar',
                   style: TextStyle(
                     color: Colors.white,
                   ),
                 ),
                 onPressed: () {
-                  BlocProvider.of<DecisionTreeBloc>(context).add(NextNodeDecisionTreeEvent(
-                      answer: Answer(answers: null)));
+                  BlocProvider.of<DecisionTreeBloc>(context).add(
+                      NextNodeDecisionTreeEvent(answer: Answer(answers: null)));
                 },
               ),
             ),

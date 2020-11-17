@@ -22,12 +22,17 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
   int index;
   Map<PossibleAnswer, bool> mapAnswer = {};
 
-  Widget radioAnswer(BuildContext context, List<PossibleAnswer> possibleAnswers, Answer answer) {
-
+  Widget checkBoxAnswer(BuildContext context,
+      List<PossibleAnswer> possibleAnswers, Answer answer) {
     if (mapAnswer.isEmpty)
       for (index = 0; index < possibleAnswers.length; index++) {
         mapAnswer.addAll({
-          PossibleAnswer(id: possibleAnswers[index].id, value: possibleAnswers[index].value): false,
+          PossibleAnswer(
+            id: possibleAnswers[index].id,
+            code: possibleAnswers[index].code,
+            title: possibleAnswers[index].title,
+            possibleAnswerGroup: possibleAnswers[index].possibleAnswerGroup,
+          ): false,
         });
       }
 
@@ -37,16 +42,27 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
         itemCount: possibleAnswers.length,
         itemBuilder: (context, index) {
           return ListTile(
-            title: Text(possibleAnswers[index].value),
+            title: Text(possibleAnswers[index].title),
             leading: Checkbox(
-              value: mapAnswer[PossibleAnswer(id: possibleAnswers[index].id, value: possibleAnswers[index].value)],
+              value: mapAnswer[PossibleAnswer(
+                id: possibleAnswers[index].id,
+                code: possibleAnswers[index].code,
+                title: possibleAnswers[index].title,
+                possibleAnswerGroup: possibleAnswers[index].possibleAnswerGroup,
+              )],
               onChanged: (value) {
                 setState(() {
-                  mapAnswer[PossibleAnswer(id: possibleAnswers[index].id, value: possibleAnswers[index].value)] = value;
+                  mapAnswer[PossibleAnswer(
+                    id: possibleAnswers[index].id,
+                    code: possibleAnswers[index].code,
+                    title: possibleAnswers[index].title,
+                    possibleAnswerGroup:
+                        possibleAnswers[index].possibleAnswerGroup,
+                  )] = value;
 
                   (value)
-                  ? answer.answers.add(possibleAnswers[index])
-                  : answer.answers.remove(possibleAnswers[index]);
+                      ? answer.answers.add(possibleAnswers[index])
+                      : answer.answers.remove(possibleAnswers[index]);
                 });
               },
             ),
@@ -58,68 +74,105 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(top: 25, left: 20, right: 20),
-          child: Container(
-            margin: EdgeInsets.only(top: 40),
-            child: Center(
-              child: Text(
-                widget.node.question.title,
-                textAlign: TextAlign.center,
-                softWrap: true,
-                style: TextStyle(
-                  fontSize: 21,
-                ),
+    return Expanded(
+      child: Column(
+        children: <Widget>[
+          AppBar(
+            iconTheme: IconThemeData(
+              color: Colors.black,
+            ),
+            title: Text(
+              'Cardiomiopatia Periparto',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 25,
               ),
             ),
-            height: MediaQuery.of(context).size.height / 4,
-            width: MediaQuery.of(context).size.width / 1.5,
+            backgroundColor: Colors.grey[300],
           ),
-        ),
-        Container(
-          margin: EdgeInsets.only(top: 10, left: 20, right: 20),
-          child: radioAnswer(
-              context, widget.node.question.possibleAnswers, finalAnswer),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.only(top: 20, right: 20),
-              child: FlatButton(
-                color: Colors.blue,
-                child: Text('Voltar',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/prancheta2.jpg'),
+                  fit: BoxFit.fill,
                 ),
-                onPressed: () async {
-                  BlocProvider.of<DecisionTreeBloc>(context)
-                      .add(InitialDecisionTreeEvent());
-                },
+              ),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    height: MediaQuery.of(context).size.height / 4.5,
+                    child: Center(
+                      child: Container(
+                        alignment: Alignment.bottomCenter,
+                        child: Text(
+                          widget.node.question.title,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 21,
+                          ),
+                        ),
+                      ),
+                    ),
+                    width: MediaQuery.of(context).size.width / 1.5,
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 10, left: 20, right: 20),
+                    height: MediaQuery.of(context).size.height / 2.5,
+                    child: checkBoxAnswer(context,
+                        widget.node.question.possibleAnswers, finalAnswer),
+                  ),
+                  Expanded(
+                    child: Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.only(top: 50, right: 20),
+                            child: FlatButton(
+                              color: Colors.blue,
+                              child: Text(
+                                'Voltar',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              onPressed: () async {
+                                BlocProvider.of<DecisionTreeBloc>(context)
+                                    .add(InitialDecisionTreeEvent());
+                              },
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 50, left: 20),
+                            child: FlatButton(
+                              color: Colors.blue,
+                              child: Text(
+                                'Avançar',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              onPressed: () {
+                                print(
+                                    'id: ${finalAnswer.answers[0].id} | value: ${finalAnswer.answers[0].title}');
+                                BlocProvider.of<DecisionTreeBloc>(context).add(
+                                    NextNodeDecisionTreeEvent(
+                                        answer: Answer(
+                                            answers: finalAnswer.answers)));
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-            Container(
-              padding: EdgeInsets.only(top: 20, left: 20),
-              child: FlatButton(
-                color: Colors.blue,
-                child: Text('Avançar',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-                onPressed: () {
-                  BlocProvider.of<DecisionTreeBloc>(context).add(
-                    NextNodeDecisionTreeEvent(
-                      answer: Answer(answers: finalAnswer.answers)));
-                },
-              ),
-            ),
-          ],
-        ),
-      ],
+          ),
+        ],
+      ),
     );
   }
 }
