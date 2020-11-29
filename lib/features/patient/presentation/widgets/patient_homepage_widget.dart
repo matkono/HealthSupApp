@@ -38,7 +38,7 @@ class _PatientHomePageWidgetState extends State<PatientHomePageWidget> {
                       ),
                       onPressed: () {
                         Navigator.pushNamedAndRemoveUntil(
-                            context, '/overlay', (route) => false);
+                            context, '/overlayPatientHomePage', (route) => false);
                       },
                     ),
                   ),
