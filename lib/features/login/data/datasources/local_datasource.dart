@@ -52,9 +52,6 @@ class LocalDataSourceImpl implements LocalDataSource {
     if (preferences.containsKey(key)) {
       var tokenTime = preferences.getInt(key);
 
-      // print('tokenTime Armazenado: $tokenTime');
-      // print('tokenTime Atual: $timeNow');
-
       if (timeNow - tokenTime > 29*60*1000) {
         return true;
       }
