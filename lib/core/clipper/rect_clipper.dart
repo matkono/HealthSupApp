@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 class InvertedClipperRect extends CustomClipper<Path> {
+  final double widthBox;
   final double widthClipper;
   final double heightClipper;
   final double radiusClipper;
 
   InvertedClipperRect({
+    this.widthBox,
     @required this.widthClipper,
     @required this.heightClipper,
     @required this.radiusClipper,
@@ -21,8 +23,8 @@ class InvertedClipperRect extends CustomClipper<Path> {
           ),
         Path()
           ..addRect(Rect.fromCenter(
-              height: 65,
-              width: 420,
+              height: 80,
+              width: widthBox,
               center: Offset(
                   size.width - widthClipper, size.height - heightClipper))))
       ..close();

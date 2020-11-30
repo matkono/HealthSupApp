@@ -4,7 +4,9 @@ import 'package:HealthSup/features/login/presentation/bloc/login_bloc.dart';
 import 'package:HealthSup/features/login/presentation/pages/login.dart';
 import 'package:HealthSup/features/patient/presentation/bloc/patient_bloc.dart';
 import 'package:HealthSup/features/patient/presentation/overlays/pages/overlay.dart';
+import 'package:HealthSup/features/patient/presentation/overlays/pages/overlay_patient_details.dart';
 import 'package:HealthSup/features/patient/presentation/pages/patient_homepage.dart';
+import 'package:HealthSup/features/patient/presentation/widgets/patient_details.dart';
 import 'package:HealthSup/features/tutorial/presentation/pages/base_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,7 +35,9 @@ class MyApp extends StatelessWidget {
           '/login': (context) => LoginPage(),
           '/home': (context) => PatientHomePage(),
           '/medicalAppointment': (context) => MedicalAppointment(),
-          '/overlay': (context) => OverlayHomePage(),
+          '/overlayPatientHomePage': (context) => OverlayHomePage(),
+          '/overlayPatientDetails': (context) => OverlayPatientDetails(),
+          '/patientDetails': (context) => PatientDetails(),
         },
       ),
     );

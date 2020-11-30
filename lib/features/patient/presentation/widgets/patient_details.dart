@@ -33,6 +33,24 @@ class _PatientDetailsState extends State<PatientDetails> {
                       fontSize: 30,
                     ),
                   ),
+                  actions: [
+                    Container(
+                      width: MediaQuery.of(context).size.width / 4.5,
+                      child: FlatButton(
+                        child: Text(
+                          'Ajuda',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.black,
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.pushNamedAndRemoveUntil(context,
+                              '/overlayPatientDetails', (route) => false);
+                        },
+                      ),
+                    ),
+                  ],
                 ),
                 Row(
                   children: [
@@ -49,6 +67,7 @@ class _PatientDetailsState extends State<PatientDetails> {
                       ),
                     ),
                     IconButton(
+                      padding: EdgeInsets.only(bottom: 10, left: 2),
                       icon: Icon(
                         Icons.edit,
                         color: Colors.blue,
@@ -115,52 +134,55 @@ class _PatientDetailsState extends State<PatientDetails> {
                   ),
                 ),
                 Container(
-                    height: MediaQuery.of(context).size.height / 2,
-                    width: MediaQuery.of(context).size.width / 1.1,
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 1),
-                    ),
-                    child: Column(
-                      children: [
-                        Container(
-                          height: MediaQuery.of(context).size.height / 10,
-                          child: Row(
-                            children: [
-                              Container(
-                                padding: EdgeInsets.only(left: 10),
-                                width: MediaQuery.of(context).size.width / 1.6,
-                                child: Text(
-                                  'Primeira consulta iniciada ou concluída do paciente em questão com data e status',
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                  ),
+                  height: MediaQuery.of(context).size.height / 2,
+                  width: MediaQuery.of(context).size.width / 1.1,
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 1),
+                  ),
+                  child: Column(
+                    children: [
+                      Container(
+                        height: MediaQuery.of(context).size.height / 10,
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.only(left: 10),
+                              width: MediaQuery.of(context).size.width / 1.6,
+                              child: Text(
+                                'Primeira consulta iniciada ou concluída do paciente em questão com data e status',
+                                style: TextStyle(
+                                  fontSize: 17,
                                 ),
                               ),
-                              Container(
-                                margin: EdgeInsets.only(left: 4),
-                                color: Colors.blue[600],
-                                child: FlatButton(
-                                  child: Text(
-                                    'Continuar',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(left: 4),
+                              color: Colors.blue[600],
+                              child: FlatButton(
+                                child: Text(
+                                  'Continuar',
+                                  style: TextStyle(
+                                    color: Colors.white,
                                   ),
-                                  onPressed: () {
-                                    BlocProvider.of<DecisionTreeBloc>(context)
-                                        .add(StartDecisionTreeEvent());
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => MedicalAppointment()),
-                                    );
-                                  },
                                 ),
-                              )
-                            ],
-                          ),
+                                onPressed: () {
+                                  BlocProvider.of<DecisionTreeBloc>(context)
+                                      .add(StartDecisionTreeEvent());
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            MedicalAppointment()),
+                                  );
+                                },
+                              ),
+                            )
+                          ],
                         ),
-                      ],
-                    )),
+                      ),
+                    ],
+                  ),
+                ),
                 Container(
                   margin: EdgeInsets.only(top: 10),
                   height: MediaQuery.of(context).size.height / 14,
