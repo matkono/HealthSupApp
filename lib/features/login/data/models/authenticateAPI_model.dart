@@ -3,24 +3,24 @@ import 'package:meta/meta.dart';
 
 class AuthenticateApiModel extends Authenticate {
 
-  final String agentName;
+  final String agentKey;
   final String password;
 
   AuthenticateApiModel({
-    @required this.agentName,
+    @required this.agentKey,
     @required this.password,
   });
 
   factory AuthenticateApiModel.fromJson(Map<String, dynamic> json) {
     return AuthenticateApiModel(
-      agentName: json['agentName'],
+      agentKey: json['agentKey'],
       password: json['password'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'agentName': agentName,
+      'agentKey': agentKey,
       'password': password,
     };
   }

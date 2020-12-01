@@ -27,23 +27,21 @@ class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
         return isValidHost;
       });
 
-      // settingsAPI.CertificateHost(client);
-      String urlAuth = 'authentication/';
+      String urlAuth = 'Authentication/agentAuthentication/token/';
       Map map = user.toJson();
-      print('estou aqui');
 
       var url = settingsAPI.getUrl(urlAuth);
       print(url);
       var uriParse = Uri.parse(url);
       print(uriParse);
       HttpClientRequest request =
-          await client.postUrl(uriParse).timeout(Duration(seconds: 5));
-      print('estou aqui 3');
+          await client.postUrl(uriParse).timeout(Duration(seconds: 10));
       await settingsAPI.setHeaders(request);
       request.add(utf8.encode(json.encode(map)));
 
       HttpClientResponse response = await request.close();
       String body = await response.transform(utf8.decoder).join();
+      print(body);
       Map jsonDecoded = json.decode(body);
 
       return jsonDecoded;
@@ -66,17 +64,16 @@ class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
       return isValidHost;
     });
 
-    // settingsAPI.CertificateHost(client);
 
     var login = new LoginDoctorModel(
       email: email,
       password: password,
     );
-    String urlLogin = 'Doctor/login/';
+    String urlLogin = 'Authentication/userAuthentication/';
 
     try {
       HttpClientRequest request =
-          await client.postUrl(Uri.parse(settingsAPI.getUrl(urlLogin)));
+          await client.postUrl(Uri.parse(settingsAPI.getUrl(urlLogin))).timeout(Duration(seconds: 10));
 
       await settingsAPI.setHeaders(request);
       request.add(utf8.encode(json.encode(login.toJson())));
