@@ -1,57 +1,243 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:HealthSup/core/error/exception.dart';
 import 'package:HealthSup/features/decision_tree/data/models/answer_model.dart';
+import 'package:HealthSup/features/decision_tree/data/models/authenticateApi_model.dart';
 import 'package:HealthSup/features/decision_tree/data/models/node_model.dart';
-import 'package:flutter/services.dart';
+import 'package:HealthSup/features/login/data/datasources/settingsAPI.dart';
+import 'package:flutter/material.dart';
 
-abstract class RemoteDataSource {
-  Future<NodeModel> getFirstNodeMedicalAppointment();
+abstract class DecisionTreeRemoteDataSource {
+  Future<NodeModel> startNodeMedicalAppointment();
   Future<NodeModel> setAnswer(AnswerModel answer);
-  Future<NodeModel> getLastQuestion(int idQuestion);
+  Future<NodeModel> getPreviousQuestion(
+      int idMedicalAppointment, int idCurrentNode);
+  Future<NodeModel> finishAppointment(int idAppointment, bool finished);
+  Future<NodeModel> getCurrentNode(int idAppointment);
+  Future<NodeModel> confirmAction(int idAction, int idAppointment);
 }
 
-class RemoteDataSourceImpl extends RemoteDataSource {
+class DecisionTreeRemoteDataSourceImpl extends DecisionTreeRemoteDataSource {
+  final SettingsAPI settingsAPI;
+  // Parâmetros mocados
+  final int appointmentId = 1;
+  final int userId = 0;
+  var tokenKey = 'tokenJWT';
+  var tokenTimeKey = 'tokenCurrentTime';
+  var loginAPIModel = new AuthenticateApiModel(
+    agentName: 'CardiomppApp',
+    password: '2e0f011c-a22d-4771-8c50-a9491b96dfea',
+  );
+
+  DecisionTreeRemoteDataSourceImpl({
+    @required this.settingsAPI,
+  });
 
   @override
-  Future<NodeModel> getFirstNodeMedicalAppointment() async {
+  Future<NodeModel> startNodeMedicalAppointment() async {
+    // TO DO
+    // Iremos usar o endpoint currentNode, mas no futuro deverá ser o endpoint de criação de consulta
 
-    try {
-    String body = await rootBundle.loadString('assets/contract_question.json');
-    Map jsonNodeResponse = json.decode(body);
-    
-    return NodeModel.fromJson(jsonNodeResponse);
-
-    } catch(e) {
-      print(e);
-      throw ServerException();
-    }
+    return await getCurrentNode(appointmentId);
   }
 
   @override
   Future<NodeModel> setAnswer(AnswerModel answer) async {
+    var client = new HttpClient();
+    client.badCertificateCallback =
+        ((X509Certificate cert, String host, int port) {
+      final isValidHost = host == settingsAPI.getUrl(null);
+      return isValidHost;
+    });
+
+    String url = 'api/v1/DecisionEngine/question/answer/';
 
     try {
-    String body = await rootBundle.loadString('assets/contract_decision.json');
-    Map jsonDecisionResponse = json.decode(body);
+      HttpClientRequest request = await client
+          .postUrl(Uri.parse(settingsAPI.getUrl(url)))
+          .timeout(Duration(seconds: 10));
 
-    return NodeModel.fromJson(jsonDecisionResponse);
+      await settingsAPI.setHeaders(request);
+      request.add(utf8.encode(json.encode(answer.toJson())));
 
-    } catch(e) {
-      print(e);
+      HttpClientResponse response = await request.close();
+
+      String body = await response.transform(utf8.decoder).join();
+      Map jsonResponse = json.decode(body);
+      Map jsonData = jsonResponse['data'];
+
+      // TO DO
+      // Confirmar contrato de erro
+
+      if (jsonData == null) {
+        throw ServerException(
+            exceptionMessage: jsonResponse['errors'][0]['message']);
+      }
+
+      if (response.statusCode == 200) {
+        print('statusCode: ' + response.statusCode.toString());
+
+        return NodeModel.fromJson(jsonData);
+      } else {
+        print('statusCode: ' + response.statusCode.toString());
+        throw ServerException();
+      }
+    } on Exception catch (_) {
       throw ServerException();
     }
   }
 
   @override
-  Future<NodeModel> getLastQuestion(int idQuestion) async {
+  Future<NodeModel> getPreviousQuestion(
+      int idMedicalAppointment, int idCurrentNode) async {
+    var client = new HttpClient();
+    client.badCertificateCallback =
+        ((X509Certificate cert, String host, int port) {
+      final isValidHost = host == settingsAPI.getUrl(null);
+      return isValidHost;
+    });
+
+    Map previousQuestion = {
+      'medicalAppointmentId': idMedicalAppointment,
+      'currentNodeId': idCurrentNode,
+    };
+
+    String url = 'api/v1/DecisionEngine/node/previous/';
+
     try {
-    String body = await rootBundle.loadString('assets/contract_question.json');
-    Map jsonNodeResponse = json.decode(body);
+      HttpClientRequest request = await client
+          .postUrl(Uri.parse(settingsAPI.getUrl(url)))
+          .timeout(Duration(seconds: 10));
 
-    return NodeModel.fromJson(jsonNodeResponse);
+      await settingsAPI.setHeaders(request);
+      request.add(utf8.encode(json.encode(previousQuestion)));
 
-    } catch(e) {
-      print(e);
+      HttpClientResponse response = await request.close();
+
+      String body = await response.transform(utf8.decoder).join();
+      Map jsonResponse = json.decode(body);
+      Map jsonData = jsonResponse['data'];
+
+      // TO DO
+      // Confirmar contrato de erro
+
+      if (jsonData == null) {
+        throw ServerException(
+            exceptionMessage: jsonResponse['errors'][0]['message']);
+      }
+
+      if (response.statusCode == 200) {
+        print('statusCode: ' + response.statusCode.toString());
+
+        return NodeModel.fromJson(jsonData);
+      } else {
+        print('statusCode: ' + response.statusCode.toString());
+        throw ServerException();
+      }
+    } on Exception catch (_) {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<NodeModel> getCurrentNode(int idAppointment) async {
+    var client = new HttpClient();
+    client.badCertificateCallback =
+        ((X509Certificate cert, String host, int port) {
+      final isValidHost = host == settingsAPI.getUrl(null);
+      return isValidHost;
+    });
+
+    String url =
+        'api/v1/MedicalAppointment/medicalAppointment/$idAppointment/currentNode/';
+
+    try {
+      HttpClientRequest request = await client
+          .getUrl(Uri.parse(settingsAPI.getUrl(url)))
+          .timeout(Duration(seconds: 10));
+
+      await settingsAPI.setHeaders(request);
+
+      HttpClientResponse response = await request.close();
+
+      String body = await response.transform(utf8.decoder).join();
+      Map jsonResponse = json.decode(body);
+      Map jsonData = jsonResponse['data'];
+
+      // TO DO
+      // Confirmar contrato de erro
+
+      if (jsonData == null) {
+        throw ServerException(
+            exceptionMessage: jsonResponse['errors'][0]['message']);
+      }
+
+      if (response.statusCode == 200) {
+        print('statusCode: ' + response.statusCode.toString());
+
+        return NodeModel.fromJson(jsonData);
+      } else {
+        print('statusCode: ' + response.statusCode.toString());
+        throw ServerException();
+      }
+    } on Exception catch (_) {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<NodeModel> finishAppointment(int idAppointment, bool finished) async {
+    print('Finish Appointment');
+    return null;
+  }
+
+  @override
+  Future<NodeModel> confirmAction(int idAction, int idAppointment) async {
+    var client = new HttpClient();
+    client.badCertificateCallback =
+        ((X509Certificate cert, String host, int port) {
+      final isValidHost = host == settingsAPI.getUrl(null);
+      return isValidHost;
+    });
+
+    Map action = {
+      'medicalAppointmentId': idAppointment,
+      'actionId': idAction,
+    };
+
+    String url = 'api/v1/DecisionEngine/action/confirm/';
+
+    try {
+      HttpClientRequest request = await client
+          .postUrl(Uri.parse(settingsAPI.getUrl(url)))
+          .timeout(Duration(seconds: 10));
+
+      await settingsAPI.setHeaders(request);
+      request.add(utf8.encode(json.encode(action)));
+
+      HttpClientResponse response = await request.close();
+
+      String body = await response.transform(utf8.decoder).join();
+      Map jsonResponse = json.decode(body);
+      Map jsonData = jsonResponse['data'];
+
+      // TO DO
+      // Confirmar contrato de erro
+
+      if (jsonData == null) {
+        throw ServerException(
+            exceptionMessage: jsonResponse['errors'][0]['message']);
+      }
+
+      if (response.statusCode == 200) {
+        print('statusCode: ' + response.statusCode.toString());
+
+        return NodeModel.fromJson(jsonData);
+      } else {
+        print('statusCode: ' + response.statusCode.toString());
+        throw ServerException();
+      }
+    } on Exception catch (_) {
       throw ServerException();
     }
   }

@@ -2,10 +2,10 @@ import 'package:HealthSup/features/decision_tree/data/models/decision_tree_model
 import 'package:HealthSup/features/decision_tree/data/models/node_type_model.dart';
 import 'package:HealthSup/features/decision_tree/data/models/possible_answer_model.dart';
 import 'package:HealthSup/features/decision_tree/data/models/question_type_model.dart';
-import 'package:HealthSup/features/decision_tree/domain/entities/data.dart';
+import 'package:HealthSup/features/decision_tree/domain/entities/node.dart';
 import 'package:flutter/foundation.dart';
 
-class QuestionModel extends Data {
+class QuestionModel extends Node {
   QuestionModel({
     @required int questionId,
     @required int code,

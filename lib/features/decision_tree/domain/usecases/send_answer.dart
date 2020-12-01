@@ -3,12 +3,17 @@ import 'package:HealthSup/core/usecase/usecase.dart';
 import 'package:HealthSup/features/decision_tree/data/repositories/decision_tree_repository_impl.dart';
 import 'package:HealthSup/features/decision_tree/domain/entities/answer.dart';
 import 'package:HealthSup/features/decision_tree/domain/entities/node.dart';
+import 'package:HealthSup/features/decision_tree/domain/repositories/decision_tree_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
 class SendAnswer extends UseCase<Node, ParamsAnswer> {
-  final decisionTreeRepositoryImpl = new DecisionTreeRepositoryImpl();
+  final DecisionTreeRepository decisionTreeRepositoryImpl;
+
+  SendAnswer(
+    this.decisionTreeRepositoryImpl,
+  );
 
   @override
   Future<Either<Failure, Node>> call(ParamsAnswer params) async {

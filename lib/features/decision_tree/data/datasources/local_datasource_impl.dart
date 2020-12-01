@@ -1,13 +1,13 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-abstract class LocalDataSource {
+abstract class DecisionTreeLocalDataSource {
   Future<String> getTokenSharedPreferences(String key);
   Future<int> getTimeTokenSharedPreferences(String key);
   Future<void> setSharedPreferences(Map<String, dynamic> bodyResponse);
   Future<bool> validateTokenTime(String key);
 }
 
-class LocalDataSourceImpl implements LocalDataSource {
+class DecisionTreeLocalDataSourceImpl implements DecisionTreeLocalDataSource {
   static final preferences = SharedPreferences.getInstance();
   var tokenCurrentTime = DateTime.now().millisecondsSinceEpoch;
 

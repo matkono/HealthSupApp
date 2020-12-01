@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:HealthSup/core/usecase/usecase.dart';
 import 'package:HealthSup/features/decision_tree/domain/entities/answer.dart';
 import 'package:HealthSup/features/decision_tree/domain/entities/node.dart';
-import 'package:HealthSup/features/decision_tree/domain/usecases/last_question.dart';
+import 'package:HealthSup/features/decision_tree/domain/usecases/previous_question.dart';
 import 'package:HealthSup/features/decision_tree/domain/usecases/send_answer.dart';
 import 'package:HealthSup/features/decision_tree/domain/usecases/start_medical_appointment.dart';
 import 'package:bloc/bloc.dart';
@@ -48,7 +48,7 @@ class DecisionTreeBloc extends Bloc<DecisionTreeEvent, DecisionTreeState> {
 
     } else if (event is LastNodeDecisionTreeEvent) {
 
-      final lastNode = new LastQuestion();
+      final lastNode = new PreviousQuestion();
       final lastQuestion = await lastNode.call(ParamsQuestion(idQuestion: event.idQuestion));
       final Node lastNodeTree = lastQuestion.getOrElse(() => null);
       yield LoadedDecisionTreeState(node: lastNodeTree);

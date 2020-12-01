@@ -4,21 +4,49 @@ import 'package:flutter/foundation.dart';
 
 class AnswerModel extends Answer {
   AnswerModel({
-    @required List<PossibleAnswerModel> answers,
-  }) : super(answers: answers);
+    @required medicalAppointmentId,
+    @required doctorId,
+    @required questionId,
+    @required possibleAnswerGroupId,
+    @required date,
+    @required possibleAnswers,
+  }) : super(
+          medicalAppointmentId: medicalAppointmentId,
+          doctorId: doctorId,
+          questionId: questionId,
+          possibleAnswerGroupId: possibleAnswerGroupId,
+          date: date,
+          possibleAnswers: possibleAnswers,
+        );
 
   factory AnswerModel.fromJson(Map<String, dynamic> json) {
     if (json == null) return null;
 
     return AnswerModel(
-      answers: json['Answers'],
+      medicalAppointmentId: json['medicalAppointmentId'],
+      doctorId: json['doctorId'],
+      questionId: json['questionId'],
+      possibleAnswerGroupId: json['possibleAnswerGroupId'],
+      date: json['date'],
+      possibleAnswers: json['possibleAnswers'],
     );
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> json = {};
 
-    if (answers != null) json['Answers'] = answers;
+    if (medicalAppointmentId != null)
+      json['medicalAppointmentId'] = medicalAppointmentId;
+    if (doctorId != null)
+      json['doctorId'] = doctorId;
+    if (questionId != null)
+      json['questionId'] = questionId;
+    if (possibleAnswerGroupId != null)
+      json['possibleAnswerGroupId'] = possibleAnswerGroupId;
+    if (date != null)
+      json['date'] = date;
+    if (possibleAnswers != null)
+      json['possibleAnswers'] = possibleAnswers;
 
     return json;
   }
@@ -27,7 +55,12 @@ class AnswerModel extends Answer {
     if (answer == null) return null;
 
     return AnswerModel(
-      answers: AnswerModel.listFromJson(answer.answers),
+      medicalAppointmentId: answer.medicalAppointmentId,
+      doctorId: answer.doctorId,
+      questionId: answer.questionId,
+      possibleAnswerGroupId: answer.possibleAnswerGroupId,
+      date: answer.date,
+      possibleAnswers: answer.possibleAnswers,
     );
   }
 
