@@ -62,6 +62,8 @@ class DecisionTreeRemoteDataSourceImpl extends DecisionTreeRemoteDataSource {
       await settingsAPI.setHeaders(request);
       request.add(utf8.encode(json.encode(answer.toJson())));
 
+      print('request: ${utf8.encode(json.encode(answer.toJson()))}');
+
       HttpClientResponse response = await request.close();
 
       String body = await response.transform(utf8.decoder).join();

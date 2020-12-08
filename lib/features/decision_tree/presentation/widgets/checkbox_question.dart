@@ -18,7 +18,9 @@ class CheckBoxQuestion extends StatefulWidget {
 }
 
 class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
+  int groupId;
   int index;
+  List<PossibleAnswer> possibleAnswersResult = [];
   Map<PossibleAnswer, bool> mapAnswer = {};
   Answer finalAnswer = new Answer(
       medicalAppointmentId: null,
@@ -29,7 +31,7 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
       possibleAnswers: []);
 
   Widget checkBoxAnswer(BuildContext context,
-      List<PossibleAnswer> possibleAnswers, Answer answer) {
+      List<PossibleAnswer> possibleAnswers, Answer answer2) {
     if (mapAnswer.isEmpty)
       for (index = 0; index < possibleAnswers.length; index++) {
         mapAnswer.addAll({
@@ -54,22 +56,43 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
                 id: possibleAnswers[index].id,
                 code: possibleAnswers[index].code,
                 title: possibleAnswers[index].title,
-                possibleAnswerGroupId: possibleAnswers[index].possibleAnswerGroupId,
+                possibleAnswerGroupId:
+                    possibleAnswers[index].possibleAnswerGroupId,
               )],
               onChanged: (value) {
-                setState(() {
-                  mapAnswer[PossibleAnswer(
-                    id: possibleAnswers[index].id,
-                    code: possibleAnswers[index].code,
-                    title: possibleAnswers[index].title,
-                    possibleAnswerGroupId:
-                        possibleAnswers[index].possibleAnswerGroupId,
-                  )] = value;
+                setState(
+                  () {
+                    if (value) {
+                      groupId = possibleAnswers[index].possibleAnswerGroupId;
+                      mapAnswer.entries.forEach(
+                        (entry) {
+                          if (entry.key.possibleAnswerGroupId == groupId) {
+                            mapAnswer[entry.key] = value;
+                          } else {
+                            mapAnswer[entry.key] = !value;
+                          }
+                        },
+                      );
+                    } else {
+                      groupId = null;
+                      mapAnswer.entries.forEach(
+                        (entry) {
+                          mapAnswer[entry.key] = false;
+                        },
+                      );
+                    }
 
-                  (value)
-                      ? answer.possibleAnswers.add(possibleAnswers[index])
-                      : answer.possibleAnswers.remove(possibleAnswers[index]);
-                });
+                    mapAnswer.entries.forEach(
+                      (entry) {
+                        if (entry.value) {
+                          possibleAnswersResult.add(entry.key);
+                        } else {
+                          possibleAnswersResult.remove(entry.key);
+                        }
+                      },
+                    );
+                  },
+                );
               },
             ),
           );
@@ -125,8 +148,8 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
                   Container(
                     margin: EdgeInsets.only(top: 10, left: 20, right: 20),
                     height: MediaQuery.of(context).size.height / 2.5,
-                    child: checkBoxAnswer(
-                        context, widget.node.question.possibleAnswers, finalAnswer),
+                    child: checkBoxAnswer(context,
+                        widget.node.question.possibleAnswers, finalAnswer),
                   ),
                   Expanded(
                     child: Container(
@@ -144,8 +167,9 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
                                 ),
                               ),
                               onPressed: () async {
-                                BlocProvider.of<DecisionTreeBloc>(context)
-                                    .add(GetPreviousNodeDecisionTreeEvent(idNode: widget.node.id));
+                                BlocProvider.of<DecisionTreeBloc>(context).add(
+                                    GetPreviousNodeDecisionTreeEvent(
+                                        idNode: widget.node.id));
                               },
                             ),
                           ),
@@ -160,17 +184,17 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
                                 ),
                               ),
                               onPressed: () {
-                                print(
-                                    'id: ${finalAnswer.possibleAnswers[0].id} | value: ${finalAnswer.possibleAnswers[0].title}');
                                 BlocProvider.of<DecisionTreeBloc>(context).add(
-                                    GetNextNodeDecisionTreeEvent(
-                                        answer: Answer(medicalAppointmentId: finalAnswer.medicalAppointmentId,
-                                        doctorId: finalAnswer.doctorId, questionId: finalAnswer.questionId,
-                                        possibleAnswerGroupId: finalAnswer.possibleAnswerGroupId,
-                                        date: finalAnswer.date,
-                                        possibleAnswers: finalAnswer.possibleAnswers,
-                                      ),
+                                  GetNextNodeDecisionTreeEvent(
+                                    answer: Answer(
+                                      medicalAppointmentId: 1,
+                                      doctorId: 1,
+                                      questionId: widget.node.question.id,
+                                      possibleAnswerGroupId: groupId,
+                                      date: DateTime.now(),
+                                      possibleAnswers: possibleAnswersResult,
                                     ),
+                                  ),
                                 );
                               },
                             ),
