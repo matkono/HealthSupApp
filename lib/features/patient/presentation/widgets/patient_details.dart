@@ -167,7 +167,7 @@ class _PatientDetailsState extends State<PatientDetails> {
                                 ),
                                 onPressed: () {
                                   BlocProvider.of<DecisionTreeBloc>(context)
-                                      .add(StartDecisionTreeEvent());
+                                      .add(GetCurrentNodeDecisionTreeEvent());
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(

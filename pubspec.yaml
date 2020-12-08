@@ -36,6 +36,7 @@ dependencies:
   bloc: ^6.0.1
   data_connection_checker: ^0.3.4
   provider: ^4.3.2+2
+  get_it: ^2.0.1
 
 dev_dependencies:
   flutter_test:

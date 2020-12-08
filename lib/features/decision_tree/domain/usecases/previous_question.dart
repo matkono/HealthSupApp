@@ -6,7 +6,7 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
-class PreviousQuestion extends UseCase<Node, ParamsQuestion> {
+class PreviousQuestion extends UseCase<Node, ParamsPreviousNode> {
   final DecisionTreeRepository treeRepository;
 
   PreviousQuestion(
@@ -14,17 +14,17 @@ class PreviousQuestion extends UseCase<Node, ParamsQuestion> {
   );
 
   @override
-  Future<Either<Failure, Node>> call(ParamsQuestion params) async {
+  Future<Either<Failure, Node>> call(ParamsPreviousNode params) async {
     return await treeRepository.previousQuestion(
         params.idAppointment, params.idCurrentNode);
   }
 }
 
-class ParamsQuestion extends Equatable {
+class ParamsPreviousNode extends Equatable {
   final int idAppointment;
   final int idCurrentNode;
 
-  ParamsQuestion({
+  ParamsPreviousNode({
     @required this.idAppointment,
     @required this.idCurrentNode,
   });

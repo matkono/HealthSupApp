@@ -6,6 +6,7 @@ import 'package:HealthSup/features/decision_tree/data/models/answer_model.dart';
 import 'package:HealthSup/features/decision_tree/domain/entities/answer.dart';
 import 'package:HealthSup/features/decision_tree/domain/entities/node.dart';
 import 'package:HealthSup/features/decision_tree/domain/repositories/decision_tree_repository.dart';
+import 'package:HealthSup/features/login/data/datasources/settingsAPI.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 
@@ -21,6 +22,11 @@ class DecisionTreeRepositoryImpl implements DecisionTreeRepository {
   @override
   Future<Either<Failure, Node>> startMedicalAppointment() async {
     try {
+      SettingsAPI settingsAPI;
+      final remoteDataSource = DecisionTreeRemoteDataSourceImpl(
+        settingsAPI: settingsAPI,
+      );
+
       final startNode = await remoteDataSource.startNodeMedicalAppointment();
       return Right(startNode);
     } on ServerException catch (_) {
@@ -52,12 +58,10 @@ class DecisionTreeRepositoryImpl implements DecisionTreeRepository {
   }
 
   @override
-  Future<Either<Failure, Node>> finishAppointment(
+  Future<Either<Failure, void>> finishAppointment(
       int idAppointment, bool finished) async {
     try {
-      final node =
-          await remoteDataSource.finishAppointment(idAppointment, finished);
-      return Right(node);
+      return Right(await remoteDataSource.finishAppointment(idAppointment, finished));
     } on ServerException catch (_) {
       return Left(ServerFailure());
     }

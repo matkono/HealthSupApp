@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:HealthSup/core/authentication/authentication.dart';
 
 class SettingsAPI {
   static final hostIP = '10.0.2.2';
@@ -16,12 +16,12 @@ class SettingsAPI {
   }
 
   Future<void> setHeaders(HttpClientRequest request) async {
-    var preferences = await SharedPreferences.getInstance();
-    request.headers.set('Content-type', 'application/json');
+    Authentication authentication;
 
-    if (preferences.containsKey("tokenJWT")) {
-      String tokenJWT = preferences.getString('tokenJWT');
-      request.headers.add('Authorization', 'Bearer $tokenJWT');
-    }
+    // String tokenJWT = await authentication.getToken();
+
+    request.headers.set('Content-type', 'application/json');
+    String tokenJWT = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MDc0NjkxODAsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjQ0Mzc4IiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzNzgifQ.QVY7WSiPa0bP4hLzciXUcG-ficwoOUJ0Qc2ayt4Xdyw';
+    request.headers.add('Authorization', 'Bearer $tokenJWT');
   }
 }

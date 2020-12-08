@@ -5,19 +5,19 @@ import 'package:HealthSup/features/decision_tree/presentation/bloc/decision_tree
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class RadioQuestionLoaded extends StatefulWidget {
+class ActionLayout extends StatefulWidget {
   final Node node;
 
-  const RadioQuestionLoaded({
+  const ActionLayout({
     Key key,
     @required this.node,
   }) : super(key: key);
 
   @override
-  _RadioQuestionLoadedState createState() => _RadioQuestionLoadedState();
+  _ActionLayoutState createState() => _ActionLayoutState();
 }
 
-class _RadioQuestionLoadedState extends State<RadioQuestionLoaded> {
+class _ActionLayoutState extends State<ActionLayout> {
   int radioButton = 0;
   Map<PossibleAnswer, int> mapAnswer = {};
   Answer finalAnswer = new Answer(
@@ -56,6 +56,7 @@ class _RadioQuestionLoadedState extends State<RadioQuestionLoaded> {
         });
       }
     }
+
     return SizedBox(
       height: MediaQuery.of(context).size.height / 2,
       child: ListView.builder(
@@ -119,7 +120,8 @@ class _RadioQuestionLoadedState extends State<RadioQuestionLoaded> {
                       child: Container(
                         alignment: Alignment.bottomCenter,
                         child: Text(
-                          widget.node.question.title,
+                          // widget.node.question.title,
+                          'Pergunta de Action',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 21,
@@ -175,14 +177,14 @@ class _RadioQuestionLoadedState extends State<RadioQuestionLoaded> {
                                   GetNextNodeDecisionTreeEvent(
                                     answer: Answer(
                                       medicalAppointmentId:
-                                          1,
-                                      doctorId: 1,
-                                      questionId: widget.node.question.id,
+                                          finalAnswer.medicalAppointmentId,
+                                      doctorId: finalAnswer.doctorId,
+                                      questionId: finalAnswer.questionId,
                                       possibleAnswerGroupId:
-                                          mapAnswer.entries.firstWhere((e) => e.value == radioButton).key.possibleAnswerGroupId,
-                                      date: DateTime.now(),
+                                          finalAnswer.possibleAnswerGroupId,
+                                      date: finalAnswer.date,
                                       possibleAnswers:
-                                          [mapAnswer.entries.firstWhere((e) => e.value == radioButton).key],
+                                          finalAnswer.possibleAnswers,
                                     ),
                                   ),
                                 );

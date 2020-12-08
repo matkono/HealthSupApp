@@ -48,12 +48,10 @@ class DecisionLayout extends StatelessWidget {
                   ),
                 ),
                 onPressed: () async {
-                  (node.question.nodeType.code == 300 &&
-                          node.question.questionId == 1)
-                      ? BlocProvider.of<DecisionTreeBloc>(context)
-                          .add(InitialDecisionTreeEvent())
-                      : BlocProvider.of<DecisionTreeBloc>(context)
-                          .add(StartDecisionTreeEvent());
+                  BlocProvider.of<DecisionTreeBloc>(context)
+                      .add(GetPreviousNodeDecisionTreeEvent(
+                    idNode: node.id,
+                  ));
                 },
               ),
             ),
@@ -69,7 +67,17 @@ class DecisionLayout extends StatelessWidget {
                 ),
                 onPressed: () {
                   BlocProvider.of<DecisionTreeBloc>(context).add(
-                      NextNodeDecisionTreeEvent(answer: Answer(answers: null)));
+                    GetNextNodeDecisionTreeEvent(
+                      answer: Answer(
+                        medicalAppointmentId: node.id,
+                        doctorId: null,
+                        questionId: node.question.id,
+                        possibleAnswerGroupId: null,
+                        date: null,
+                        possibleAnswers: null,
+                      ),
+                    ),
+                  );
                 },
               ),
             ),

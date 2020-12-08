@@ -12,7 +12,7 @@ abstract class DecisionTreeRemoteDataSource {
   Future<NodeModel> setAnswer(AnswerModel answer);
   Future<NodeModel> getPreviousQuestion(
       int idMedicalAppointment, int idCurrentNode);
-  Future<NodeModel> finishAppointment(int idAppointment, bool finished);
+  Future<void> finishAppointment(int idAppointment, bool finished);
   Future<NodeModel> getCurrentNode(int idAppointment);
   Future<NodeModel> confirmAction(int idAction, int idAppointment);
 }
@@ -25,7 +25,7 @@ class DecisionTreeRemoteDataSourceImpl extends DecisionTreeRemoteDataSource {
   var tokenKey = 'tokenJWT';
   var tokenTimeKey = 'tokenCurrentTime';
   var loginAPIModel = new AuthenticateApiModel(
-    agentName: 'CardiomppApp',
+    agentName: 'db39648a-14f5-406f-94d8-1b43d266f1dd',
     password: '2e0f011c-a22d-4771-8c50-a9491b96dfea',
   );
 
@@ -43,6 +43,8 @@ class DecisionTreeRemoteDataSourceImpl extends DecisionTreeRemoteDataSource {
 
   @override
   Future<NodeModel> setAnswer(AnswerModel answer) async {
+    final settingsAPI = SettingsAPI();
+
     var client = new HttpClient();
     client.badCertificateCallback =
         ((X509Certificate cert, String host, int port) {
@@ -50,7 +52,7 @@ class DecisionTreeRemoteDataSourceImpl extends DecisionTreeRemoteDataSource {
       return isValidHost;
     });
 
-    String url = 'api/v1/DecisionEngine/question/answer/';
+    String url = 'DecisionEngine/node/question/answer/';
 
     try {
       HttpClientRequest request = await client
@@ -65,6 +67,8 @@ class DecisionTreeRemoteDataSourceImpl extends DecisionTreeRemoteDataSource {
       String body = await response.transform(utf8.decoder).join();
       Map jsonResponse = json.decode(body);
       Map jsonData = jsonResponse['data'];
+
+      print(jsonData);
 
       // TO DO
       // Confirmar contrato de erro
@@ -141,6 +145,8 @@ class DecisionTreeRemoteDataSourceImpl extends DecisionTreeRemoteDataSource {
 
   @override
   Future<NodeModel> getCurrentNode(int idAppointment) async {
+    final settingsAPI = SettingsAPI();
+
     var client = new HttpClient();
     client.badCertificateCallback =
         ((X509Certificate cert, String host, int port) {
@@ -149,8 +155,8 @@ class DecisionTreeRemoteDataSourceImpl extends DecisionTreeRemoteDataSource {
     });
 
     String url =
-        'api/v1/MedicalAppointment/medicalAppointment/$idAppointment/currentNode/';
-
+        'MedicalAppointment/$idAppointment/currentNode/';
+    print(url);
     try {
       HttpClientRequest request = await client
           .getUrl(Uri.parse(settingsAPI.getUrl(url)))
@@ -161,6 +167,7 @@ class DecisionTreeRemoteDataSourceImpl extends DecisionTreeRemoteDataSource {
       HttpClientResponse response = await request.close();
 
       String body = await response.transform(utf8.decoder).join();
+      print(body);
       Map jsonResponse = json.decode(body);
       Map jsonData = jsonResponse['data'];
 
@@ -174,7 +181,6 @@ class DecisionTreeRemoteDataSourceImpl extends DecisionTreeRemoteDataSource {
 
       if (response.statusCode == 200) {
         print('statusCode: ' + response.statusCode.toString());
-
         return NodeModel.fromJson(jsonData);
       } else {
         print('statusCode: ' + response.statusCode.toString());
@@ -186,7 +192,7 @@ class DecisionTreeRemoteDataSourceImpl extends DecisionTreeRemoteDataSource {
   }
 
   @override
-  Future<NodeModel> finishAppointment(int idAppointment, bool finished) async {
+  Future<void> finishAppointment(int idAppointment, bool finished) async {
     print('Finish Appointment');
     return null;
   }

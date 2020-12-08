@@ -18,9 +18,15 @@ class CheckBoxQuestion extends StatefulWidget {
 }
 
 class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
-  Answer finalAnswer = new Answer(answers: []);
   int index;
   Map<PossibleAnswer, bool> mapAnswer = {};
+  Answer finalAnswer = new Answer(
+      medicalAppointmentId: null,
+      doctorId: null,
+      questionId: null,
+      possibleAnswerGroupId: null,
+      date: null,
+      possibleAnswers: []);
 
   Widget checkBoxAnswer(BuildContext context,
       List<PossibleAnswer> possibleAnswers, Answer answer) {
@@ -31,7 +37,7 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
             id: possibleAnswers[index].id,
             code: possibleAnswers[index].code,
             title: possibleAnswers[index].title,
-            possibleAnswerGroup: possibleAnswers[index].possibleAnswerGroup,
+            possibleAnswerGroupId: possibleAnswers[index].possibleAnswerGroupId,
           ): false,
         });
       }
@@ -48,7 +54,7 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
                 id: possibleAnswers[index].id,
                 code: possibleAnswers[index].code,
                 title: possibleAnswers[index].title,
-                possibleAnswerGroup: possibleAnswers[index].possibleAnswerGroup,
+                possibleAnswerGroupId: possibleAnswers[index].possibleAnswerGroupId,
               )],
               onChanged: (value) {
                 setState(() {
@@ -56,13 +62,13 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
                     id: possibleAnswers[index].id,
                     code: possibleAnswers[index].code,
                     title: possibleAnswers[index].title,
-                    possibleAnswerGroup:
-                        possibleAnswers[index].possibleAnswerGroup,
+                    possibleAnswerGroupId:
+                        possibleAnswers[index].possibleAnswerGroupId,
                   )] = value;
 
                   (value)
-                      ? answer.answers.add(possibleAnswers[index])
-                      : answer.answers.remove(possibleAnswers[index]);
+                      ? answer.possibleAnswers.add(possibleAnswers[index])
+                      : answer.possibleAnswers.remove(possibleAnswers[index]);
                 });
               },
             ),
@@ -119,8 +125,8 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
                   Container(
                     margin: EdgeInsets.only(top: 10, left: 20, right: 20),
                     height: MediaQuery.of(context).size.height / 2.5,
-                    child: checkBoxAnswer(context,
-                        widget.node.question.possibleAnswers, finalAnswer),
+                    child: checkBoxAnswer(
+                        context, widget.node.question.possibleAnswers, finalAnswer),
                   ),
                   Expanded(
                     child: Container(
@@ -139,7 +145,7 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
                               ),
                               onPressed: () async {
                                 BlocProvider.of<DecisionTreeBloc>(context)
-                                    .add(InitialDecisionTreeEvent());
+                                    .add(GetPreviousNodeDecisionTreeEvent(idNode: widget.node.id));
                               },
                             ),
                           ),
@@ -155,11 +161,17 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
                               ),
                               onPressed: () {
                                 print(
-                                    'id: ${finalAnswer.answers[0].id} | value: ${finalAnswer.answers[0].title}');
+                                    'id: ${finalAnswer.possibleAnswers[0].id} | value: ${finalAnswer.possibleAnswers[0].title}');
                                 BlocProvider.of<DecisionTreeBloc>(context).add(
-                                    NextNodeDecisionTreeEvent(
-                                        answer: Answer(
-                                            answers: finalAnswer.answers)));
+                                    GetNextNodeDecisionTreeEvent(
+                                        answer: Answer(medicalAppointmentId: finalAnswer.medicalAppointmentId,
+                                        doctorId: finalAnswer.doctorId, questionId: finalAnswer.questionId,
+                                        possibleAnswerGroupId: finalAnswer.possibleAnswerGroupId,
+                                        date: finalAnswer.date,
+                                        possibleAnswers: finalAnswer.possibleAnswers,
+                                      ),
+                                    ),
+                                );
                               },
                             ),
                           ),

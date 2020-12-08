@@ -1,3 +1,5 @@
+
+
 import 'package:HealthSup/features/decision_tree/presentation/bloc/decision_tree_bloc.dart';
 import 'package:HealthSup/features/decision_tree/presentation/pages/medical_appointment.dart';
 import 'package:HealthSup/features/login/presentation/bloc/login_bloc.dart';
@@ -7,11 +9,16 @@ import 'package:HealthSup/features/patient/presentation/overlays/pages/overlay.d
 import 'package:HealthSup/features/patient/presentation/overlays/pages/overlay_patient_details.dart';
 import 'package:HealthSup/features/patient/presentation/pages/patient_homepage.dart';
 import 'package:HealthSup/features/patient/presentation/widgets/patient_details.dart';
-import 'package:HealthSup/features/tutorial/presentation/pages/base_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'injection_container.dart' as di;
 
-void main() => runApp(MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+    await di.init();
+
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -25,11 +32,11 @@ class MyApp extends StatelessWidget {
           create: (context) => LoginBloc(LoginInitial()),
         ),
         BlocProvider<DecisionTreeBloc>(
-          create: (context) => DecisionTreeBloc(initialState: DecisionTreeInitial()),
+          create: (context) => di.sl<DecisionTreeBloc>(),
         ),
       ],
       child: MaterialApp(
-        home: LoginPage(),
+        home: PatientHomePage(),
         debugShowCheckedModeBanner: false,
         routes: {
           '/login': (context) => LoginPage(),
