@@ -21,7 +21,7 @@ class SettingsAPI {
     // String tokenJWT = await authentication.getToken();
 
     request.headers.set('Content-type', 'application/json');
-    String tokenJWT = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MDc0NzU2NjYsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjQ0Mzc4IiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzNzgifQ.TZ9H40n1WROAeN4GtEqE1_LEMAm64_NAlUloOwB7L8I';
+    String tokenJWT = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MDc0Nzc3MzksImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjQ0Mzc4IiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzNzgifQ.QdlHjsQGiAOUPBhdpz9magt7t_TtYAKj5mQ-jKJ7mXs';
     request.headers.add('Authorization', 'Bearer $tokenJWT');
   }
 }

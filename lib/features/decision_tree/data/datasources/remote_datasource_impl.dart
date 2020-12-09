@@ -195,6 +195,15 @@ class DecisionTreeRemoteDataSourceImpl extends DecisionTreeRemoteDataSource {
 
   @override
   Future<void> finishAppointment(int idAppointment, bool finished) async {
+
+    // TO DO
+    // REFAZER
+
+    var currentNode = await getCurrentNode(idAppointment);
+    while (currentNode.id != 1) {
+      currentNode = await getPreviousQuestion(idAppointment, currentNode.id);
+    }
+
     print('Finish Appointment');
     return null;
   }
