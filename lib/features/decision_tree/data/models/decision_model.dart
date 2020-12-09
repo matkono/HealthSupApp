@@ -15,8 +15,8 @@ class DecisionModel extends Decision {
     return DecisionModel(
       id: json['id'],
       code: json['code'],
-      title: json['Title'],
-      isFinal: json['IsFinal'],
+      title: json['title'],
+      isFinal: json['isFinal'],
     );
   }
 }

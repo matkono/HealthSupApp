@@ -68,7 +68,8 @@ class _RadioQuestionLoadedState extends State<RadioQuestionLoaded> {
                 id: possibleAnswers[index].id,
                 code: possibleAnswers[index].code,
                 title: possibleAnswers[index].title,
-                possibleAnswerGroupId: possibleAnswers[index].possibleAnswerGroupId,
+                possibleAnswerGroupId:
+                    possibleAnswers[index].possibleAnswerGroupId,
               )],
               groupValue: radioButton,
               onChanged: (value) {
@@ -143,7 +144,9 @@ class _RadioQuestionLoadedState extends State<RadioQuestionLoaded> {
                           Container(
                             margin: EdgeInsets.only(top: 50, right: 20),
                             child: FlatButton(
-                              color: Colors.blue,
+                              color: widget.node.isInitial
+                                  ? Colors.grey
+                                  : Colors.blue,
                               child: Text(
                                 'Voltar',
                                 style: TextStyle(
@@ -151,10 +154,14 @@ class _RadioQuestionLoadedState extends State<RadioQuestionLoaded> {
                                 ),
                               ),
                               onPressed: () async {
-                                BlocProvider.of<DecisionTreeBloc>(context)
-                                    .add(GetPreviousNodeDecisionTreeEvent(
-                                  idNode: widget.node.id,
-                                ));
+                                if (!widget.node.isInitial) {
+                                  BlocProvider.of<DecisionTreeBloc>(context)
+                                      .add(
+                                    GetPreviousNodeDecisionTreeEvent(
+                                      idNode: widget.node.id,
+                                    ),
+                                  );
+                                }
                               },
                             ),
                           ),
@@ -174,15 +181,21 @@ class _RadioQuestionLoadedState extends State<RadioQuestionLoaded> {
                                 BlocProvider.of<DecisionTreeBloc>(context).add(
                                   GetNextNodeDecisionTreeEvent(
                                     answer: Answer(
-                                      medicalAppointmentId:
-                                          1,
+                                      medicalAppointmentId: 1,
                                       doctorId: 1,
                                       questionId: widget.node.question.id,
-                                      possibleAnswerGroupId:
-                                          mapAnswer.entries.firstWhere((e) => e.value == radioButton).key.possibleAnswerGroupId,
+                                      possibleAnswerGroupId: mapAnswer.entries
+                                          .firstWhere(
+                                              (e) => e.value == radioButton)
+                                          .key
+                                          .possibleAnswerGroupId,
                                       date: DateTime.now(),
-                                      possibleAnswers:
-                                          [mapAnswer.entries.firstWhere((e) => e.value == radioButton).key],
+                                      possibleAnswers: [
+                                        mapAnswer.entries
+                                            .firstWhere(
+                                                (e) => e.value == radioButton)
+                                            .key
+                                      ],
                                     ),
                                   ),
                                 );

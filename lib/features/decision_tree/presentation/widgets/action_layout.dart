@@ -27,17 +27,17 @@ class _ActionLayoutState extends State<ActionLayout> {
         itemCount: 2,
         itemBuilder: (context, index) {
           return ListTile(
-              title: Text(index == 0 ? 'Não' : 'Sim'),
-              leading: Radio(
-                value: index,
-                groupValue: radioButton,
-                onChanged: (value) {
-                  setState(() {
-                    radioButton = value;
-                  });
-                },
-              ),
-            );
+            title: Text(index == 0 ? 'Não' : 'Sim'),
+            leading: Radio(
+              value: index,
+              groupValue: radioButton,
+              onChanged: (value) {
+                setState(() {
+                  radioButton = value;
+                });
+              },
+            ),
+          );
         },
       ),
     );
@@ -100,7 +100,9 @@ class _ActionLayoutState extends State<ActionLayout> {
                           Container(
                             margin: EdgeInsets.only(top: 50, right: 20),
                             child: FlatButton(
-                              color: Colors.blue,
+                              color: widget.node.isInitial
+                                  ? Colors.grey
+                                  : Colors.blue,
                               child: Text(
                                 'Voltar',
                                 style: TextStyle(
@@ -108,10 +110,14 @@ class _ActionLayoutState extends State<ActionLayout> {
                                 ),
                               ),
                               onPressed: () async {
-                                BlocProvider.of<DecisionTreeBloc>(context)
-                                    .add(GetPreviousNodeDecisionTreeEvent(
-                                  idNode: 1,
-                                ));
+                                if (!widget.node.isInitial) {
+                                  BlocProvider.of<DecisionTreeBloc>(context)
+                                      .add(
+                                    GetPreviousNodeDecisionTreeEvent(
+                                      idNode: widget.node.id,
+                                    ),
+                                  );
+                                }
                               },
                             ),
                           ),

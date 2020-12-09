@@ -159,7 +159,9 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
                           Container(
                             margin: EdgeInsets.only(top: 50, right: 20),
                             child: FlatButton(
-                              color: Colors.blue,
+                              color: widget.node.isInitial
+                                  ? Colors.grey
+                                  : Colors.blue,
                               child: Text(
                                 'Voltar',
                                 style: TextStyle(
@@ -167,9 +169,11 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
                                 ),
                               ),
                               onPressed: () async {
-                                BlocProvider.of<DecisionTreeBloc>(context).add(
-                                    GetPreviousNodeDecisionTreeEvent(
-                                        idNode: widget.node.id));
+                                if (!widget.node.isInitial) {
+                                  BlocProvider.of<DecisionTreeBloc>(context)
+                                      .add(GetPreviousNodeDecisionTreeEvent(
+                                          idNode: widget.node.id));
+                                }
                               },
                             ),
                           ),

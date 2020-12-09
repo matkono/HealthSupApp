@@ -108,7 +108,7 @@ class DecisionTreeRemoteDataSourceImpl extends DecisionTreeRemoteDataSource {
       'currentNodeId': idCurrentNode,
     };
 
-    String url = 'api/v1/DecisionEngine/node/previous/';
+    String url = 'DecisionEngine/node/previous/';
 
     try {
       HttpClientRequest request = await client
