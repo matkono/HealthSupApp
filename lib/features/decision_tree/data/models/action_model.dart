@@ -14,7 +14,7 @@ class ActionModel extends Action {
     return ActionModel(
       id: json['id'],
       code: json['code'],
-      title: json['Title'],
+      title: json['title'],
     );
   }
 }

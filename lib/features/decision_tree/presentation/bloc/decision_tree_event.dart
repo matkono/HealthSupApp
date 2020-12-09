@@ -51,7 +51,7 @@ class ConfirmActionDecisionTreeEvent extends DecisionTreeEvent {
   final int idAction;
 
   ConfirmActionDecisionTreeEvent({
-    this.idAction,
+    @required this.idAction,
   });
 
   @override

@@ -1,6 +1,4 @@
-import 'package:HealthSup/features/decision_tree/domain/entities/answer.dart';
 import 'package:HealthSup/features/decision_tree/domain/entities/node.dart';
-import 'package:HealthSup/features/decision_tree/domain/entities/possible_answer.dart';
 import 'package:HealthSup/features/decision_tree/presentation/bloc/decision_tree_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,69 +16,28 @@ class ActionLayout extends StatefulWidget {
 }
 
 class _ActionLayoutState extends State<ActionLayout> {
-  int radioButton = 0;
-  Map<PossibleAnswer, int> mapAnswer = {};
-  Answer finalAnswer = new Answer(
-    medicalAppointmentId: null,
-    doctorId: null,
-    questionId: null,
-    possibleAnswerGroupId: null,
-    date: null,
-    possibleAnswers: [],
-  );
+  int radioButton;
 
   Widget radioAnswer(
     BuildContext context,
-    List<PossibleAnswer> possibleAnswers,
-    Answer answer,
   ) {
-    if (answer.possibleAnswers.isEmpty) {
-      mapAnswer.addAll({
-        PossibleAnswer(
-          id: possibleAnswers[0].id,
-          code: possibleAnswers[0].code,
-          title: possibleAnswers[0].title,
-          possibleAnswerGroupId: possibleAnswers[0].possibleAnswerGroupId,
-        ): 0
-      });
-      answer.possibleAnswers.add(possibleAnswers[0]);
-
-      for (int x = 1; x < possibleAnswers.length; x++) {
-        mapAnswer.addAll({
-          PossibleAnswer(
-            id: possibleAnswers[x].id,
-            code: possibleAnswers[x].code,
-            title: possibleAnswers[x].title,
-            possibleAnswerGroupId: possibleAnswers[x].possibleAnswerGroupId,
-          ): x
-        });
-      }
-    }
-
     return SizedBox(
       height: MediaQuery.of(context).size.height / 2,
       child: ListView.builder(
-        itemCount: possibleAnswers.length,
+        itemCount: 2,
         itemBuilder: (context, index) {
           return ListTile(
-            title: Text(possibleAnswers[index].title),
-            leading: Radio(
-              value: mapAnswer[PossibleAnswer(
-                id: possibleAnswers[index].id,
-                code: possibleAnswers[index].code,
-                title: possibleAnswers[index].title,
-                possibleAnswerGroupId: possibleAnswers[index].possibleAnswerGroupId,
-              )],
-              groupValue: radioButton,
-              onChanged: (value) {
-                setState(() {
-                  radioButton = value;
-                  answer.possibleAnswers.removeLast();
-                  answer.possibleAnswers.add(possibleAnswers[index]);
-                });
-              },
-            ),
-          );
+              title: Text(index == 0 ? 'Não' : 'Sim'),
+              leading: Radio(
+                value: index,
+                groupValue: radioButton,
+                onChanged: (value) {
+                  setState(() {
+                    radioButton = value;
+                  });
+                },
+              ),
+            );
         },
       ),
     );
@@ -120,8 +77,7 @@ class _ActionLayoutState extends State<ActionLayout> {
                       child: Container(
                         alignment: Alignment.bottomCenter,
                         child: Text(
-                          // widget.node.question.title,
-                          'Pergunta de Action',
+                          '${widget.node.action.title}\n\n Você já realizou esta ação?',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 21,
@@ -134,8 +90,7 @@ class _ActionLayoutState extends State<ActionLayout> {
                   Container(
                     margin: EdgeInsets.only(top: 10, left: 20, right: 20),
                     height: MediaQuery.of(context).size.height / 2.5,
-                    child: radioAnswer(context,
-                        widget.node.question.possibleAnswers, finalAnswer),
+                    child: radioAnswer(context),
                   ),
                   Expanded(
                     child: Container(
@@ -155,7 +110,7 @@ class _ActionLayoutState extends State<ActionLayout> {
                               onPressed: () async {
                                 BlocProvider.of<DecisionTreeBloc>(context)
                                     .add(GetPreviousNodeDecisionTreeEvent(
-                                  idNode: widget.node.id,
+                                  idNode: 1,
                                 ));
                               },
                             ),
@@ -171,23 +126,18 @@ class _ActionLayoutState extends State<ActionLayout> {
                                 ),
                               ),
                               onPressed: () {
-                                print(
-                                    'id: ${finalAnswer.possibleAnswers[0].id} | value: ${finalAnswer.possibleAnswers[0].title}');
-                                BlocProvider.of<DecisionTreeBloc>(context).add(
-                                  GetNextNodeDecisionTreeEvent(
-                                    answer: Answer(
-                                      medicalAppointmentId:
-                                          finalAnswer.medicalAppointmentId,
-                                      doctorId: finalAnswer.doctorId,
-                                      questionId: finalAnswer.questionId,
-                                      possibleAnswerGroupId:
-                                          finalAnswer.possibleAnswerGroupId,
-                                      date: finalAnswer.date,
-                                      possibleAnswers:
-                                          finalAnswer.possibleAnswers,
-                                    ),
-                                  ),
-                                );
+                                if (radioButton != null) {
+                                  if (radioButton == 0) {
+                                    Navigator.pop(context);
+                                  } else if (radioButton == 1) {
+                                    BlocProvider.of<DecisionTreeBloc>(context)
+                                        .add(
+                                      ConfirmActionDecisionTreeEvent(
+                                        idAction: widget.node.action.id,
+                                      ),
+                                    );
+                                  }
+                                }
                               },
                             ),
                           ),

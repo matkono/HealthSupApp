@@ -213,7 +213,7 @@ class DecisionTreeRemoteDataSourceImpl extends DecisionTreeRemoteDataSource {
       'actionId': idAction,
     };
 
-    String url = 'api/v1/DecisionEngine/action/confirm/';
+    String url = 'DecisionEngine/node/action/confirm/';
 
     try {
       HttpClientRequest request = await client
@@ -222,6 +222,8 @@ class DecisionTreeRemoteDataSourceImpl extends DecisionTreeRemoteDataSource {
 
       await settingsAPI.setHeaders(request);
       request.add(utf8.encode(json.encode(action)));
+
+      print(utf8.encode(json.encode(action)));
 
       HttpClientResponse response = await request.close();
 
