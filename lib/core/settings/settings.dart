@@ -1,63 +1,36 @@
-// import 'dart:io';
+import 'dart:io';
 
-// import 'package:HealthSup/core/authentication/authentication.dart';
+import 'package:HealthSup/core/authentication/authentication.dart';
 
-// class Settings {
-//   static final hostIP = '10.0.2.2';
-//   static final String hostUrlDevelop = 'https://10.0.2.2:5001/api/v1/';
-//   var tokenCurrentTime = DateTime.now().millisecondsSinceEpoch;
+class Settings {
+  static final hostIP = '10.0.2.2';
+  static final String hostUrlDevelop = 'https://10.0.2.2:5001/api/v1/';
+  var tokenCurrentTime = DateTime.now().millisecondsSinceEpoch;
 
-//   Future<Map<dynamic, dynamic>> authenticatorAPI(
-//       AuthenticateApiModel user) async {
-//     try {
-//       HttpClient client = new HttpClient();
-//       client.badCertificateCallback =
-//           ((X509Certificate cert, String host, int port) {
-//         final isValidHost = host == settingsAPI.getUrl(null);
-//         return isValidHost;
-//       });
+  String getUrl(String params) {
+    if (params == null) {
+      return '$hostIP';
+    }
+    return '$hostUrlDevelop$params';
+  }
 
-//       String urlAuth = 'Authentication/agentAuthentication/token/';
-//       Map map = user.toJson();
+  Future<void> certificateHost(HttpClient client) async {
+    client.badCertificateCallback =
+        ((X509Certificate cert, String host, int port) {
+      final isValidHost = host == getUrl(null);
+      return isValidHost;
+    });
+  }
 
-//       var url = settingsAPI.getUrl(urlAuth);
-//       print(url);
-//       var uriParse = Uri.parse(url);
-//       print(uriParse);
-//       HttpClientRequest request =
-//           await client.postUrl(uriParse).timeout(Duration(seconds: 10));
-//       await settingsAPI.setHeaders(request);
-//       request.add(utf8.encode(json.encode(map)));
+  Future<void> setHeaders(HttpClientRequest request) async {
+    request.headers.set('Content-type', 'application/json');
+  }
 
-//       HttpClientResponse response = await request.close();
-//       String body = await response.transform(utf8.decoder).join();
-//       print(body);
-//       Map jsonDecoded = json.decode(body);
+  Future<void> setToken(HttpClientRequest request) async {
+    AuthenticationSettings authentication = new AuthenticationSettings();
 
-//       return jsonDecoded;
-//     } on TimeoutException catch (e) {
-//       throw e;
-//     } on SocketException catch (e) {
-//       throw e;
-//     } on Exception catch (_) {
-//       throw ServerException();
-//     }
-//   }
-
-//   String getUrl(String params) {
-
-//     if (params == null) {
-//       return '$hostIP';
-//     }
-//     return '$hostUrlDevelop$params';
-//   }
-
-//   Future<void> setHeaders(HttpClientRequest request) async {
-//     Authentication authentication;
-
-//     String tokenJWT = await authentication.getToken();
-
-//     request.headers.set('Content-type', 'application/json');
-//     request.headers.add('Authorization', 'Bearer $tokenJWT');
-//   }
-// }
+    // String tokenJWT = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MDc5NzE1MDQsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjQ0Mzc4IiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzNzgifQ.JG68fAHrcDToNHXwfZLW5ARBWhuVcvZ9Ivesw8kY3Lw';
+    String tokenJWT = await authentication.getToken();
+    request.headers.add('Authorization', 'Bearer $tokenJWT');
+  }
+}

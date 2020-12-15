@@ -1,12 +1,13 @@
+import 'package:HealthSup/core/authentication/authentication.dart';
 import 'package:HealthSup/core/error/exception.dart';
 import 'package:HealthSup/core/error/failure.dart';
+import 'package:HealthSup/core/settings/settings.dart';
 import 'package:HealthSup/features/decision_tree/data/datasources/local_datasource_impl.dart';
 import 'package:HealthSup/features/decision_tree/data/datasources/remote_datasource_impl.dart';
 import 'package:HealthSup/features/decision_tree/data/models/answer_model.dart';
 import 'package:HealthSup/features/decision_tree/domain/entities/answer.dart';
 import 'package:HealthSup/features/decision_tree/domain/entities/node.dart';
 import 'package:HealthSup/features/decision_tree/domain/repositories/decision_tree_repository.dart';
-import 'package:HealthSup/features/login/data/datasources/settingsAPI.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 
@@ -22,9 +23,12 @@ class DecisionTreeRepositoryImpl implements DecisionTreeRepository {
   @override
   Future<Either<Failure, Node>> startMedicalAppointment() async {
     try {
-      SettingsAPI settingsAPI;
+      Settings settings;
+      AuthenticationSettings authenticationSettings;
+
       final remoteDataSource = DecisionTreeRemoteDataSourceImpl(
-        settingsAPI: settingsAPI,
+        settings: settings,
+        authenticationSettings: authenticationSettings,
       );
 
       final startNode = await remoteDataSource.startNodeMedicalAppointment();
@@ -61,7 +65,8 @@ class DecisionTreeRepositoryImpl implements DecisionTreeRepository {
   Future<Either<Failure, void>> finishAppointment(
       int idAppointment, bool finished) async {
     try {
-      return Right(await remoteDataSource.finishAppointment(idAppointment, finished));
+      return Right(
+          await remoteDataSource.finishAppointment(idAppointment, finished));
     } on ServerException catch (_) {
       return Left(ServerFailure());
     }

@@ -50,7 +50,7 @@ class _DecisionLayoutState extends State<DecisionLayout> {
                       child: Container(
                         alignment: Alignment.bottomCenter,
                         child: Text(
-                          '${widget.node.decision.title}\n\n Você já realizou esta ação?',
+                          '${widget.node.decision.title}',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 21,

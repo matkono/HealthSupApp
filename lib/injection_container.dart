@@ -1,3 +1,5 @@
+import 'package:HealthSup/core/authentication/authentication.dart';
+import 'package:HealthSup/core/settings/settings.dart';
 import 'package:HealthSup/features/decision_tree/data/datasources/remote_datasource_impl.dart';
 import 'package:HealthSup/features/decision_tree/data/repositories/decision_tree_repository_impl.dart';
 import 'package:HealthSup/features/decision_tree/domain/repositories/decision_tree_repository.dart';
@@ -29,6 +31,8 @@ Future<void> init() async {
 
   //Core
   sl.registerLazySingleton(() => SettingsAPI());
+  sl.registerLazySingleton(() => Settings());
+  sl.registerLazySingleton(() => AuthenticationSettings());
 
   //! External
   final sharedPreferences = await SharedPreferences.getInstance();
@@ -66,7 +70,10 @@ void _initDecisionTree() {
   );
   // Data sources
   sl.registerLazySingleton<DecisionTreeRemoteDataSource>(
-    () => DecisionTreeRemoteDataSourceImpl(settingsAPI: sl()),
+    () => DecisionTreeRemoteDataSourceImpl(
+      settings: sl(),
+      authenticationSettings: sl(),
+    ),
   );
   sl.registerLazySingleton<DecisionTreeLocalDataSource>(
     () => DecisionTreeLocalDataSourceImpl(),
