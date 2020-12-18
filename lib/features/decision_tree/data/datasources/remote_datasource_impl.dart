@@ -46,9 +46,8 @@ class DecisionTreeRemoteDataSourceImpl extends DecisionTreeRemoteDataSource {
       bool expiredToken =
           await authenticationSettings.validateTokenTime(tokenTimeKey);
       print(expiredToken);
-      print('oi');
       if (expiredToken == true) {
-        print('oi2');
+        print('oi');
         await authenticationSettings.resetSharedPreferences();
         String urlAuth = 'Authentication/agentAuthentication/token/';
         Map map = authUser.toJson();
@@ -101,15 +100,11 @@ class DecisionTreeRemoteDataSourceImpl extends DecisionTreeRemoteDataSource {
       await settings.setToken(request);
       request.add(utf8.encode(json.encode(answer.toJson())));
 
-      print('request: ${utf8.encode(json.encode(answer.toJson()))}');
-
       HttpClientResponse response = await request.close();
 
       String body = await response.transform(utf8.decoder).join();
       Map jsonResponse = json.decode(body);
       Map jsonData = jsonResponse['data'];
-
-      print(jsonData);
 
       // TO DO
       // Confirmar contrato de erro
@@ -201,7 +196,6 @@ class DecisionTreeRemoteDataSourceImpl extends DecisionTreeRemoteDataSource {
       HttpClientResponse response = await request.close();
 
       String body = await response.transform(utf8.decoder).join();
-      print(body);
       Map jsonResponse = json.decode(body);
       Map jsonData = jsonResponse['data'];
 
@@ -260,8 +254,6 @@ class DecisionTreeRemoteDataSourceImpl extends DecisionTreeRemoteDataSource {
       await settings.setHeaders(request);
       await settings.setToken(request);
       request.add(utf8.encode(json.encode(action)));
-
-      print(utf8.encode(json.encode(action)));
 
       HttpClientResponse response = await request.close();
 

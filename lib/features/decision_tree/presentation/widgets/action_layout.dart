@@ -73,6 +73,7 @@ class _ActionLayoutState extends State<ActionLayout> {
                 children: <Widget>[
                   Container(
                     height: MediaQuery.of(context).size.height / 4.5,
+                    margin: EdgeInsets.only(top: 60),
                     child: Center(
                       child: Container(
                         alignment: Alignment.bottomCenter,
@@ -88,7 +89,7 @@ class _ActionLayoutState extends State<ActionLayout> {
                     width: MediaQuery.of(context).size.width / 1.5,
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 10, left: 20, right: 20),
+                    margin: EdgeInsets.only(left: 20, right: 20),
                     height: MediaQuery.of(context).size.height / 2.5,
                     child: radioAnswer(context),
                   ),
@@ -98,7 +99,7 @@ class _ActionLayoutState extends State<ActionLayout> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Container(
-                            margin: EdgeInsets.only(top: 50, right: 20),
+                            margin: EdgeInsets.only(right: 20),
                             child: FlatButton(
                               color: widget.node.isInitial
                                   ? Colors.grey
@@ -122,7 +123,7 @@ class _ActionLayoutState extends State<ActionLayout> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.only(top: 50, left: 20),
+                            margin: EdgeInsets.only(left: 20),
                             child: FlatButton(
                               color: Colors.blue,
                               child: Text(

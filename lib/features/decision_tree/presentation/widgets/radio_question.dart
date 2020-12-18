@@ -18,7 +18,7 @@ class RadioQuestionLoaded extends StatefulWidget {
 }
 
 class _RadioQuestionLoadedState extends State<RadioQuestionLoaded> {
-  int radioButton = 0;
+  int radioButton;
   Map<PossibleAnswer, int> mapAnswer = {};
   Answer finalAnswer = new Answer(
     medicalAppointmentId: null,
@@ -116,6 +116,7 @@ class _RadioQuestionLoadedState extends State<RadioQuestionLoaded> {
                 children: <Widget>[
                   Container(
                     height: MediaQuery.of(context).size.height / 4.5,
+                    margin: EdgeInsets.only(top: 40),
                     child: Center(
                       child: Container(
                         alignment: Alignment.bottomCenter,
@@ -131,8 +132,8 @@ class _RadioQuestionLoadedState extends State<RadioQuestionLoaded> {
                     width: MediaQuery.of(context).size.width / 1.5,
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 10, left: 20, right: 20),
-                    height: MediaQuery.of(context).size.height / 2.5,
+                    margin: EdgeInsets.only(left: 20, right: 20),
+                    height: MediaQuery.of(context).size.height / 2.3,
                     child: radioAnswer(context,
                         widget.node.question.possibleAnswers, finalAnswer),
                   ),
@@ -142,7 +143,7 @@ class _RadioQuestionLoadedState extends State<RadioQuestionLoaded> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Container(
-                            margin: EdgeInsets.only(top: 50, right: 20),
+                            margin: EdgeInsets.only(right: 20),
                             child: FlatButton(
                               color: widget.node.isInitial
                                   ? Colors.grey
@@ -166,7 +167,7 @@ class _RadioQuestionLoadedState extends State<RadioQuestionLoaded> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.only(top: 50, left: 20),
+                            margin: EdgeInsets.only(left: 20),
                             child: FlatButton(
                               color: Colors.blue,
                               child: Text(

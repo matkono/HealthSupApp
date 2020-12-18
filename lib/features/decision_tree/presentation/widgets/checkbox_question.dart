@@ -20,6 +20,7 @@ class CheckBoxQuestion extends StatefulWidget {
 class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
   int groupId;
   int index;
+  int possibleAnswersId;
   List<PossibleAnswer> possibleAnswersResult = [];
   Map<PossibleAnswer, bool> mapAnswer = {};
   Answer finalAnswer = new Answer(
@@ -62,35 +63,47 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
               onChanged: (value) {
                 setState(
                   () {
-                    if (value) {
-                      groupId = possibleAnswers[index].possibleAnswerGroupId;
+                    groupId = possibleAnswers[index].possibleAnswerGroupId;
+                    possibleAnswersId = possibleAnswers[index].id;
+                    if (value == true) {
                       mapAnswer.entries.forEach(
                         (entry) {
-                          if (entry.key.possibleAnswerGroupId == groupId) {
+                          if (entry.key.possibleAnswerGroupId == groupId &&
+                              entry.key.id == possibleAnswersId) {
                             mapAnswer[entry.key] = value;
+                            if ((mapAnswer[entry.key] == true) &&
+                                (entry.key.possibleAnswerGroupId == groupId)) {
+                              if (possibleAnswersResult.isNotEmpty) {
+                                possibleAnswersResult.removeWhere((entry) =>
+                                    entry.possibleAnswerGroupId != groupId);
+                              }
+                            }
+                            if ((mapAnswer[entry.key] == true) &&
+                                (entry.key.possibleAnswerGroupId == groupId)) {
+                              possibleAnswersResult.add(entry.key);
+                            }
                           } else {
-                            mapAnswer[entry.key] = !value;
+                            if (mapAnswer[entry.key] == true &&
+                                entry.key.possibleAnswerGroupId == groupId) {
+                              mapAnswer[entry.key] = true;
+                            } else {
+                              mapAnswer[entry.key] = !value;
+                            }
                           }
                         },
                       );
                     } else {
-                      groupId = null;
                       mapAnswer.entries.forEach(
                         (entry) {
-                          mapAnswer[entry.key] = false;
+                          if (entry.key.possibleAnswerGroupId == groupId &&
+                              entry.key.id == possibleAnswersId) {
+                            mapAnswer[entry.key] = value;
+                            possibleAnswersResult.remove(entry.key);
+                          }
                         },
                       );
                     }
-
-                    mapAnswer.entries.forEach(
-                      (entry) {
-                        if (entry.value) {
-                          possibleAnswersResult.add(entry.key);
-                        } else {
-                          possibleAnswersResult.remove(entry.key);
-                        }
-                      },
-                    );
+                    print(possibleAnswersResult);
                   },
                 );
               },
@@ -188,18 +201,21 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
                                 ),
                               ),
                               onPressed: () {
-                                BlocProvider.of<DecisionTreeBloc>(context).add(
-                                  GetNextNodeDecisionTreeEvent(
-                                    answer: Answer(
-                                      medicalAppointmentId: 1,
-                                      doctorId: 1,
-                                      questionId: widget.node.question.id,
-                                      possibleAnswerGroupId: groupId,
-                                      date: DateTime.now(),
-                                      possibleAnswers: possibleAnswersResult,
+                                if (possibleAnswersResult.isNotEmpty) {
+                                  BlocProvider.of<DecisionTreeBloc>(context)
+                                      .add(
+                                    GetNextNodeDecisionTreeEvent(
+                                      answer: Answer(
+                                        medicalAppointmentId: 1,
+                                        doctorId: 1,
+                                        questionId: widget.node.question.id,
+                                        possibleAnswerGroupId: groupId,
+                                        date: DateTime.now(),
+                                        possibleAnswers: possibleAnswersResult,
+                                      ),
                                     ),
-                                  ),
-                                );
+                                  );
+                                }
                               },
                             ),
                           ),

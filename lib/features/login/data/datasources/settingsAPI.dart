@@ -23,7 +23,7 @@ class SettingsAPI {
     request.headers.set('Content-type', 'application/json');
 
     // For test, we need to generate a new token and paste here
-    String tokenJWT = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MDc5OTA1OTgsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjQ0Mzc4IiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzNzgifQ.sKArM-wsZ-cM_Lywl36PHzstkZaSqYbTXvTJQB_wkzY';
+    String tokenJWT = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MDgxNTQxODIsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjQ0Mzc4IiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzNzgifQ.kpj5NuCiJIacwRqUz3Qkvb7s1Ep00TvhrWWfcjAzjEk';
     request.headers.add('Authorization', 'Bearer $tokenJWT');
   }
 }

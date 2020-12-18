@@ -4,13 +4,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AuthenticationSettings {
   var tokenKey = 'tokenJWT';
   var tokenTimeKey = 'tokenCurrentTime';
-  var tokenCurrentTime = DateTime.now().millisecondsSinceEpoch;
   var loginAPIModel = new AuthenticationModel(
     agentKey: 'db39648a-14f5-406f-94d8-1b43d266f1dd',
     password: '2e0f011c-a22d-4771-8c50-a9491b96dfea',
   );
 
   Future<void> setSharedPreferences(Map<String, dynamic> bodyResponse) async {
+    var tokenCurrentTime = DateTime.now().millisecondsSinceEpoch;
     var preferences = await SharedPreferences.getInstance();
     var token = bodyResponse['data']['token'];
     preferences.setString('tokenJWT', token);
