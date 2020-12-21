@@ -193,7 +193,10 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
                           Container(
                             margin: EdgeInsets.only(top: 50, left: 20),
                             child: FlatButton(
-                              color: Colors.blue,
+                              color: (possibleAnswersResult == null ||
+                                      (possibleAnswersResult.isEmpty))
+                                  ? Colors.grey
+                                  : Colors.blue,
                               child: Text(
                                 'Avançar',
                                 style: TextStyle(
@@ -201,7 +204,8 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
                                 ),
                               ),
                               onPressed: () {
-                                if (possibleAnswersResult.isNotEmpty) {
+                                if (possibleAnswersResult != null &&
+                                    possibleAnswersResult.isNotEmpty) {
                                   BlocProvider.of<DecisionTreeBloc>(context)
                                       .add(
                                     GetNextNodeDecisionTreeEvent(

@@ -1,5 +1,6 @@
 import 'package:HealthSup/features/decision_tree/domain/entities/node.dart';
 import 'package:HealthSup/features/decision_tree/presentation/bloc/decision_tree_bloc.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -78,7 +79,7 @@ class _ActionLayoutState extends State<ActionLayout> {
                       child: Container(
                         alignment: Alignment.bottomCenter,
                         child: Text(
-                          '${widget.node.action.title}\n\n Você já realizou esta ação?',
+                          '${widget.node.action.title}',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 21,
@@ -125,7 +126,9 @@ class _ActionLayoutState extends State<ActionLayout> {
                           Container(
                             margin: EdgeInsets.only(left: 20),
                             child: FlatButton(
-                              color: Colors.blue,
+                              color: radioButton == null
+                                  ? Colors.grey
+                                  : Colors.blue,
                               child: Text(
                                 'Avançar',
                                 style: TextStyle(
@@ -135,7 +138,29 @@ class _ActionLayoutState extends State<ActionLayout> {
                               onPressed: () {
                                 if (radioButton != null) {
                                   if (radioButton == 0) {
-                                    Navigator.pop(context);
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return CupertinoAlertDialog(
+                                          title: Text("Ação necessaria"),
+                                          content: Text("É necessário realizar esta ação!"),
+                                          actions: [
+                                            CupertinoDialogAction(
+                                              child: Text("Cancelar"),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                            CupertinoDialogAction(
+                                              child: Text("Sair"),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                                Navigator.pop(context);                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
                                   } else if (radioButton == 1) {
                                     BlocProvider.of<DecisionTreeBloc>(context)
                                         .add(

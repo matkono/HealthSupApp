@@ -62,7 +62,9 @@ class _MedicalAppointmentState extends State<MedicalAppointment> {
                     else if (state is DecisionDecisionTreeState)
                       return DecisionLayout(node: state.node);
                     else if (state is ActionDecisionTreeState)
-                      return ActionLayout(node: state.node,);
+                      return ActionLayout(
+                        node: state.node,
+                      );
                     else if (state is LoadingDecisionTreeState)
                       return Center(
                         child: Text('Deveria ter um Loading'),

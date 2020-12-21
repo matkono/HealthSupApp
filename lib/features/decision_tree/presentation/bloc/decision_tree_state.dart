@@ -57,6 +57,6 @@ class ErrorDecisionTreeState extends DecisionTreeState {
 }
 
 class AppointmentFinished extends DecisionTreeState {
-    @override
+  @override
   List<Object> get props => [];
 }

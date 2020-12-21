@@ -169,7 +169,9 @@ class _RadioQuestionLoadedState extends State<RadioQuestionLoaded> {
                           Container(
                             margin: EdgeInsets.only(left: 20),
                             child: FlatButton(
-                              color: Colors.blue,
+                              color: radioButton == null
+                                  ? Colors.grey
+                                  : Colors.blue,
                               child: Text(
                                 'Avançar',
                                 style: TextStyle(
@@ -177,29 +179,32 @@ class _RadioQuestionLoadedState extends State<RadioQuestionLoaded> {
                                 ),
                               ),
                               onPressed: () {
-                                print(
-                                    'id: ${finalAnswer.possibleAnswers[0].id} | value: ${finalAnswer.possibleAnswers[0].title}');
-                                BlocProvider.of<DecisionTreeBloc>(context).add(
-                                  GetNextNodeDecisionTreeEvent(
-                                    answer: Answer(
-                                      medicalAppointmentId: 1,
-                                      doctorId: 1,
-                                      questionId: widget.node.question.id,
-                                      possibleAnswerGroupId: mapAnswer.entries
-                                          .firstWhere(
-                                              (e) => e.value == radioButton)
-                                          .key
-                                          .possibleAnswerGroupId,
-                                      date: DateTime.now(),
-                                      possibleAnswers: [
-                                        mapAnswer.entries
+                                if (radioButton != null) {
+                                  print(
+                                      'id: ${finalAnswer.possibleAnswers[0].id} | value: ${finalAnswer.possibleAnswers[0].title}');
+                                  BlocProvider.of<DecisionTreeBloc>(context)
+                                      .add(
+                                    GetNextNodeDecisionTreeEvent(
+                                      answer: Answer(
+                                        medicalAppointmentId: 1,
+                                        doctorId: 1,
+                                        questionId: widget.node.question.id,
+                                        possibleAnswerGroupId: mapAnswer.entries
                                             .firstWhere(
                                                 (e) => e.value == radioButton)
                                             .key
-                                      ],
+                                            .possibleAnswerGroupId,
+                                        date: DateTime.now(),
+                                        possibleAnswers: [
+                                          mapAnswer.entries
+                                              .firstWhere(
+                                                  (e) => e.value == radioButton)
+                                              .key
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                );
+                                  );
+                                }
                               },
                             ),
                           ),
