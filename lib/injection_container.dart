@@ -7,7 +7,6 @@ import 'package:HealthSup/features/decision_tree/domain/usecases/previous_questi
 import 'package:HealthSup/features/decision_tree/presentation/bloc/decision_tree_bloc.dart';
 import 'package:HealthSup/features/login/data/datasources/local_datasource.dart';
 import 'package:HealthSup/features/login/data/datasources/remote_datasource.dart';
-import 'package:HealthSup/features/login/data/datasources/settingsAPI.dart';
 import 'package:HealthSup/features/login/domain/repositories/repository.dart';
 import 'package:HealthSup/features/login/presentation/bloc/login_bloc.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
@@ -36,7 +35,6 @@ Future<void> init() async {
   _initLogin();
 
   //Core
-  sl.registerLazySingleton(() => SettingsAPI());
   sl.registerLazySingleton(() => Settings());
   sl.registerLazySingleton(() => AuthenticationSettings());
 
