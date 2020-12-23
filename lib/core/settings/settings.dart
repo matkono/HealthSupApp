@@ -29,7 +29,6 @@ class Settings {
   Future<void> setToken(HttpClientRequest request) async {
     AuthenticationSettings authentication = new AuthenticationSettings();
 
-    // String tokenJWT = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MDc5NzE1MDQsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjQ0Mzc4IiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzNzgifQ.JG68fAHrcDToNHXwfZLW5ARBWhuVcvZ9Ivesw8kY3Lw';
     String tokenJWT = await authentication.getToken();
     request.headers.add('Authorization', 'Bearer $tokenJWT');
   }

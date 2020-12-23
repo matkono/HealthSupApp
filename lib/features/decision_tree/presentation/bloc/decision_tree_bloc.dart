@@ -1,15 +1,8 @@
 import 'dart:async';
 
 import 'package:HealthSup/core/error/failure.dart';
-import 'package:HealthSup/core/usecase/usecase.dart';
-import 'package:HealthSup/features/decision_tree/data/datasources/local_datasource_impl.dart';
-import 'package:HealthSup/features/decision_tree/data/datasources/remote_datasource_impl.dart';
-import 'package:HealthSup/features/decision_tree/data/repositories/decision_tree_repository_impl.dart';
 import 'package:HealthSup/features/decision_tree/domain/entities/answer.dart';
-import 'package:HealthSup/features/decision_tree/domain/entities/decision.dart';
 import 'package:HealthSup/features/decision_tree/domain/entities/node.dart';
-import 'package:HealthSup/features/decision_tree/domain/entities/question.dart';
-import 'package:HealthSup/features/decision_tree/domain/repositories/decision_tree_repository.dart';
 import 'package:HealthSup/features/decision_tree/domain/usecases/confirm_action.dart';
 import 'package:HealthSup/features/decision_tree/domain/usecases/finish_appointment.dart';
 import 'package:HealthSup/features/decision_tree/domain/usecases/get_current_node.dart';

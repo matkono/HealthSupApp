@@ -1,50 +1,61 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+
+import 'package:HealthSup/core/authentication/authentication.dart';
+import 'package:HealthSup/core/authentication/model/authentication_model.dart';
+import 'package:HealthSup/core/settings/settings.dart';
 import 'package:HealthSup/features/login/data/models/doctor_model.dart';
 import 'package:HealthSup/core/error/exception.dart';
-import 'package:HealthSup/features/login/data/datasources/settingsAPI.dart';
-import 'package:HealthSup/features/login/data/models/authenticateAPI_model.dart';
 import 'package:HealthSup/features/login/data/models/loginApp_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/material.dart';
 
-abstract class DoctorRemoteDataSource {
-  Future<DoctorModel> getLoginDataFromAPI(
-      String email, String password, SharedPreferences preferences);
+abstract class LoginRemoteDataSource {
+  Future<DoctorModel> getLoginUser(String email, String password);
 }
 
-class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
-  var currentTime = DateTime.now().millisecondsSinceEpoch;
-  final SettingsAPI settingsAPI = new SettingsAPI();
+class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
+  final Settings settings;
+  final AuthenticationSettings authenticationSettings;
+  var tokenKey = 'tokenJWT';
+  var tokenTimeKey = 'tokenCurrentTime';
+  var authModel = new AuthenticationModel(
+    agentKey: "db39648a-14f5-406f-94d8-1b43d266f1dd",
+    password: '2e0f011c-a22d-4771-8c50-a9491b96dfea',
+  );
 
-  Future<Map<dynamic, dynamic>> authenticatorAPI(
-      AuthenticateApiModel user) async {
+  LoginRemoteDataSourceImpl({
+    @required this.settings,
+    @required this.authenticationSettings,
+  });
+
+  Future<void> authenticatorAPI(AuthenticationModel user) async {
     try {
       HttpClient client = new HttpClient();
-      client.badCertificateCallback =
-          ((X509Certificate cert, String host, int port) {
-        final isValidHost = host == settingsAPI.getUrl(null);
-        return isValidHost;
-      });
+      settings.certificateHost(client);
 
-      String urlAuth = 'Authentication/agentAuthentication/token/';
-      Map map = user.toJson();
+      bool expiredToken =
+          await authenticationSettings.validateTokenTime(tokenTimeKey);
 
-      var url = settingsAPI.getUrl(urlAuth);
-      print(url);
-      var uriParse = Uri.parse(url);
-      print(uriParse);
-      HttpClientRequest request =
-          await client.postUrl(uriParse).timeout(Duration(seconds: 10));
-      await settingsAPI.setHeaders(request);
-      request.add(utf8.encode(json.encode(map)));
+      if (expiredToken == true) {
+        await authenticationSettings.resetSharedPreferences();
+        String urlAuth = 'Authentication/agentAuthentication/token/';
+        Map map = user.toJson();
 
-      HttpClientResponse response = await request.close();
-      String body = await response.transform(utf8.decoder).join();
-      print(body);
-      Map jsonDecoded = json.decode(body);
+        var url = settings.getUrl(urlAuth);
+        var uriParse = Uri.parse(url);
 
-      return jsonDecoded;
+        HttpClientRequest request =
+            await client.postUrl(uriParse).timeout(Duration(seconds: 10));
+        await settings.setHeaders(request);
+        request.add(utf8.encode(json.encode(map)));
+        HttpClientResponse response = await request.close();
+        String body = await response.transform(utf8.decoder).join();
+        print(body);
+        Map jsonDecoded = json.decode(body);
+
+        await authenticationSettings.setSharedPreferences(jsonDecoded);
+      }
     } on TimeoutException catch (e) {
       throw e;
     } on SocketException catch (e) {
@@ -55,15 +66,10 @@ class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
   }
 
   @override
-  Future<DoctorModel> getLoginDataFromAPI(
-      String email, String password, preferences) async {
+  Future<DoctorModel> getLoginUser(String email, String password) async {
     var client = new HttpClient();
-    client.badCertificateCallback =
-        ((X509Certificate cert, String host, int port) {
-      final isValidHost = host == settingsAPI.getUrl(null);
-      return isValidHost;
-    });
 
+    settings.certificateHost(client);
 
     var login = new LoginDoctorModel(
       email: email,
@@ -72,10 +78,13 @@ class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
     String urlLogin = 'Authentication/userAuthentication/';
 
     try {
-      HttpClientRequest request =
-          await client.postUrl(Uri.parse(settingsAPI.getUrl(urlLogin))).timeout(Duration(seconds: 10));
+      await authenticatorAPI(authModel);
+      HttpClientRequest request = await client
+          .postUrl(Uri.parse(settings.getUrl(urlLogin)))
+          .timeout(Duration(seconds: 10));
 
-      await settingsAPI.setHeaders(request);
+      await settings.setHeaders(request);
+      await settings.setToken(request);
       request.add(utf8.encode(json.encode(login.toJson())));
 
       HttpClientResponse response = await request.close();
@@ -93,11 +102,11 @@ class DoctorRemoteDataSourceImpl implements DoctorRemoteDataSource {
         var doctor = jsonLoginResponse['data'];
         var doctorModel = new DoctorModel.fromJson(doctor);
 
-        print('statusCode: ' + response.statusCode.toString());
+        print('statusCode: ${response.statusCode}');
 
         return doctorModel;
       } else {
-        print('statusCode: ' + response.statusCode.toString());
+        print('statusCode: ${response.statusCode}');
         throw ServerException();
       }
     } on Exception catch (_) {

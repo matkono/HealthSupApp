@@ -1,16 +1,14 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-abstract class LocalDataSource {
+abstract class LoginLocalDataSource {
   Future<String> getTokenSharedPreferences(String key);
   Future<int> getTimeTokenSharedPreferences(String key);
   Future<void> setSharedPreferences(Map<String, dynamic> bodyResponse);
   Future<bool> validateTokenTime(String key);
 }
 
-class LocalDataSourceImpl implements LocalDataSource {
+class LoginLocalDataSourceImpl implements LoginLocalDataSource {
   static final preferences = SharedPreferences.getInstance();
-  static final hostIP = '10.0.2.2';
-  static final String hostUrlDevelop = 'https://10.0.2.2:5001/api/v1/';
   var tokenCurrentTime = DateTime.now().millisecondsSinceEpoch;
 
   @override
@@ -58,11 +56,4 @@ class LocalDataSourceImpl implements LocalDataSource {
     }
     return false;
   }
-
-  Future<void> resetSharedPreferences() async {
-    var preferences = await SharedPreferences.getInstance();
-
-    preferences.clear();
-  }
-
 }

@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
           create: (context) => PatientBloc(),
         ),
         BlocProvider<LoginBloc>(
-          create: (context) => LoginBloc(LoginInitial()),
+          create: (context) => di.sl<LoginBloc>(),
         ),
         BlocProvider<DecisionTreeBloc>(
           create: (context) => di.sl<DecisionTreeBloc>(),
@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
             color: Color(0xFFF5F5F5),
           ),
         ),
-        home: PatientHomePage(),
+        home: LoginPage(),
         debugShowCheckedModeBanner: false,
         routes: {
           '/login': (context) => LoginPage(),
