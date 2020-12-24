@@ -14,7 +14,7 @@ class _BasePageState extends State<BasePage> {
   Widget bodyWidget(String image, String title, String subTitle) {
     return Material(
       child: Container(
-        height: MediaQuery.of(context).size.height / 1.20,
+        height: MediaQuery.of(context).size.height / 1.15,
         decoration: BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('assets/images/Decoration.png'),
@@ -25,8 +25,8 @@ class _BasePageState extends State<BasePage> {
           children: <Widget>[
             Image.asset(
               image,
-              width: 450,
-              height: 400,
+              width: 400,
+              height: 350,
             ),
             Container(
               width: MediaQuery.of(context).size.width / 1.2,

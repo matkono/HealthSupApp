@@ -10,6 +10,7 @@ import 'package:HealthSup/features/patient/presentation/widgets/patient_details.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'features/tutorial/presentation/pages/base_page.dart';
 import 'injection_container.dart' as di;
 
 Future<void> main() async {
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
           BouncingScrollWrapper.builder(context, widget),
           maxWidth: 1200,
           minWidth: 450,
-          defaultScale: false,
+          defaultScale: true,
           breakpoints: [
             ResponsiveBreakpoint.resize(450, name: MOBILE),
             ResponsiveBreakpoint.autoScale(800, name: TABLET),
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
             color: Color(0xFFF5F5F5),
           ),
         ),
-        home: LoginPage(),
+        home: BasePage(),
         debugShowCheckedModeBanner: false,
         routes: {
           '/login': (context) => LoginPage(),
