@@ -1,4 +1,4 @@
-import 'package:HealthSup/features/decision_tree/domain/entities/action.dart';
+import 'package:healthsup/features/decision_tree/domain/entities/action.dart';
 import 'package:flutter/foundation.dart';
 
 class ActionModel extends Action {

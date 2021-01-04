@@ -1,13 +1,13 @@
-import 'package:HealthSup/core/authentication/authentication.dart';
-import 'package:HealthSup/core/error/exception.dart';
-import 'package:HealthSup/core/error/failure.dart';
-import 'package:HealthSup/core/settings/settings.dart';
-import 'package:HealthSup/features/decision_tree/data/datasources/local_datasource_impl.dart';
-import 'package:HealthSup/features/decision_tree/data/datasources/remote_datasource_impl.dart';
-import 'package:HealthSup/features/decision_tree/data/models/answer_model.dart';
-import 'package:HealthSup/features/decision_tree/domain/entities/answer.dart';
-import 'package:HealthSup/features/decision_tree/domain/entities/node.dart';
-import 'package:HealthSup/features/decision_tree/domain/repositories/decision_tree_repository.dart';
+import 'package:healthsup/core/authentication/authentication.dart';
+import 'package:healthsup/core/error/exception.dart';
+import 'package:healthsup/core/error/failure.dart';
+import 'package:healthsup/core/settings/settings.dart';
+import 'package:healthsup/features/decision_tree/data/datasources/local_datasource_impl.dart';
+import 'package:healthsup/features/decision_tree/data/datasources/remote_datasource_impl.dart';
+import 'package:healthsup/features/decision_tree/data/models/answer_model.dart';
+import 'package:healthsup/features/decision_tree/domain/entities/answer.dart';
+import 'package:healthsup/features/decision_tree/domain/entities/node.dart';
+import 'package:healthsup/features/decision_tree/domain/repositories/decision_tree_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 

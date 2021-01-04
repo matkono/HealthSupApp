@@ -1,6 +1,6 @@
-import 'package:HealthSup/features/login/presentation/bloc/login_bloc.dart';
-import 'package:HealthSup/features/login/presentation/widgets/alertDialog.dart';
-import 'package:HealthSup/features/tutorial/presentation/widgets/icon.dart';
+import 'package:healthsup/features/login/presentation/bloc/login_bloc.dart';
+import 'package:healthsup/features/login/presentation/widgets/alertDialog.dart';
+import 'package:healthsup/features/tutorial/presentation/widgets/icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -137,8 +137,10 @@ class _ResetPasswordState extends State<ResetPassword> {
                               child: Column(
                                 children: <Widget>[
                                   Container(
-                                    width: MediaQuery.of(context).size.width / 1.3,
-                                    height: MediaQuery.of(context).size.height / 15,
+                                    width:
+                                        MediaQuery.of(context).size.width / 1.3,
+                                    height:
+                                        MediaQuery.of(context).size.height / 15,
                                     child: Align(
                                       alignment: Alignment.center,
                                       child: Text(

@@ -1,5 +1,5 @@
-import 'package:HealthSup/features/patient/presentation/widgets/patient_details.dart';
-import 'package:HealthSup/features/patient/presentation/widgets/new_patient.dart';
+import 'package:healthsup/features/patient/presentation/widgets/patient_details.dart';
+import 'package:healthsup/features/patient/presentation/widgets/new_patient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -37,8 +37,8 @@ class _PatientHomePageWidgetState extends State<PatientHomePageWidget> {
                         ),
                       ),
                       onPressed: () {
-                        Navigator.pushNamedAndRemoveUntil(
-                            context, '/overlayPatientHomePage', (route) => false);
+                        Navigator.pushNamedAndRemoveUntil(context,
+                            '/overlayPatientHomePage', (route) => false);
                       },
                     ),
                   ),

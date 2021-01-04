@@ -1,14 +1,14 @@
 import 'dart:async';
 
-import 'package:HealthSup/core/error/failure.dart';
-import 'package:HealthSup/features/decision_tree/domain/entities/answer.dart';
-import 'package:HealthSup/features/decision_tree/domain/entities/node.dart';
-import 'package:HealthSup/features/decision_tree/domain/usecases/confirm_action.dart';
-import 'package:HealthSup/features/decision_tree/domain/usecases/finish_appointment.dart';
-import 'package:HealthSup/features/decision_tree/domain/usecases/get_current_node.dart';
-import 'package:HealthSup/features/decision_tree/domain/usecases/previous_question.dart';
-import 'package:HealthSup/features/decision_tree/domain/usecases/send_answer.dart';
-import 'package:HealthSup/features/decision_tree/domain/usecases/start_medical_appointment.dart';
+import 'package:healthsup/core/error/failure.dart';
+import 'package:healthsup/features/decision_tree/domain/entities/answer.dart';
+import 'package:healthsup/features/decision_tree/domain/entities/node.dart';
+import 'package:healthsup/features/decision_tree/domain/usecases/confirm_action.dart';
+import 'package:healthsup/features/decision_tree/domain/usecases/finish_appointment.dart';
+import 'package:healthsup/features/decision_tree/domain/usecases/get_current_node.dart';
+import 'package:healthsup/features/decision_tree/domain/usecases/previous_question.dart';
+import 'package:healthsup/features/decision_tree/domain/usecases/send_answer.dart';
+import 'package:healthsup/features/decision_tree/domain/usecases/start_medical_appointment.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';

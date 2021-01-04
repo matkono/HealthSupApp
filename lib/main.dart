@@ -1,12 +1,12 @@
-import 'package:HealthSup/features/decision_tree/presentation/bloc/decision_tree_bloc.dart';
-import 'package:HealthSup/features/decision_tree/presentation/pages/medical_appointment.dart';
-import 'package:HealthSup/features/login/presentation/bloc/login_bloc.dart';
-import 'package:HealthSup/features/login/presentation/pages/login.dart';
-import 'package:HealthSup/features/patient/presentation/bloc/patient_bloc.dart';
-import 'package:HealthSup/features/patient/presentation/overlays/pages/overlay.dart';
-import 'package:HealthSup/features/patient/presentation/overlays/pages/overlay_patient_details.dart';
-import 'package:HealthSup/features/patient/presentation/pages/patient_homepage.dart';
-import 'package:HealthSup/features/patient/presentation/widgets/patient_details.dart';
+import 'package:healthsup/features/decision_tree/presentation/bloc/decision_tree_bloc.dart';
+import 'package:healthsup/features/decision_tree/presentation/pages/medical_appointment.dart';
+import 'package:healthsup/features/login/presentation/bloc/login_bloc.dart';
+import 'package:healthsup/features/login/presentation/pages/login.dart';
+import 'package:healthsup/features/patient/presentation/bloc/patient_bloc.dart';
+import 'package:healthsup/features/patient/presentation/overlays/pages/overlay.dart';
+import 'package:healthsup/features/patient/presentation/overlays/pages/overlay_patient_details.dart';
+import 'package:healthsup/features/patient/presentation/pages/patient_homepage.dart';
+import 'package:healthsup/features/patient/presentation/widgets/patient_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -15,7 +15,7 @@ import 'injection_container.dart' as di;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-    await di.init();
+  await di.init();
 
   runApp(MyApp());
 }

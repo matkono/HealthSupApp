@@ -1,7 +1,7 @@
-import 'package:HealthSup/features/decision_tree/domain/entities/action.dart';
-import 'package:HealthSup/features/decision_tree/domain/entities/decision.dart';
-import 'package:HealthSup/features/decision_tree/domain/entities/node_type.dart';
-import 'package:HealthSup/features/decision_tree/domain/entities/question.dart';
+import 'package:healthsup/features/decision_tree/domain/entities/action.dart';
+import 'package:healthsup/features/decision_tree/domain/entities/decision.dart';
+import 'package:healthsup/features/decision_tree/domain/entities/node_type.dart';
+import 'package:healthsup/features/decision_tree/domain/entities/question.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 

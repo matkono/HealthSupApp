@@ -1,4 +1,4 @@
-import 'package:HealthSup/features/decision_tree/domain/entities/decision_tree.dart';
+import 'package:healthsup/features/decision_tree/domain/entities/decision_tree.dart';
 import 'package:flutter/foundation.dart';
 
 class DecisionTreeModel extends DecisionTree {

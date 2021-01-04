@@ -1,8 +1,7 @@
-import 'package:HealthSup/features/decision_tree/domain/entities/authenticate.dart';
+import 'package:healthsup/features/decision_tree/domain/entities/authenticate.dart';
 import 'package:flutter/foundation.dart';
 
 class AuthenticateApiModel extends Authenticate {
-
   final String agentName;
   final String password;
 

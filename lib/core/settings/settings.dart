@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:HealthSup/core/authentication/authentication.dart';
+import 'package:healthsup/core/authentication/authentication.dart';
 
 class Settings {
   static final hostIP = '10.0.2.2';

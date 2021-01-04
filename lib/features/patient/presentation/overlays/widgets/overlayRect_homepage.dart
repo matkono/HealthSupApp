@@ -1,5 +1,5 @@
-import 'package:HealthSup/core/clipper/rect_clipper.dart';
-import 'package:HealthSup/features/patient/presentation/pages/patient_homepage.dart';
+import 'package:healthsup/core/clipper/rect_clipper.dart';
+import 'package:healthsup/features/patient/presentation/pages/patient_homepage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

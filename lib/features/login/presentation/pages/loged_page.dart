@@ -1,5 +1,5 @@
-import 'package:HealthSup/features/login/domain/entities/doctor.dart';
-import 'package:HealthSup/features/login/presentation/bloc/login_bloc.dart';
+import 'package:healthsup/features/login/domain/entities/doctor.dart';
+import 'package:healthsup/features/login/presentation/bloc/login_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

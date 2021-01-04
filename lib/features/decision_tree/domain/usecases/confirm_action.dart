@@ -1,7 +1,7 @@
-import 'package:HealthSup/core/error/failure.dart';
-import 'package:HealthSup/core/usecase/usecase.dart';
-import 'package:HealthSup/features/decision_tree/domain/entities/node.dart';
-import 'package:HealthSup/features/decision_tree/domain/repositories/decision_tree_repository.dart';
+import 'package:healthsup/core/error/failure.dart';
+import 'package:healthsup/core/usecase/usecase.dart';
+import 'package:healthsup/features/decision_tree/domain/entities/node.dart';
+import 'package:healthsup/features/decision_tree/domain/repositories/decision_tree_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
@@ -15,7 +15,8 @@ class ConfirmAction extends UseCase<Node, ParamsConfirmAction> {
 
   @override
   Future<Either<Failure, Node>> call(ParamsConfirmAction params) async {
-    return await treeRepository.confirmAction(params.idAction, params.idAppointment);
+    return await treeRepository.confirmAction(
+        params.idAction, params.idAppointment);
   }
 }
 

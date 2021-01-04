@@ -1,9 +1,8 @@
-import 'package:HealthSup/core/error/failure.dart';
-import 'package:HealthSup/core/usecase/usecase.dart';
-import 'package:HealthSup/features/decision_tree/data/repositories/decision_tree_repository_impl.dart';
-import 'package:HealthSup/features/decision_tree/domain/entities/answer.dart';
-import 'package:HealthSup/features/decision_tree/domain/entities/node.dart';
-import 'package:HealthSup/features/decision_tree/domain/repositories/decision_tree_repository.dart';
+import 'package:healthsup/core/error/failure.dart';
+import 'package:healthsup/core/usecase/usecase.dart';
+import 'package:healthsup/features/decision_tree/domain/entities/answer.dart';
+import 'package:healthsup/features/decision_tree/domain/entities/node.dart';
+import 'package:healthsup/features/decision_tree/domain/repositories/decision_tree_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';

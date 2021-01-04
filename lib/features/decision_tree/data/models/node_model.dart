@@ -1,7 +1,7 @@
-import 'package:HealthSup/features/decision_tree/data/models/action_model.dart';
-import 'package:HealthSup/features/decision_tree/data/models/decision_model.dart';
-import 'package:HealthSup/features/decision_tree/data/models/question_model.dart';
-import 'package:HealthSup/features/decision_tree/domain/entities/node.dart';
+import 'package:healthsup/features/decision_tree/data/models/action_model.dart';
+import 'package:healthsup/features/decision_tree/data/models/decision_model.dart';
+import 'package:healthsup/features/decision_tree/data/models/question_model.dart';
+import 'package:healthsup/features/decision_tree/domain/entities/node.dart';
 import 'package:flutter/foundation.dart';
 import 'node_type_model.dart';
 

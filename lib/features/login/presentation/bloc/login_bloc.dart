@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:HealthSup/core/error/failure.dart';
-import 'package:HealthSup/features/login/domain/usecases/login_user.dart';
+import 'package:healthsup/core/error/failure.dart';
+import 'package:healthsup/features/login/domain/usecases/login_user.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 

@@ -1,6 +1,6 @@
-import 'package:HealthSup/features/decision_tree/data/models/possible_answer_model.dart';
-import 'package:HealthSup/features/decision_tree/data/models/question_type_model.dart';
-import 'package:HealthSup/features/decision_tree/domain/entities/question.dart';
+import 'package:healthsup/features/decision_tree/data/models/possible_answer_model.dart';
+import 'package:healthsup/features/decision_tree/data/models/question_type_model.dart';
+import 'package:healthsup/features/decision_tree/domain/entities/question.dart';
 import 'package:flutter/foundation.dart';
 
 class QuestionModel extends Question {

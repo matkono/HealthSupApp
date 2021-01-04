@@ -1,4 +1,4 @@
-import 'package:HealthSup/core/authentication/entities/authentication.dart';
+import 'package:healthsup/core/authentication/entities/authentication.dart';
 import 'package:flutter/material.dart';
 
 class AuthenticationModel extends Authentication {

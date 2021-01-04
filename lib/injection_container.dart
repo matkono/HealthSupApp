@@ -1,14 +1,14 @@
-import 'package:HealthSup/core/authentication/authentication.dart';
-import 'package:HealthSup/core/settings/settings.dart';
-import 'package:HealthSup/features/decision_tree/data/datasources/remote_datasource_impl.dart';
-import 'package:HealthSup/features/decision_tree/data/repositories/decision_tree_repository_impl.dart';
-import 'package:HealthSup/features/decision_tree/domain/repositories/decision_tree_repository.dart';
-import 'package:HealthSup/features/decision_tree/domain/usecases/previous_question.dart';
-import 'package:HealthSup/features/decision_tree/presentation/bloc/decision_tree_bloc.dart';
-import 'package:HealthSup/features/login/data/datasources/local_datasource.dart';
-import 'package:HealthSup/features/login/data/datasources/remote_datasource.dart';
-import 'package:HealthSup/features/login/domain/repositories/repository.dart';
-import 'package:HealthSup/features/login/presentation/bloc/login_bloc.dart';
+import 'package:healthsup/core/authentication/authentication.dart';
+import 'package:healthsup/core/settings/settings.dart';
+import 'package:healthsup/features/decision_tree/data/datasources/remote_datasource_impl.dart';
+import 'package:healthsup/features/decision_tree/data/repositories/decision_tree_repository_impl.dart';
+import 'package:healthsup/features/decision_tree/domain/repositories/decision_tree_repository.dart';
+import 'package:healthsup/features/decision_tree/domain/usecases/previous_question.dart';
+import 'package:healthsup/features/decision_tree/presentation/bloc/decision_tree_bloc.dart';
+import 'package:healthsup/features/login/data/datasources/local_datasource.dart';
+import 'package:healthsup/features/login/data/datasources/remote_datasource.dart';
+import 'package:healthsup/features/login/domain/repositories/repository.dart';
+import 'package:healthsup/features/login/presentation/bloc/login_bloc.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -96,7 +96,7 @@ void _initLogin() {
 
   // Use cases
   sl.registerLazySingleton(() => LoginUser(sl()));
-  
+
   // Repository
   sl.registerLazySingleton<LoginRepository>(
     () => LoginRepositoryImpl(

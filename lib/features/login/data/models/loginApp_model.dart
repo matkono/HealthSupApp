@@ -1,4 +1,4 @@
-import 'package:HealthSup/features/login/domain/entities/loginApp.dart';
+import 'package:healthsup/features/login/domain/entities/loginApp.dart';
 import 'package:meta/meta.dart';
 
 class LoginDoctorModel extends LoginApp {
@@ -15,9 +15,6 @@ class LoginDoctorModel extends LoginApp {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'email': email,
-      'password': password
-    };
+    return {'email': email, 'password': password};
   }
 }

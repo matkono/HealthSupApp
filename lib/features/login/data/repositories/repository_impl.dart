@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:HealthSup/core/error/failure.dart';
-import 'package:HealthSup/features/login/data/datasources/local_datasource.dart';
-import 'package:HealthSup/features/login/data/datasources/remote_datasource.dart';
-import 'package:HealthSup/features/login/domain/entities/doctor.dart';
-import 'package:HealthSup/features/login/domain/repositories/repository.dart';
+import 'package:healthsup/core/error/failure.dart';
+import 'package:healthsup/features/login/data/datasources/local_datasource.dart';
+import 'package:healthsup/features/login/data/datasources/remote_datasource.dart';
+import 'package:healthsup/features/login/domain/entities/doctor.dart';
+import 'package:healthsup/features/login/domain/repositories/repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';

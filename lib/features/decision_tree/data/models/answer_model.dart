@@ -1,5 +1,5 @@
-import 'package:HealthSup/features/decision_tree/data/models/possible_answer_model.dart';
-import 'package:HealthSup/features/decision_tree/domain/entities/answer.dart';
+import 'package:healthsup/features/decision_tree/data/models/possible_answer_model.dart';
+import 'package:healthsup/features/decision_tree/domain/entities/answer.dart';
 import 'package:flutter/foundation.dart';
 
 class AnswerModel extends Answer {
@@ -30,8 +30,9 @@ class AnswerModel extends Answer {
       json['possibleAnswerGroupId'] = possibleAnswerGroupId;
     if (date != null) json['date'] = '2020-12-08T22:00:03.818Z';
     if (possibleAnswers != null)
-      json['possibleAnswersId'] =
-          PossibleAnswerModel.listToJson(possibleAnswers.map((e) => PossibleAnswerModel.fromEntity(e)).toList());
+      json['possibleAnswersId'] = PossibleAnswerModel.listToJson(possibleAnswers
+          .map((e) => PossibleAnswerModel.fromEntity(e))
+          .toList());
 
     return json;
   }

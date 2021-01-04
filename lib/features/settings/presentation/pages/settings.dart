@@ -1,6 +1,6 @@
-import 'package:HealthSup/features/settings/presentation/widgets/about.dart';
-import 'package:HealthSup/features/settings/presentation/widgets/account.dart';
-import 'package:HealthSup/features/settings/presentation/widgets/report_problem.dart';
+import 'package:healthsup/features/settings/presentation/widgets/about.dart';
+import 'package:healthsup/features/settings/presentation/widgets/account.dart';
+import 'package:healthsup/features/settings/presentation/widgets/report_problem.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

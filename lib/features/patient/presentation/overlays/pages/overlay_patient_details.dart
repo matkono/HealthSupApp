@@ -1,6 +1,6 @@
-import 'package:HealthSup/features/patient/presentation/overlays/widgets/overlayCircle_patient_details.dart';
-import 'package:HealthSup/features/patient/presentation/overlays/widgets/overlayRect_patient_details.dart';
-import 'package:HealthSup/features/patient/presentation/overlays/widgets/overlayRect_patient_details_new.dart';
+import 'package:healthsup/features/patient/presentation/overlays/widgets/overlayCircle_patient_details.dart';
+import 'package:healthsup/features/patient/presentation/overlays/widgets/overlayRect_patient_details.dart';
+import 'package:healthsup/features/patient/presentation/overlays/widgets/overlayRect_patient_details_new.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

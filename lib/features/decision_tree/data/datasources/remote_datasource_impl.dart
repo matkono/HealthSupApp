@@ -2,12 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:HealthSup/core/authentication/authentication.dart';
-import 'package:HealthSup/core/authentication/model/authentication_model.dart';
-import 'package:HealthSup/core/error/exception.dart';
-import 'package:HealthSup/core/settings/settings.dart';
-import 'package:HealthSup/features/decision_tree/data/models/answer_model.dart';
-import 'package:HealthSup/features/decision_tree/data/models/node_model.dart';
+import 'package:healthsup/core/authentication/authentication.dart';
+import 'package:healthsup/core/authentication/model/authentication_model.dart';
+import 'package:healthsup/core/error/exception.dart';
+import 'package:healthsup/core/settings/settings.dart';
+import 'package:healthsup/features/decision_tree/data/models/answer_model.dart';
+import 'package:healthsup/features/decision_tree/data/models/node_model.dart';
 import 'package:flutter/material.dart';
 
 abstract class DecisionTreeRemoteDataSource {

@@ -1,6 +1,6 @@
-import 'package:HealthSup/features/disease/presentation/pages/disease.dart';
-import 'package:HealthSup/features/patient/presentation/widgets/patient_homepage_widget.dart';
-import 'package:HealthSup/features/settings/presentation/pages/settings.dart';
+import 'package:healthsup/features/disease/presentation/pages/disease.dart';
+import 'package:healthsup/features/patient/presentation/widgets/patient_homepage_widget.dart';
+import 'package:healthsup/features/settings/presentation/pages/settings.dart';
 import 'package:flutter/material.dart';
 
 class PatientHomePage extends StatefulWidget {

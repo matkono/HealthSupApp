@@ -1,4 +1,4 @@
-import 'package:HealthSup/features/decision_tree/domain/entities/possible_answer.dart';
+import 'package:healthsup/features/decision_tree/domain/entities/possible_answer.dart';
 import 'package:flutter/foundation.dart';
 
 class PossibleAnswerModel extends PossibleAnswer {

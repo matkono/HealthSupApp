@@ -1,8 +1,8 @@
-import 'package:HealthSup/core/error/exception.dart';
-import 'package:HealthSup/core/error/failure.dart';
-import 'package:HealthSup/core/usecase/usecase.dart';
-import 'package:HealthSup/features/decision_tree/domain/entities/node.dart';
-import 'package:HealthSup/features/decision_tree/domain/repositories/decision_tree_repository.dart';
+import 'package:healthsup/core/error/exception.dart';
+import 'package:healthsup/core/error/failure.dart';
+import 'package:healthsup/core/usecase/usecase.dart';
+import 'package:healthsup/features/decision_tree/domain/entities/node.dart';
+import 'package:healthsup/features/decision_tree/domain/repositories/decision_tree_repository.dart';
 import 'package:dartz/dartz.dart';
 
 class StartMedicalAppointment extends UseCase<Node, NoParams> {

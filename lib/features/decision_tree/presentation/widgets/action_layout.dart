@@ -1,5 +1,5 @@
-import 'package:HealthSup/features/decision_tree/domain/entities/node.dart';
-import 'package:HealthSup/features/decision_tree/presentation/bloc/decision_tree_bloc.dart';
+import 'package:healthsup/features/decision_tree/domain/entities/node.dart';
+import 'package:healthsup/features/decision_tree/presentation/bloc/decision_tree_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -143,7 +143,8 @@ class _ActionLayoutState extends State<ActionLayout> {
                                       builder: (BuildContext context) {
                                         return CupertinoAlertDialog(
                                           title: Text("Ação necessaria"),
-                                          content: Text("É necessário realizar esta ação!"),
+                                          content: Text(
+                                              "É necessário realizar esta ação!"),
                                           actions: [
                                             CupertinoDialogAction(
                                               child: Text("Cancelar"),
@@ -155,7 +156,8 @@ class _ActionLayoutState extends State<ActionLayout> {
                                               child: Text("Sair"),
                                               onPressed: () {
                                                 Navigator.pop(context);
-                                                Navigator.pop(context);                                              },
+                                                Navigator.pop(context);
+                                              },
                                             ),
                                           ],
                                         );

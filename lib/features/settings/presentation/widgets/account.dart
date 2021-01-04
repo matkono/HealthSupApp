@@ -1,5 +1,5 @@
-import 'package:HealthSup/features/settings/presentation/widgets/alter_data_account.dart';
-import 'package:HealthSup/features/settings/presentation/widgets/alter_password.dart';
+import 'package:healthsup/features/settings/presentation/widgets/alter_data_account.dart';
+import 'package:healthsup/features/settings/presentation/widgets/alter_password.dart';
 import 'package:flutter/material.dart';
 
 class AccountDetails extends StatelessWidget {

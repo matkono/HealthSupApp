@@ -1,10 +1,10 @@
-import 'package:HealthSup/features/decision_tree/presentation/bloc/decision_tree_bloc.dart';
-import 'package:HealthSup/features/decision_tree/presentation/widgets/action_layout.dart';
-import 'package:HealthSup/features/decision_tree/presentation/widgets/checkbox_question.dart';
-import 'package:HealthSup/features/decision_tree/presentation/widgets/decision_layout.dart';
-import 'package:HealthSup/features/decision_tree/presentation/widgets/error_layout.dart';
-import 'package:HealthSup/features/decision_tree/presentation/widgets/radio_question.dart';
-import 'package:HealthSup/features/decision_tree/presentation/widgets/start_decision_tree.dart';
+import 'package:healthsup/features/decision_tree/presentation/bloc/decision_tree_bloc.dart';
+import 'package:healthsup/features/decision_tree/presentation/widgets/action_layout.dart';
+import 'package:healthsup/features/decision_tree/presentation/widgets/checkbox_question.dart';
+import 'package:healthsup/features/decision_tree/presentation/widgets/decision_layout.dart';
+import 'package:healthsup/features/decision_tree/presentation/widgets/error_layout.dart';
+import 'package:healthsup/features/decision_tree/presentation/widgets/radio_question.dart';
+import 'package:healthsup/features/decision_tree/presentation/widgets/start_decision_tree.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

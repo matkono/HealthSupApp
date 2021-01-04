@@ -1,4 +1,4 @@
-import 'package:HealthSup/features/decision_tree/domain/entities/question_type.dart';
+import 'package:healthsup/features/decision_tree/domain/entities/question_type.dart';
 import 'package:flutter/foundation.dart';
 
 class QuestionTypeModel extends QuestionType {
