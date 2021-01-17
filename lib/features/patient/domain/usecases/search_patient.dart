@@ -5,15 +5,21 @@ import 'package:healthsup/features/patient/domain/entities/patient.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:healthsup/features/patient/domain/repositories/patient_repository.dart';
 
 class SearchPatient extends UseCase<Patient, PatientParams> {
-  // final patientRepository = new PatientRepositoryImpl();
+  final PatientRepository patientRepository;
+
+  SearchPatient(
+    this.patientRepository,
+  );
 
   @override
   Future<Either<Failure, Patient>> call(PatientParams params) async {
     try {
-      // final searchPatient = await patientRepository.searchPatient(params.registration);
-      // return searchPatient;
+      final searchPatient =
+          await patientRepository.searchPatient(params.registration);
+      return searchPatient;
     } on ServerException catch (_) {
       return Left(ServerFailure());
     }

@@ -143,8 +143,7 @@ class _ActionLayoutState extends State<ActionLayout> {
                                       builder: (BuildContext context) {
                                         return CupertinoAlertDialog(
                                           title: Text("Ação necessaria"),
-                                          content: Text(
-                                              "É necessário realizar esta ação!"),
+                                          content: Text("Solicite o ECOTT!"),
                                           actions: [
                                             CupertinoDialogAction(
                                               child: Text("Cancelar"),

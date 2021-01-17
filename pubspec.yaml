@@ -39,6 +39,7 @@ dependencies:
   get_it: ^2.0.1
   device_preview:
   responsive_framework: ^0.0.14
+  via_cep: ^1.0.6
 
 dev_dependencies:
   flutter_test:

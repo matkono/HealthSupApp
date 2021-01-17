@@ -11,6 +11,13 @@ import 'package:healthsup/features/login/domain/repositories/repository.dart';
 import 'package:healthsup/features/login/presentation/bloc/login_bloc.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:get_it/get_it.dart';
+import 'package:healthsup/features/patient/data/repositories/patient_repository_impl.dart';
+import 'package:healthsup/features/patient/domain/repositories/patient_repository.dart';
+import 'package:healthsup/features/patient/domain/usecases/list_patient.dart';
+import 'package:healthsup/features/patient/domain/usecases/register_patient.dart';
+import 'package:healthsup/features/patient/domain/usecases/search_patient.dart';
+import 'package:healthsup/features/patient/domain/usecases/via_cep.dart';
+import 'package:healthsup/features/patient/presentation/bloc/patient_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'features/decision_tree/data/datasources/local_datasource_impl.dart';
@@ -21,6 +28,7 @@ import 'features/decision_tree/domain/usecases/send_answer.dart';
 import 'features/decision_tree/domain/usecases/start_medical_appointment.dart';
 import 'features/login/data/repositories/repository_impl.dart';
 import 'features/login/domain/usecases/login_user.dart';
+import 'features/patient/data/datasources/patient_remote_datasource_impl.dart';
 
 final sl = GetIt.instance;
 
@@ -33,6 +41,7 @@ Future<void> init() async {
   // Features
   _initDecisionTree();
   _initLogin();
+  _initPatient();
 
   //Core
   sl.registerLazySingleton(() => Settings());
@@ -114,5 +123,35 @@ void _initLogin() {
   );
   sl.registerLazySingleton<LoginLocalDataSource>(
     () => LoginLocalDataSourceImpl(),
+  );
+}
+
+void _initPatient() {
+  // Bloc
+  sl.registerFactory(
+    () => PatientBloc(
+      listPatient: sl(),
+      registerPatient: sl(),
+      searchPatient: sl(),
+      viaCep: sl(),
+    ),
+  );
+
+  // Use Cases
+  sl.registerLazySingleton(() => ListPatient(sl()));
+  sl.registerLazySingleton(() => RegisterPatient(sl()));
+  sl.registerLazySingleton(() => SearchPatient(sl()));
+  sl.registerLazySingleton(() => ViaCep(sl()));
+
+  // Repository
+  sl.registerLazySingleton<PatientRepository>(
+    () => PatientRepositoryImpl(
+      patientRemoteDataSource: sl(),
+    ),
+  );
+
+  // Data sources
+  sl.registerLazySingleton<PatientRemoteDataSource>(
+    () => PatientRemoteDataSourceImpl(),
   );
 }
