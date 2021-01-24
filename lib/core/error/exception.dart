@@ -11,3 +11,8 @@ class ServerException extends Exception {
   @override
   List<Object> get props => [exceptionMessage];
 }
+
+class ZipCodeException extends Exception {
+  @override
+  List<Object> get props => [];
+}

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:healthsup/core/error/failure.dart';
 import 'package:healthsup/features/patient/domain/entities/cep_info.dart';
+import 'package:healthsup/features/patient/domain/entities/patient.dart';
 import 'package:healthsup/features/patient/domain/usecases/list_patient.dart';
 import 'package:healthsup/features/patient/domain/usecases/register_patient.dart';
 import 'package:healthsup/features/patient/domain/usecases/search_patient.dart';
@@ -35,7 +36,7 @@ class PatientBloc extends Bloc<PatientEvent, PatientState> {
     if (event is GetCepInfoEvent) {
       yield LoadingPatientState();
 
-      var failureOrCep = await viaCep(CepParams(cep: event.cep));
+      var failureOrCep = await viaCep(CepParams(patient: event.patient));
       yield failureOrCep.fold(
         (failure) {
           if (failure is ServerFailure) {
@@ -46,8 +47,8 @@ class PatientBloc extends Bloc<PatientEvent, PatientState> {
             return ErrorPatientState(message: 'Erro desconhecido');
           }
         },
-        (cepResult) {
-          return LoadedPatientState(cepInfo: cepResult);
+        (patientResult) {
+          return LoadedPatientState(patient: patientResult);
         },
       );
     }

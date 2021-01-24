@@ -8,9 +8,9 @@ abstract class PatientEvent extends Equatable {
 }
 
 class GetCepInfoEvent extends PatientEvent {
-  final String cep;
+  final Patient patient;
 
   GetCepInfoEvent({
-    @required this.cep,
+    @required this.patient,
   });
 }

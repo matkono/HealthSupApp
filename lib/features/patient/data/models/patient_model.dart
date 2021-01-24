@@ -1,3 +1,4 @@
+import 'package:healthsup/features/patient/data/models/cep_info_model.dart';
 import 'package:healthsup/features/patient/domain/entities/patient.dart';
 import 'package:meta/meta.dart';
 
@@ -6,16 +7,19 @@ class PatientModel extends Patient {
     @required int id,
     @required String name,
     @required String registration,
-    @required String endereco,
+    @required CepInfoModel addressInfo,
   }) : super(
-            id: id, name: name, registration: registration, endereco: endereco);
+            id: id,
+            name: name,
+            registration: registration,
+            addressInfo: addressInfo);
 
   factory PatientModel.fromJson(Map<String, dynamic> json) {
     return PatientModel(
       id: json['id'],
       name: json['name'],
       registration: json['registration'],
-      endereco: json['endereco'],
+      addressInfo: CepInfoModel.fromJson(json['Address']),
     );
   }
 
@@ -24,7 +28,7 @@ class PatientModel extends Patient {
       'id': id,
       'name': name,
       'registration': registration,
-      'endereco': endereco,
+      'Address': addressInfo,
     };
   }
 }

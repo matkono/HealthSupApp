@@ -1,3 +1,4 @@
+import 'package:healthsup/core/error/exception.dart';
 import 'package:healthsup/features/patient/data/models/cep_info_model.dart';
 import 'package:healthsup/features/patient/data/models/patient_model.dart';
 import 'package:healthsup/features/patient/domain/entities/patient.dart';
@@ -29,8 +30,21 @@ class PatientRemoteDataSourceImpl implements PatientRemoteDataSource {
   @override
   Future<CepInfoModel> viaCep(String cep) async {
     var viaCep = new via_cep();
-    var result = await viaCep.searchCEP(cep, 'json', '');
+    print(cep);
+    await viaCep.searchCEP(cep, 'json', '');
 
-    return CepInfoModel.fromJson(result);
+    if (viaCep.getResponse() == 200) {
+      final cepInfo = CepInfoModel(
+        cep: viaCep.getCEP(),
+        logradouro: viaCep.getLogradouro(),
+        bairro: viaCep.getBairro(),
+        localidade: viaCep.getLocalidade(),
+      );
+      return cepInfo;
+    } else {
+      print('Código de Retorno: ' + viaCep.getResponse().toString());
+      print('Erro: ' + viaCep.getBody());
+      throw ZipCodeException();
+    }
   }
 }

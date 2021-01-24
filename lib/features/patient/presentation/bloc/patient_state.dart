@@ -13,14 +13,14 @@ class PatientInitial extends PatientState {
 }
 
 class LoadedPatientState extends PatientState {
-  final CepInfo cepInfo;
+  final Patient patient;
 
   LoadedPatientState({
-    @required this.cepInfo,
+    @required this.patient,
   });
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [patient];
 }
 
 class LoadingPatientState extends PatientState {
