@@ -48,7 +48,11 @@ class PatientBloc extends Bloc<PatientEvent, PatientState> {
           }
         },
         (patientResult) {
-          return LoadedPatientState(patient: patientResult);
+          if (patientResult.addressInfo.cep == null) {
+            return ErrorPatientState(message: 'CEP inválido!');
+          } else {
+            return LoadedPatientState(patient: patientResult);
+          }
         },
       );
     }

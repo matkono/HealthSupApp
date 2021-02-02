@@ -35,8 +35,8 @@ class _NewPatientState extends State<NewPatient> {
           return Center(
             child: Text('Deveria ter um Loading'),
           );
-        } else {
-          return _buildBody(context, null);
+        } else if (state is ErrorPatientState) {
+          return _buildBody(context, state.patient);
         }
       }),
     );
