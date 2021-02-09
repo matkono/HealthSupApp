@@ -1,10 +1,9 @@
-import 'package:HealthSup/features/decision_tree/domain/entities/answer.dart';
-import 'package:HealthSup/features/decision_tree/domain/entities/node.dart';
-import 'package:HealthSup/features/decision_tree/presentation/bloc/decision_tree_bloc.dart';
+import 'package:healthsup/features/decision_tree/domain/entities/node.dart';
+import 'package:healthsup/features/decision_tree/presentation/bloc/decision_tree_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class DecisionLayout extends StatelessWidget {
+class DecisionLayout extends StatefulWidget {
   final Node node;
 
   const DecisionLayout({
@@ -13,69 +12,113 @@ class DecisionLayout extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  _DecisionLayoutState createState() => _DecisionLayoutState();
+}
+
+class _DecisionLayoutState extends State<DecisionLayout> {
+  @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(top: 25, left: 20, right: 20),
-          child: Container(
-            margin: EdgeInsets.only(top: 40),
-            child: Center(
-              child: Text(
-                node.question.title,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 21,
-                ),
+    return Expanded(
+      child: Column(
+        children: [
+          AppBar(
+            iconTheme: IconThemeData(
+              color: Colors.black,
+            ),
+            title: Text(
+              'Cardiomiopatia Periparto',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 25,
               ),
             ),
-            alignment: Alignment.center,
-            height: MediaQuery.of(context).size.height / 1.312,
-            width: MediaQuery.of(context).size.width / 1.3,
+            backgroundColor: Colors.grey[300],
           ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.only(top: 20, right: 20),
-              child: FlatButton(
-                color: Colors.blue,
-                child: Text(
-                  'Voltar',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/prancheta2.jpg'),
+                  fit: BoxFit.fill,
                 ),
-                onPressed: () async {
-                  (node.question.nodeType.code == 300 &&
-                          node.question.questionId == 1)
-                      ? BlocProvider.of<DecisionTreeBloc>(context)
-                          .add(InitialDecisionTreeEvent())
-                      : BlocProvider.of<DecisionTreeBloc>(context)
-                          .add(StartDecisionTreeEvent());
-                },
+              ),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    height: MediaQuery.of(context).size.height / 4.5,
+                    child: Center(
+                      child: Container(
+                        alignment: Alignment.bottomCenter,
+                        child: Text(
+                          '${widget.node.decision.title}',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 21,
+                          ),
+                        ),
+                      ),
+                    ),
+                    width: MediaQuery.of(context).size.width / 1.5,
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 10, left: 20, right: 20),
+                    height: MediaQuery.of(context).size.height / 2.5,
+                  ),
+                  Expanded(
+                    child: Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.only(top: 50, right: 20),
+                            child: FlatButton(
+                              color: widget.node.isInitial
+                                  ? Colors.grey
+                                  : Colors.blue,
+                              child: Text(
+                                'Voltar',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              onPressed: () async {
+                                if (!widget.node.isInitial) {
+                                  BlocProvider.of<DecisionTreeBloc>(context)
+                                      .add(
+                                    GetPreviousNodeDecisionTreeEvent(
+                                      idNode: widget.node.id,
+                                    ),
+                                  );
+                                }
+                              },
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 50, left: 20),
+                            child: FlatButton(
+                              color: Colors.blue,
+                              child: Text(
+                                'Confirmar',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              onPressed: () {
+                                BlocProvider.of<DecisionTreeBloc>(context)
+                                    .add(ConfirmDecisionDecisionTreeEvent());
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-            Container(
-              padding: EdgeInsets.only(top: 20, left: 20),
-              child: FlatButton(
-                color: Colors.blue,
-                child: Text(
-                  'Avançar',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-                onPressed: () {
-                  BlocProvider.of<DecisionTreeBloc>(context).add(
-                      NextNodeDecisionTreeEvent(answer: Answer(answers: null)));
-                },
-              ),
-            ),
-          ],
-        ),
-      ],
+          ),
+        ],
+      ),
     );
   }
 }

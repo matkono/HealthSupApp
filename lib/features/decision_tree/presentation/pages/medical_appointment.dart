@@ -1,9 +1,10 @@
-import 'package:HealthSup/features/decision_tree/presentation/bloc/decision_tree_bloc.dart';
-import 'package:HealthSup/features/decision_tree/presentation/widgets/checkbox_question.dart';
-import 'package:HealthSup/features/decision_tree/presentation/widgets/decision_layout.dart';
-import 'package:HealthSup/features/decision_tree/presentation/widgets/error_layout.dart';
-import 'package:HealthSup/features/decision_tree/presentation/widgets/radio_question.dart';
-import 'package:HealthSup/features/decision_tree/presentation/widgets/start_decision_tree.dart';
+import 'package:healthsup/features/decision_tree/presentation/bloc/decision_tree_bloc.dart';
+import 'package:healthsup/features/decision_tree/presentation/widgets/action_layout.dart';
+import 'package:healthsup/features/decision_tree/presentation/widgets/checkbox_question.dart';
+import 'package:healthsup/features/decision_tree/presentation/widgets/decision_layout.dart';
+import 'package:healthsup/features/decision_tree/presentation/widgets/error_layout.dart';
+import 'package:healthsup/features/decision_tree/presentation/widgets/radio_question.dart';
+import 'package:healthsup/features/decision_tree/presentation/widgets/start_decision_tree.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -36,21 +37,38 @@ class _MedicalAppointmentState extends State<MedicalAppointment> {
             height: MediaQuery.of(context).size.height,
             child: Column(children: <Widget>[
               BlocListener<DecisionTreeBloc, DecisionTreeState>(
-                listener: (BuildContext context, state) {},
+                listener: (BuildContext context, state) {
+                  if (state is ErrorDecisionTreeState) {
+                    Scaffold.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(state.message),
+                      ),
+                    );
+                  }
+                  if (state is AppointmentFinished) {
+                    Navigator.pop(context);
+                  }
+                },
                 child: BlocBuilder<DecisionTreeBloc, DecisionTreeState>(
                   builder: (BuildContext context, DecisionTreeState state) {
                     if (state is DecisionTreeInitial)
                       return StartDecisionTree();
-                    else if (state is LoadedDecisionTreeState)
-                      return (state.node.question.nodeType.code == 0 &&
-                              state.node.question.questionType.code == 0)
+                    else if (state is QuestionDecisionTreeState)
+                      return (state.node.question.questionType.id == 1)
                           ? RadioQuestionLoaded(
                               node: state.node,
                             )
-                          : (state.node.question.nodeType.code == 0 &&
-                                  state.node.question.questionType.code == 1)
-                              ? CheckBoxQuestion(node: state.node)
-                              : DecisionLayout(node: state.node);
+                          : CheckBoxQuestion(node: state.node);
+                    else if (state is DecisionDecisionTreeState)
+                      return DecisionLayout(node: state.node);
+                    else if (state is ActionDecisionTreeState)
+                      return ActionLayout(
+                        node: state.node,
+                      );
+                    else if (state is LoadingDecisionTreeState)
+                      return Center(
+                        child: Text('Deveria ter um Loading'),
+                      );
                     else if (state is ErrorDecisionTreeState)
                       return ErrorLayout();
                     else

@@ -1,4 +1,4 @@
-import 'package:HealthSup/features/login/domain/entities/doctor.dart';
+import 'package:healthsup/features/login/domain/entities/doctor.dart';
 import 'package:meta/meta.dart';
 
 class DoctorModel extends Doctor {
@@ -8,7 +8,12 @@ class DoctorModel extends Doctor {
     String phone,
     @required String email,
     @required bool isActive,
-  }) : super(name: name, crm: crm, phone: phone, email: email, isActive: isActive);
+  }) : super(
+            name: name,
+            crm: crm,
+            phone: phone,
+            email: email,
+            isActive: isActive);
 
   factory DoctorModel.fromJson(Map<String, dynamic> json) {
     return DoctorModel(

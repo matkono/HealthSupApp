@@ -1,7 +1,7 @@
-import 'package:HealthSup/features/decision_tree/domain/entities/answer.dart';
-import 'package:HealthSup/features/decision_tree/domain/entities/node.dart';
-import 'package:HealthSup/features/decision_tree/domain/entities/possible_answer.dart';
-import 'package:HealthSup/features/decision_tree/presentation/bloc/decision_tree_bloc.dart';
+import 'package:healthsup/features/decision_tree/domain/entities/answer.dart';
+import 'package:healthsup/features/decision_tree/domain/entities/node.dart';
+import 'package:healthsup/features/decision_tree/domain/entities/possible_answer.dart';
+import 'package:healthsup/features/decision_tree/presentation/bloc/decision_tree_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,12 +18,21 @@ class CheckBoxQuestion extends StatefulWidget {
 }
 
 class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
-  Answer finalAnswer = new Answer(answers: []);
+  int groupId;
   int index;
+  int possibleAnswersId;
+  List<PossibleAnswer> possibleAnswersResult = [];
   Map<PossibleAnswer, bool> mapAnswer = {};
+  Answer finalAnswer = new Answer(
+      medicalAppointmentId: null,
+      doctorId: null,
+      questionId: null,
+      possibleAnswerGroupId: null,
+      date: null,
+      possibleAnswers: []);
 
   Widget checkBoxAnswer(BuildContext context,
-      List<PossibleAnswer> possibleAnswers, Answer answer) {
+      List<PossibleAnswer> possibleAnswers, Answer answer2) {
     if (mapAnswer.isEmpty)
       for (index = 0; index < possibleAnswers.length; index++) {
         mapAnswer.addAll({
@@ -31,7 +40,7 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
             id: possibleAnswers[index].id,
             code: possibleAnswers[index].code,
             title: possibleAnswers[index].title,
-            possibleAnswerGroup: possibleAnswers[index].possibleAnswerGroup,
+            possibleAnswerGroupId: possibleAnswers[index].possibleAnswerGroupId,
           ): false,
         });
       }
@@ -48,22 +57,55 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
                 id: possibleAnswers[index].id,
                 code: possibleAnswers[index].code,
                 title: possibleAnswers[index].title,
-                possibleAnswerGroup: possibleAnswers[index].possibleAnswerGroup,
+                possibleAnswerGroupId:
+                    possibleAnswers[index].possibleAnswerGroupId,
               )],
               onChanged: (value) {
-                setState(() {
-                  mapAnswer[PossibleAnswer(
-                    id: possibleAnswers[index].id,
-                    code: possibleAnswers[index].code,
-                    title: possibleAnswers[index].title,
-                    possibleAnswerGroup:
-                        possibleAnswers[index].possibleAnswerGroup,
-                  )] = value;
-
-                  (value)
-                      ? answer.answers.add(possibleAnswers[index])
-                      : answer.answers.remove(possibleAnswers[index]);
-                });
+                setState(
+                  () {
+                    groupId = possibleAnswers[index].possibleAnswerGroupId;
+                    possibleAnswersId = possibleAnswers[index].id;
+                    if (value == true) {
+                      mapAnswer.entries.forEach(
+                        (entry) {
+                          if (entry.key.possibleAnswerGroupId == groupId &&
+                              entry.key.id == possibleAnswersId) {
+                            mapAnswer[entry.key] = value;
+                            if ((mapAnswer[entry.key] == true) &&
+                                (entry.key.possibleAnswerGroupId == groupId)) {
+                              if (possibleAnswersResult.isNotEmpty) {
+                                possibleAnswersResult.removeWhere((entry) =>
+                                    entry.possibleAnswerGroupId != groupId);
+                              }
+                            }
+                            if ((mapAnswer[entry.key] == true) &&
+                                (entry.key.possibleAnswerGroupId == groupId)) {
+                              possibleAnswersResult.add(entry.key);
+                            }
+                          } else {
+                            if (mapAnswer[entry.key] == true &&
+                                entry.key.possibleAnswerGroupId == groupId) {
+                              mapAnswer[entry.key] = true;
+                            } else {
+                              mapAnswer[entry.key] = !value;
+                            }
+                          }
+                        },
+                      );
+                    } else {
+                      mapAnswer.entries.forEach(
+                        (entry) {
+                          if (entry.key.possibleAnswerGroupId == groupId &&
+                              entry.key.id == possibleAnswersId) {
+                            mapAnswer[entry.key] = value;
+                            possibleAnswersResult.remove(entry.key);
+                          }
+                        },
+                      );
+                    }
+                    print(possibleAnswersResult);
+                  },
+                );
               },
             ),
           );
@@ -130,7 +172,9 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
                           Container(
                             margin: EdgeInsets.only(top: 50, right: 20),
                             child: FlatButton(
-                              color: Colors.blue,
+                              color: widget.node.isInitial
+                                  ? Colors.grey
+                                  : Colors.blue,
                               child: Text(
                                 'Voltar',
                                 style: TextStyle(
@@ -138,15 +182,21 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
                                 ),
                               ),
                               onPressed: () async {
-                                BlocProvider.of<DecisionTreeBloc>(context)
-                                    .add(InitialDecisionTreeEvent());
+                                if (!widget.node.isInitial) {
+                                  BlocProvider.of<DecisionTreeBloc>(context)
+                                      .add(GetPreviousNodeDecisionTreeEvent(
+                                          idNode: widget.node.id));
+                                }
                               },
                             ),
                           ),
                           Container(
                             margin: EdgeInsets.only(top: 50, left: 20),
                             child: FlatButton(
-                              color: Colors.blue,
+                              color: (possibleAnswersResult == null ||
+                                      (possibleAnswersResult.isEmpty))
+                                  ? Colors.grey
+                                  : Colors.blue,
                               child: Text(
                                 'Avançar',
                                 style: TextStyle(
@@ -154,12 +204,22 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
                                 ),
                               ),
                               onPressed: () {
-                                print(
-                                    'id: ${finalAnswer.answers[0].id} | value: ${finalAnswer.answers[0].title}');
-                                BlocProvider.of<DecisionTreeBloc>(context).add(
-                                    NextNodeDecisionTreeEvent(
-                                        answer: Answer(
-                                            answers: finalAnswer.answers)));
+                                if (possibleAnswersResult != null &&
+                                    possibleAnswersResult.isNotEmpty) {
+                                  BlocProvider.of<DecisionTreeBloc>(context)
+                                      .add(
+                                    GetNextNodeDecisionTreeEvent(
+                                      answer: Answer(
+                                        medicalAppointmentId: 1,
+                                        doctorId: 1,
+                                        questionId: widget.node.question.id,
+                                        possibleAnswerGroupId: groupId,
+                                        date: DateTime.now(),
+                                        possibleAnswers: possibleAnswersResult,
+                                      ),
+                                    ),
+                                  );
+                                }
                               },
                             ),
                           ),

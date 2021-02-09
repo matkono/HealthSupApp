@@ -1,6 +1,7 @@
 {
-    "data": {
-      "questionId": 1,
+  "data": {
+    "question": {
+      "id": 1,
       "code": 200,
       "title": "Paciente gestante ou em pós parto?",
       "questionType": {
@@ -24,15 +25,16 @@
             "id": 2
           }
         }
-      ],
+      ]
+    },
+    "id": 1,
+    "isInitial": true,
+    "nodeType": {
       "id": 1,
-      "isInitial": true,
-      "nodeType": {
-        "id": 1,
-        "code": 0
-      },
-      "decisionTree": {
-        "id": 1
-      }
+      "code": 0
+    },
+    "decisionTree": {
+      "id": 1
     }
   }
+}

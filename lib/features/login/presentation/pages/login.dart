@@ -1,6 +1,6 @@
-import 'package:HealthSup/features/login/presentation/bloc/login_bloc.dart';
-import 'package:HealthSup/features/login/presentation/widgets/reset_password.dart';
-import 'package:HealthSup/features/tutorial/presentation/widgets/icon.dart';
+import 'package:healthsup/features/login/presentation/bloc/login_bloc.dart';
+import 'package:healthsup/features/login/presentation/widgets/reset_password.dart';
+import 'package:healthsup/features/tutorial/presentation/widgets/icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -65,8 +65,8 @@ class _LoginPageState extends State<LoginPage> {
                               key: _formKey,
                               child: Column(
                                 children: <Widget>[
-                                  Stack(alignment: Alignment.center,
-                                  children: <Widget>[
+                                  Stack(alignment: Alignment.center, children: <
+                                      Widget>[
                                     Container(
                                       width: MediaQuery.of(context).size.width /
                                           1.2,

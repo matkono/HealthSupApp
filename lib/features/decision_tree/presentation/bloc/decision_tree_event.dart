@@ -4,20 +4,26 @@ abstract class DecisionTreeEvent extends Equatable {
   const DecisionTreeEvent();
 }
 
-class InitialDecisionTreeEvent extends DecisionTreeEvent {
-  @override
-  List<Object> get props => [];
-}
-
 class StartDecisionTreeEvent extends DecisionTreeEvent {
   @override
   List<Object> get props => [];
 }
 
-class NextNodeDecisionTreeEvent extends DecisionTreeEvent {
+class GetCurrentNodeDecisionTreeEvent extends DecisionTreeEvent {
+  final int idAppointmment;
+
+  GetCurrentNodeDecisionTreeEvent({
+    this.idAppointmment,
+  });
+
+  @override
+  List<Object> get props => [];
+}
+
+class GetNextNodeDecisionTreeEvent extends DecisionTreeEvent {
   final Answer answer;
 
-  NextNodeDecisionTreeEvent({
+  GetNextNodeDecisionTreeEvent({
     @required this.answer,
   });
 
@@ -25,13 +31,29 @@ class NextNodeDecisionTreeEvent extends DecisionTreeEvent {
   List<Object> get props => [answer];
 }
 
-class LastNodeDecisionTreeEvent extends DecisionTreeEvent {
-  final int idQuestion;
+class GetPreviousNodeDecisionTreeEvent extends DecisionTreeEvent {
+  final int idNode;
 
-  LastNodeDecisionTreeEvent({
-    @required this.idQuestion,
+  GetPreviousNodeDecisionTreeEvent({
+    @required this.idNode,
   });
 
   @override
-  List<Object> get props => [idQuestion];
+  List<Object> get props => [idNode];
+}
+
+class ConfirmDecisionDecisionTreeEvent extends DecisionTreeEvent {
+  @override
+  List<Object> get props => [];
+}
+
+class ConfirmActionDecisionTreeEvent extends DecisionTreeEvent {
+  final int idAction;
+
+  ConfirmActionDecisionTreeEvent({
+    @required this.idAction,
+  });
+
+  @override
+  List<Object> get props => [idAction];
 }

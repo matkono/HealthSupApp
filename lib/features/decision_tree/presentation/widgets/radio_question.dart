@@ -1,7 +1,7 @@
-import 'package:HealthSup/features/decision_tree/domain/entities/answer.dart';
-import 'package:HealthSup/features/decision_tree/domain/entities/node.dart';
-import 'package:HealthSup/features/decision_tree/domain/entities/possible_answer.dart';
-import 'package:HealthSup/features/decision_tree/presentation/bloc/decision_tree_bloc.dart';
+import 'package:healthsup/features/decision_tree/domain/entities/answer.dart';
+import 'package:healthsup/features/decision_tree/domain/entities/node.dart';
+import 'package:healthsup/features/decision_tree/domain/entities/possible_answer.dart';
+import 'package:healthsup/features/decision_tree/presentation/bloc/decision_tree_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,25 +18,32 @@ class RadioQuestionLoaded extends StatefulWidget {
 }
 
 class _RadioQuestionLoadedState extends State<RadioQuestionLoaded> {
-  int radioButton = 0;
-  Answer finalAnswer = new Answer(answers: []);
+  int radioButton;
   Map<PossibleAnswer, int> mapAnswer = {};
+  Answer finalAnswer = new Answer(
+    medicalAppointmentId: null,
+    doctorId: null,
+    questionId: null,
+    possibleAnswerGroupId: null,
+    date: null,
+    possibleAnswers: [],
+  );
 
   Widget radioAnswer(
     BuildContext context,
     List<PossibleAnswer> possibleAnswers,
     Answer answer,
   ) {
-    if (answer.answers.isEmpty) {
+    if (answer.possibleAnswers.isEmpty) {
       mapAnswer.addAll({
         PossibleAnswer(
           id: possibleAnswers[0].id,
           code: possibleAnswers[0].code,
           title: possibleAnswers[0].title,
-          possibleAnswerGroup: possibleAnswers[0].possibleAnswerGroup,
+          possibleAnswerGroupId: possibleAnswers[0].possibleAnswerGroupId,
         ): 0
       });
-      answer.answers.add(possibleAnswers[0]);
+      answer.possibleAnswers.add(possibleAnswers[0]);
 
       for (int x = 1; x < possibleAnswers.length; x++) {
         mapAnswer.addAll({
@@ -44,12 +51,11 @@ class _RadioQuestionLoadedState extends State<RadioQuestionLoaded> {
             id: possibleAnswers[x].id,
             code: possibleAnswers[x].code,
             title: possibleAnswers[x].title,
-            possibleAnswerGroup: possibleAnswers[x].possibleAnswerGroup,
+            possibleAnswerGroupId: possibleAnswers[x].possibleAnswerGroupId,
           ): x
         });
       }
     }
-
     return SizedBox(
       height: MediaQuery.of(context).size.height / 2,
       child: ListView.builder(
@@ -62,14 +68,15 @@ class _RadioQuestionLoadedState extends State<RadioQuestionLoaded> {
                 id: possibleAnswers[index].id,
                 code: possibleAnswers[index].code,
                 title: possibleAnswers[index].title,
-                possibleAnswerGroup: possibleAnswers[index].possibleAnswerGroup,
+                possibleAnswerGroupId:
+                    possibleAnswers[index].possibleAnswerGroupId,
               )],
               groupValue: radioButton,
               onChanged: (value) {
                 setState(() {
                   radioButton = value;
-                  answer.answers.removeLast();
-                  answer.answers.add(possibleAnswers[index]);
+                  answer.possibleAnswers.removeLast();
+                  answer.possibleAnswers.add(possibleAnswers[index]);
                 });
               },
             ),
@@ -109,6 +116,7 @@ class _RadioQuestionLoadedState extends State<RadioQuestionLoaded> {
                 children: <Widget>[
                   Container(
                     height: MediaQuery.of(context).size.height / 4.5,
+                    margin: EdgeInsets.only(top: 40),
                     child: Center(
                       child: Container(
                         alignment: Alignment.bottomCenter,
@@ -124,8 +132,8 @@ class _RadioQuestionLoadedState extends State<RadioQuestionLoaded> {
                     width: MediaQuery.of(context).size.width / 1.5,
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 10, left: 20, right: 20),
-                    height: MediaQuery.of(context).size.height / 2.5,
+                    margin: EdgeInsets.only(left: 20, right: 20),
+                    height: MediaQuery.of(context).size.height / 2.3,
                     child: radioAnswer(context,
                         widget.node.question.possibleAnswers, finalAnswer),
                   ),
@@ -135,9 +143,11 @@ class _RadioQuestionLoadedState extends State<RadioQuestionLoaded> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Container(
-                            margin: EdgeInsets.only(top: 50, right: 20),
+                            margin: EdgeInsets.only(right: 20),
                             child: FlatButton(
-                              color: Colors.blue,
+                              color: widget.node.isInitial
+                                  ? Colors.grey
+                                  : Colors.blue,
                               child: Text(
                                 'Voltar',
                                 style: TextStyle(
@@ -145,15 +155,23 @@ class _RadioQuestionLoadedState extends State<RadioQuestionLoaded> {
                                 ),
                               ),
                               onPressed: () async {
-                                BlocProvider.of<DecisionTreeBloc>(context)
-                                    .add(InitialDecisionTreeEvent());
+                                if (!widget.node.isInitial) {
+                                  BlocProvider.of<DecisionTreeBloc>(context)
+                                      .add(
+                                    GetPreviousNodeDecisionTreeEvent(
+                                      idNode: widget.node.id,
+                                    ),
+                                  );
+                                }
                               },
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.only(top: 50, left: 20),
+                            margin: EdgeInsets.only(left: 20),
                             child: FlatButton(
-                              color: Colors.blue,
+                              color: radioButton == null
+                                  ? Colors.grey
+                                  : Colors.blue,
                               child: Text(
                                 'Avançar',
                                 style: TextStyle(
@@ -161,12 +179,32 @@ class _RadioQuestionLoadedState extends State<RadioQuestionLoaded> {
                                 ),
                               ),
                               onPressed: () {
-                                print(
-                                    'id: ${finalAnswer.answers[0].id} | value: ${finalAnswer.answers[0].title}');
-                                BlocProvider.of<DecisionTreeBloc>(context).add(
-                                    NextNodeDecisionTreeEvent(
-                                        answer: Answer(
-                                            answers: finalAnswer.answers)));
+                                if (radioButton != null) {
+                                  print(
+                                      'id: ${finalAnswer.possibleAnswers[0].id} | value: ${finalAnswer.possibleAnswers[0].title}');
+                                  BlocProvider.of<DecisionTreeBloc>(context)
+                                      .add(
+                                    GetNextNodeDecisionTreeEvent(
+                                      answer: Answer(
+                                        medicalAppointmentId: 1,
+                                        doctorId: 1,
+                                        questionId: widget.node.question.id,
+                                        possibleAnswerGroupId: mapAnswer.entries
+                                            .firstWhere(
+                                                (e) => e.value == radioButton)
+                                            .key
+                                            .possibleAnswerGroupId,
+                                        date: DateTime.now(),
+                                        possibleAnswers: [
+                                          mapAnswer.entries
+                                              .firstWhere(
+                                                  (e) => e.value == radioButton)
+                                              .key
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                }
                               },
                             ),
                           ),

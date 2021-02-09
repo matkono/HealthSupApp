@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:HealthSup/core/error/failure.dart';
-import 'package:HealthSup/features/login/domain/entities/doctor.dart';
-import 'package:HealthSup/features/login/domain/usecases/loginApp_usecase.dart';
-import 'package:dartz/dartz.dart';
+import 'package:healthsup/core/error/failure.dart';
+import 'package:healthsup/features/login/domain/usecases/login_user.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +9,11 @@ part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  LoginBloc(LoginState initialState) : super(initialState);
+  final LoginUser loginUser;
+  LoginBloc({
+    @required this.loginUser,
+    initialState,
+  }) : super(initialState);
 
   LoginState get initialState => LoginInitial();
 
@@ -22,13 +24,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     if (event is SignInEvent) {
       try {
         yield LoginStartState();
-        final validate = await validateLogin(event.email, event.password);
-
-        if (validate == true) {
+        if (event.email.isEmpty && event.password.isEmpty) {
           yield LoginEmptyErrorState();
         } else {
-          final login = await authenticateLogin(event.email, event.password);
-
+          var login = await loginUser(ParamsLogin(
+            email: event.email,
+            password: event.password,
+          ));
           yield login.fold(
             (failure) {
               if (failure is ServerFailure)
@@ -44,28 +46,5 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         print(e);
       }
     }
-  }
-
-  Future<Either<Failure, Doctor>> authenticateLogin(String email, String password) {
-    return Future.delayed(Duration(seconds: 2), () async {
-      LoginAppUseCase verifyData = LoginAppUseCase();
-
-      final result = await verifyData.call(Params(email: email, password: password));
-
-      print("<<< AuthenticationAPI >>>");
-
-      return result;
-    });
-  }
-
-  Future<bool> validateLogin(String email, String password) async {
-    print("<<< validating Login Form >>>");
-
-    if(email.isEmpty && password.isEmpty) {
-      print('Login format: ERROR');
-      return true;
-    }
-    print('Login format: OK');
-    return false;
   }
 }

@@ -1,7 +1,7 @@
-import 'package:HealthSup/core/error/exception.dart';
-import 'package:HealthSup/core/error/failure.dart';
-import 'package:HealthSup/core/usecase/usecase.dart';
-import 'package:HealthSup/features/patient/domain/entities/patient.dart';
+import 'package:healthsup/core/error/exception.dart';
+import 'package:healthsup/core/error/failure.dart';
+import 'package:healthsup/core/usecase/usecase.dart';
+import 'package:healthsup/features/patient/domain/entities/patient.dart';
 import 'package:dartz/dartz.dart';
 
 class ListPatient extends UseCase<Patient, NoParams> {

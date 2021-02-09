@@ -1,6 +1,4 @@
-import 'package:HealthSup/features/decision_tree/data/models/possible_answer_group_model.dart';
-import 'package:HealthSup/features/decision_tree/domain/entities/possible_answer.dart';
-import 'package:HealthSup/features/decision_tree/domain/entities/possible_answer_group.dart';
+import 'package:healthsup/features/decision_tree/domain/entities/possible_answer.dart';
 import 'package:flutter/foundation.dart';
 
 class PossibleAnswerModel extends PossibleAnswer {
@@ -8,12 +6,12 @@ class PossibleAnswerModel extends PossibleAnswer {
     @required int id,
     @required int code,
     @required String title,
-    @required PossibleAnswerGroup possibleAnswerGroup,
+    @required int possibleAnswerGroup,
   }) : super(
           id: id,
           code: code,
           title: title,
-          possibleAnswerGroup: possibleAnswerGroup,
+          possibleAnswerGroupId: possibleAnswerGroup,
         );
 
   factory PossibleAnswerModel.fromJson(Map<String, dynamic> json) {
@@ -23,17 +21,8 @@ class PossibleAnswerModel extends PossibleAnswer {
       id: json['id'],
       code: json['code'],
       title: json["title"],
-      possibleAnswerGroup:
-          PossibleAnswerGroupModel.fromJson(json["possibleAnswerGroup"]),
+      possibleAnswerGroup: json['possibleAnswerGroup']['id'],
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> json = {};
-
-    if (id != null) json['Id'] = id;
-
-    return json;
   }
 
   static List<dynamic> listToJson(List<PossibleAnswerModel> list) {
@@ -42,7 +31,7 @@ class PossibleAnswerModel extends PossibleAnswer {
     List<dynamic> json = [];
 
     for (PossibleAnswerModel i in list) {
-      json.add(i.toJson());
+      json.add(i.id);
     }
 
     return json;
@@ -58,5 +47,16 @@ class PossibleAnswerModel extends PossibleAnswer {
     }
 
     return list;
+  }
+
+  factory PossibleAnswerModel.fromEntity(PossibleAnswer possibleAnswer) {
+    if (possibleAnswer == null) return null;
+
+    return PossibleAnswerModel(
+      id: possibleAnswer.id,
+      code: possibleAnswer.code,
+      title: possibleAnswer.title,
+      possibleAnswerGroup: possibleAnswer.possibleAnswerGroupId,
+    );
   }
 }

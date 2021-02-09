@@ -1,5 +1,5 @@
-import 'package:HealthSup/features/decision_tree/presentation/bloc/decision_tree_bloc.dart';
-import 'package:HealthSup/features/decision_tree/presentation/pages/medical_appointment.dart';
+import 'package:healthsup/features/decision_tree/presentation/bloc/decision_tree_bloc.dart';
+import 'package:healthsup/features/decision_tree/presentation/pages/medical_appointment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

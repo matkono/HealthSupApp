@@ -1,5 +1,5 @@
-import 'package:HealthSup/core/clipper/circle_clipper.dart';
-import 'package:HealthSup/features/patient/presentation/widgets/patient_details.dart';
+import 'package:healthsup/core/clipper/circle_clipper.dart';
+import 'package:healthsup/features/patient/presentation/widgets/patient_details.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -20,10 +20,12 @@ class OverlayCirclePatientDetails extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _OverlayCirclePatientDetailsState createState() => _OverlayCirclePatientDetailsState();
+  _OverlayCirclePatientDetailsState createState() =>
+      _OverlayCirclePatientDetailsState();
 }
 
-class _OverlayCirclePatientDetailsState extends State<OverlayCirclePatientDetails> {
+class _OverlayCirclePatientDetailsState
+    extends State<OverlayCirclePatientDetails> {
   var searchPatient = TextEditingController();
 
   Stack _clipPathOverlay() {

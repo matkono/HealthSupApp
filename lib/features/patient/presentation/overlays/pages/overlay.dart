@@ -1,5 +1,5 @@
-import 'package:HealthSup/features/patient/presentation/overlays/widgets/overlayCircle_homepage.dart';
-import 'package:HealthSup/features/patient/presentation/overlays/widgets/overlayRect_homepage.dart';
+import 'package:healthsup/features/patient/presentation/overlays/widgets/overlayCircle_homepage.dart';
+import 'package:healthsup/features/patient/presentation/overlays/widgets/overlayRect_homepage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

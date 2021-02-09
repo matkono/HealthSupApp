@@ -1,4 +1,4 @@
-import 'package:HealthSup/features/login/presentation/pages/login.dart';
+import 'package:healthsup/features/login/presentation/pages/login.dart';
 import 'package:flutter/material.dart';
 
 class BodyPage extends StatefulWidget {
@@ -38,9 +38,8 @@ class _BodyPageState extends State<BodyPage> {
                     ),
                     onPressed: () {
                       setState(() {
-                          Navigator.pop(context);
-                        }
-                      );
+                        Navigator.pop(context);
+                      });
                     },
                   ),
                 ),

@@ -1,4 +1,4 @@
-import 'package:HealthSup/core/error/failure.dart';
+import 'package:healthsup/core/error/failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 

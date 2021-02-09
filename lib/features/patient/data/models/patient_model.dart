@@ -1,4 +1,4 @@
-import 'package:HealthSup/features/patient/domain/entities/patient.dart';
+import 'package:healthsup/features/patient/domain/entities/patient.dart';
 import 'package:meta/meta.dart';
 
 class PatientModel extends Patient {

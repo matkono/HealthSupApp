@@ -9,10 +9,10 @@ class DecisionTreeInitial extends DecisionTreeState {
   List<Object> get props => [];
 }
 
-class LoadedDecisionTreeState extends DecisionTreeState {
+class QuestionDecisionTreeState extends DecisionTreeState {
   final Node node;
 
-  LoadedDecisionTreeState({
+  QuestionDecisionTreeState({
     @required this.node,
   });
 
@@ -20,10 +20,10 @@ class LoadedDecisionTreeState extends DecisionTreeState {
   List<Object> get props => [node];
 }
 
-class StartDecisionTreeState extends DecisionTreeState {
+class DecisionDecisionTreeState extends DecisionTreeState {
   final Node node;
 
-  StartDecisionTreeState({
+  DecisionDecisionTreeState({
     @required this.node,
   });
 
@@ -31,12 +31,32 @@ class StartDecisionTreeState extends DecisionTreeState {
   List<Object> get props => [node];
 }
 
-class IsLoadingDecisionTreeState extends DecisionTreeState {
+class ActionDecisionTreeState extends DecisionTreeState {
+  final Node node;
+
+  ActionDecisionTreeState({
+    @required this.node,
+  });
+
+  @override
+  List<Object> get props => [node];
+}
+
+class LoadingDecisionTreeState extends DecisionTreeState {
   @override
   List<Object> get props => [];
 }
 
 class ErrorDecisionTreeState extends DecisionTreeState {
+  final String message;
+
+  ErrorDecisionTreeState({@required this.message});
+
   @override
-  List<Object> get props => ['Failure'];
+  List<Object> get props => [message];
+}
+
+class AppointmentFinished extends DecisionTreeState {
+  @override
+  List<Object> get props => [];
 }

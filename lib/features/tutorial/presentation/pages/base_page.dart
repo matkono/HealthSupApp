@@ -1,5 +1,5 @@
-import 'package:HealthSup/features/decision_tree/presentation/pages/medical_appointment.dart';
-import 'package:HealthSup/features/tutorial/presentation/widgets/body.dart';
+import 'package:healthsup/features/decision_tree/presentation/pages/medical_appointment.dart';
+import 'package:healthsup/features/tutorial/presentation/widgets/body.dart';
 import 'package:flutter/material.dart';
 
 class BasePage extends StatefulWidget {
@@ -14,19 +14,19 @@ class _BasePageState extends State<BasePage> {
   Widget bodyWidget(String image, String title, String subTitle) {
     return Material(
       child: Container(
-        height: MediaQuery.of(context).size.height / 1.20,
+        height: MediaQuery.of(context).size.height / 1.15,
         decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/Decoration.png'),
-                    fit: BoxFit.fill,
-                  ),
-                ),
+          image: DecorationImage(
+            image: AssetImage('assets/images/Decoration.png'),
+            fit: BoxFit.fill,
+          ),
+        ),
         child: Column(
           children: <Widget>[
             Image.asset(
               image,
-              width: 450,
-              height: 400,
+              width: 400,
+              height: 350,
             ),
             Container(
               width: MediaQuery.of(context).size.width / 1.2,
@@ -121,8 +121,10 @@ class _BasePageState extends State<BasePage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                BodyPage(widgetList: widgetView, index: 0,)));
+                            builder: (context) => BodyPage(
+                                  widgetList: widgetView,
+                                  index: 0,
+                                )));
                   }
                 },
               ),

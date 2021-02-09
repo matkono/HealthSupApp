@@ -1,8 +1,7 @@
-import 'package:HealthSup/features/login/domain/entities/authenticate.dart';
+import 'package:healthsup/features/login/domain/entities/authenticate.dart';
 import 'package:meta/meta.dart';
 
 class AuthenticateApiModel extends Authenticate {
-
   final String agentKey;
   final String password;
 

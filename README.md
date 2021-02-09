@@ -1,4 +1,4 @@
-# HealthSup
+# healthsup
 
 A new Flutter project.
 
