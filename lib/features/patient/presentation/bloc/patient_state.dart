@@ -33,7 +33,7 @@ class ErrorPatientState extends PatientState {
   final String message;
 
   ErrorPatientState({
-    this.patient,
+    @required this.patient,
     @required this.message,
   });
 

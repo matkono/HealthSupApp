@@ -29,14 +29,20 @@ class _NewPatientState extends State<NewPatient> {
     return Scaffold(
       body: BlocBuilder<PatientBloc, PatientState>(
           builder: (BuildContext context, PatientState state) {
-        if (state is LoadedPatientState) {
+        if (state is PatientInitial) {
+          return SingleChildScrollView(child: PatientForm());
+        } else if (state is LoadedPatientState) {
           return _buildBody(context, state.patient);
         } else if (state is LoadingPatientState) {
           return Center(
-            child: Text('Deveria ter um Loading'),
+            child: CircularProgressIndicator(),
           );
         } else if (state is ErrorPatientState) {
           return _buildBody(context, state.patient);
+        } else {
+          return Center(
+            child: Text('Deveria ter um Erro'),
+          );
         }
       }),
     );

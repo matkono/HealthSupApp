@@ -307,6 +307,7 @@ class _PatientFormState extends State<PatientForm> {
                             BlocProvider.of<PatientBloc>(context).add(
                               GetCepInfoEvent(
                                 patient: Patient(
+                                  id: null,
                                   name: _formData['NOME'],
                                   registration: _formData['MATRICULA'],
                                   addressInfo: CepInfo(
