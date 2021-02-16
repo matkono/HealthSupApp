@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<PatientBloc>(
-          create: (context) => PatientBloc(),
+          create: (context) => di.sl<PatientBloc>(),
         ),
         BlocProvider<LoginBloc>(
           create: (context) => di.sl<LoginBloc>(),
@@ -36,6 +36,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        theme: ThemeData(canvasColor: Colors.white),
         builder: (context, widget) => ResponsiveWrapper.builder(
           BouncingScrollWrapper.builder(context, widget),
           maxWidth: 1200,

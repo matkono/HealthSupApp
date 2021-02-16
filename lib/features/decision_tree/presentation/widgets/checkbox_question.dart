@@ -143,7 +143,7 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
               child: Column(
                 children: <Widget>[
                   Container(
-                    height: MediaQuery.of(context).size.height / 4.5,
+                    height: MediaQuery.of(context).size.height / 4.0,
                     child: Center(
                       child: Container(
                         alignment: Alignment.bottomCenter,
@@ -170,7 +170,7 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Container(
-                            margin: EdgeInsets.only(top: 50, right: 20),
+                            margin: EdgeInsets.only(top: 30, right: 20),
                             child: FlatButton(
                               color: widget.node.isInitial
                                   ? Colors.grey
@@ -191,7 +191,7 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.only(top: 50, left: 20),
+                            margin: EdgeInsets.only(top: 30, left: 20),
                             child: FlatButton(
                               color: (possibleAnswersResult == null ||
                                       (possibleAnswersResult.isEmpty))

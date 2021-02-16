@@ -28,7 +28,7 @@ class _ActionLayoutState extends State<ActionLayout> {
         itemCount: 2,
         itemBuilder: (context, index) {
           return ListTile(
-            title: Text(index == 0 ? 'Não' : 'Sim'),
+            title: Text(index == 0 ? 'Sim.' : 'Não.'),
             leading: Radio(
               value: index,
               groupValue: radioButton,
@@ -74,7 +74,7 @@ class _ActionLayoutState extends State<ActionLayout> {
                 children: <Widget>[
                   Container(
                     height: MediaQuery.of(context).size.height / 4.5,
-                    margin: EdgeInsets.only(top: 60),
+                    margin: EdgeInsets.only(top: 50),
                     child: Center(
                       child: Container(
                         alignment: Alignment.bottomCenter,
@@ -90,8 +90,15 @@ class _ActionLayoutState extends State<ActionLayout> {
                     width: MediaQuery.of(context).size.width / 1.5,
                   ),
                   Container(
+                    margin: EdgeInsets.only(top: 40),
+                    child: Text(
+                      'Esta ação foi realizada?',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ),
+                  Container(
                     margin: EdgeInsets.only(left: 20, right: 20),
-                    height: MediaQuery.of(context).size.height / 2.5,
+                    height: MediaQuery.of(context).size.height / 3,
                     child: radioAnswer(context),
                   ),
                   Expanded(
@@ -137,14 +144,14 @@ class _ActionLayoutState extends State<ActionLayout> {
                               ),
                               onPressed: () {
                                 if (radioButton != null) {
-                                  if (radioButton == 0) {
+                                  if (radioButton == 1) {
                                     showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
                                         return CupertinoAlertDialog(
                                           title: Text("Ação necessaria"),
-                                          content: Text(
-                                              "É necessário realizar esta ação!"),
+                                          content:
+                                              Text(widget.node.action.title),
                                           actions: [
                                             CupertinoDialogAction(
                                               child: Text("Cancelar"),
@@ -163,7 +170,7 @@ class _ActionLayoutState extends State<ActionLayout> {
                                         );
                                       },
                                     );
-                                  } else if (radioButton == 1) {
+                                  } else if (radioButton == 0) {
                                     BlocProvider.of<DecisionTreeBloc>(context)
                                         .add(
                                       ConfirmActionDecisionTreeEvent(

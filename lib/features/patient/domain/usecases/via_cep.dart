@@ -1,28 +1,28 @@
 import 'package:healthsup/core/error/failure.dart';
 import 'package:healthsup/core/usecase/usecase.dart';
-import 'package:healthsup/features/patient/domain/entities/patient.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:healthsup/features/patient/domain/entities/patient.dart';
 import 'package:healthsup/features/patient/domain/repositories/patient_repository.dart';
 
-class RegisterPatient extends UseCase<Patient, PatientParams> {
+class ViaCep extends UseCase<Patient, CepParams> {
   final PatientRepository patientRepository;
 
-  RegisterPatient(
+  ViaCep(
     this.patientRepository,
   );
 
   @override
-  Future<Either<Failure, Patient>> call(PatientParams params) async {
-    return await patientRepository.registerPatient(params.patient);
+  Future<Either<Failure, Patient>> call(CepParams params) async {
+    return await patientRepository.viaCep(params.patient);
   }
 }
 
-class PatientParams extends Equatable {
+class CepParams extends Equatable {
   final Patient patient;
 
-  PatientParams({
+  CepParams({
     @required this.patient,
   });
 

@@ -6,3 +6,11 @@ abstract class PatientEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class GetCepInfoEvent extends PatientEvent {
+  final Patient patient;
+
+  GetCepInfoEvent({
+    @required this.patient,
+  });
+}
