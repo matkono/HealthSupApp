@@ -26,6 +26,11 @@ import 'features/decision_tree/domain/usecases/finish_appointment.dart';
 import 'features/decision_tree/domain/usecases/get_current_node.dart';
 import 'features/decision_tree/domain/usecases/send_answer.dart';
 import 'features/decision_tree/domain/usecases/start_medical_appointment.dart';
+import 'features/disease/data/datasources/disease_remote_datasource.dart';
+import 'features/disease/data/repositories/disease_repository_impl.dart';
+import 'features/disease/domain/repositories/disease_repository.dart';
+import 'features/disease/domain/usecases/get_disease_list.dart';
+import 'features/disease/presentation/bloc/disease_bloc.dart';
 import 'features/login/data/repositories/repository_impl.dart';
 import 'features/login/domain/usecases/login_user.dart';
 import 'features/patient/data/datasources/patient_remote_datasource_impl.dart';
@@ -42,6 +47,7 @@ Future<void> init() async {
   _initDecisionTree();
   _initLogin();
   _initPatient();
+  _initDisease();
 
   //Core
   sl.registerLazySingleton(() => Settings());
@@ -153,5 +159,29 @@ void _initPatient() {
   // Data sources
   sl.registerLazySingleton<PatientRemoteDataSource>(
     () => PatientRemoteDataSourceImpl(),
+  );
+}
+
+void _initDisease() {
+  // Bloc
+  sl.registerFactory(
+    () => DiseaseBloc(
+      getDiseaseList: sl(),
+    ),
+  );
+
+  // Use cases
+  sl.registerLazySingleton(() => GetDiseaseList(sl()));
+
+  // Repository
+  sl.registerLazySingleton<DiseaseRepository>(
+    () => DiseaseRepositoryImpl(
+      remoteDataSource: sl(),
+    ),
+  );
+
+  // Data sources
+  sl.registerLazySingleton<DiseaseRemoteDataSource>(
+    () => DiseaseRemoteDataSourceImpl(),
   );
 }
