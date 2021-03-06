@@ -10,3 +10,16 @@ abstract class DiseaseEvent extends Equatable {
 class GetStartDiseaseListEvent extends DiseaseEvent {}
 
 class GetNextDiseaseListEvent extends DiseaseEvent {}
+
+class StartNewDiseaseEvent extends DiseaseEvent {
+  final int patientId;
+  final int diseaseId;
+
+  StartNewDiseaseEvent({
+    @required this.patientId,
+    @required this.diseaseId,
+  });
+
+  @override
+  List<Object> get props => [patientId, diseaseId];
+}

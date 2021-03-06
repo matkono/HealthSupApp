@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:healthsup/features/disease/domain/entities/diseases.dart';
 import 'package:healthsup/features/disease/presentation/bloc/disease_bloc.dart';
 
 class DiseasesListHomePage extends StatefulWidget {
-  final List<Diseases> diseasesList;
-  final int totalRows;
-
   const DiseasesListHomePage({
     Key key,
-    @required this.diseasesList,
-    @required this.totalRows,
   }) : super(key: key);
 
   @override
@@ -42,28 +36,48 @@ class _DiseasesListHomePageState extends State<DiseasesListHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView.builder(
-        itemCount: widget.diseasesList.length + 1,
-        controller: _scrollController,
-        itemBuilder: (BuildContext context, int index) {
-          if (index == widget.diseasesList.length) {
-            if (index != widget.totalRows) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            } else {
-              return Center(
-                child: Text(''),
-              );
-            }
-          }
-          return Container(
-            constraints: BoxConstraints.tightFor(height: 80),
-            child: Text(widget.diseasesList[index].name),
-          );
-        },
-      ),
+    return Column(
+      children: [
+        AppBar(
+          iconTheme: IconThemeData(
+            color: Colors.black,
+          ),
+          title: Text(
+            'Doenças',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 25,
+            ),
+          ),
+          backgroundColor: Colors.grey[300],
+        ),
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/background.png'),
+                fit: BoxFit.fill,
+              ),
+            ),
+            child: Center(
+              child: Container(
+                height: MediaQuery.of(context).size.height / 2,
+                margin:
+                    EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
+                child: ListView.builder(
+                  itemCount: 50,
+                  controller: _scrollController,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      child: Text('Center'),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -1,9 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:healthsup/features/disease/domain/entities/pagination.dart';
 
 class PaginationModel extends Pagination {
   PaginationModel({
-    final int pageSize,
-    final int pageNumber,
+    @required int pageSize,
+    @required int pageNumber,
   }) : super(
           pageSize: pageSize,
           pageNumber: pageNumber,

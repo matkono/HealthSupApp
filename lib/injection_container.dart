@@ -25,7 +25,7 @@ import 'features/decision_tree/domain/usecases/confirm_action.dart';
 import 'features/decision_tree/domain/usecases/finish_appointment.dart';
 import 'features/decision_tree/domain/usecases/get_current_node.dart';
 import 'features/decision_tree/domain/usecases/send_answer.dart';
-import 'features/decision_tree/domain/usecases/start_medical_appointment.dart';
+import 'features/decision_tree/domain/usecases/start_new_disease.dart';
 import 'features/disease/data/datasources/disease_remote_datasource.dart';
 import 'features/disease/data/repositories/disease_repository_impl.dart';
 import 'features/disease/domain/repositories/disease_repository.dart';
@@ -69,7 +69,7 @@ void _initDecisionTree() {
       getCurrentNode: sl(),
       previousQuestion: sl(),
       sendAnswer: sl(),
-      startMedicalAppointment: sl(),
+      startNewDisease: sl(),
     ),
   );
 
@@ -79,7 +79,7 @@ void _initDecisionTree() {
   sl.registerLazySingleton(() => GetCurrentNode(sl()));
   sl.registerLazySingleton(() => PreviousQuestion(sl()));
   sl.registerLazySingleton(() => SendAnswer(sl()));
-  sl.registerLazySingleton(() => StartMedicalAppointment(sl()));
+  sl.registerLazySingleton(() => StartNewDisease(sl()));
 
   // Repository
   sl.registerLazySingleton<DecisionTreeRepository>(
@@ -182,6 +182,9 @@ void _initDisease() {
 
   // Data sources
   sl.registerLazySingleton<DiseaseRemoteDataSource>(
-    () => DiseaseRemoteDataSourceImpl(),
+    () => DiseaseRemoteDataSourceImpl(
+      settings: sl(),
+      authenticationSettings: sl(),
+    ),
   );
 }

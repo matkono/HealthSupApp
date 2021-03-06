@@ -37,7 +37,3 @@ class DiseaseLoaded extends DiseaseState {
 }
 
 class DiseaseLoading extends DiseaseState {}
-
-class DiseaseUninitialized extends DiseaseState {}
-
-class DiseaseError extends DiseaseState {}

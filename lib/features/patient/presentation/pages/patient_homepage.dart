@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:healthsup/features/disease/presentation/pages/disease.dart';
+import 'package:healthsup/features/disease/presentation/widgets/diseasesList_homepage.dart';
 import 'package:healthsup/features/patient/presentation/bloc/patient_bloc.dart';
 import 'package:healthsup/features/patient/presentation/widgets/patient_homepage_widget.dart';
 import 'package:healthsup/features/settings/presentation/pages/settings.dart';
@@ -15,7 +15,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
   int _currentIndex = 0;
   final List<Widget> _children = [
     PatientHomePageWidget(),
-    DiseaseHomePage(),
+    DiseasesListHomePage(),
     Settings()
   ];
 

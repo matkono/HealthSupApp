@@ -5,12 +5,12 @@ import 'package:healthsup/features/disease/domain/entities/diseases_list.dart';
 
 class DiseaseListModel extends DiseasesList {
   DiseaseListModel({
-    @required List<Diseases> disease,
+    @required List<Diseases> patients,
     @required int pageNumber,
     @required int pageSize,
     @required int totalRows,
   }) : super(
-          disease: disease,
+          patients: patients,
           pageNumber: pageNumber,
           pageSize: pageSize,
           totalRows: totalRows,
@@ -20,7 +20,8 @@ class DiseaseListModel extends DiseasesList {
     if (json == null) return null;
 
     return DiseaseListModel(
-      disease: DiseasesModel.listFromJson(json['diseases']),
+      patients:
+          DiseasesModel.listFromJson(json['patients']), // mudar para diseases
       pageNumber: json['pageNumber'],
       pageSize: json['pageSize'],
       totalRows: json['totalRows'],

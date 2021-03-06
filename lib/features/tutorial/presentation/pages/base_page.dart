@@ -115,7 +115,7 @@ class _BasePageState extends State<BasePage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => MedicalAppointment()));
+                            builder: (context) => MedicalAppointmentPage()));
                   }
                   if (widgetView.isNotEmpty) {
                     Navigator.push(

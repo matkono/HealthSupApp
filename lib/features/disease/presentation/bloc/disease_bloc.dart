@@ -17,7 +17,7 @@ class DiseaseBloc extends Bloc<DiseaseEvent, DiseaseState> {
   Pagination currentPagination;
 
   DiseaseBloc({
-    this.getDiseaseList,
+    @required this.getDiseaseList,
   }) : super(DiseaseInitial()) {
     this.add(GetNextDiseaseListEvent());
   }
@@ -30,7 +30,7 @@ class DiseaseBloc extends Bloc<DiseaseEvent, DiseaseState> {
       yield DiseaseLoading();
 
       if (currentPagination == null) {
-        currentPagination = new Pagination(pageNumber: 0, pageSize: 10);
+        currentPagination = new Pagination(pageNumber: 1, pageSize: 10);
       } else {
         currentPagination = new Pagination(
             pageNumber: currentPagination.pageNumber + 1,
@@ -50,13 +50,13 @@ class DiseaseBloc extends Bloc<DiseaseEvent, DiseaseState> {
           }
         },
         (diseaseResult) {
-          if (diseaseResult.disease == null) {
+          if (diseaseResult.patients == null) {
             return ErrorDiseaseState(message: 'Doenças não encontradas!');
           } else {
             if (diseaseResult.pageNumber == 0) {
               diseaseList.clear();
             }
-            diseaseList.addAll(diseaseResult.disease);
+            diseaseList.addAll(diseaseResult.patients);
             return DiseaseLoaded(
                 diseasesList: diseaseList, totalRows: diseaseResult.totalRows);
           }

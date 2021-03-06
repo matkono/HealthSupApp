@@ -7,11 +7,15 @@ import 'package:healthsup/core/authentication/model/authentication_model.dart';
 import 'package:healthsup/core/error/exception.dart';
 import 'package:healthsup/core/settings/settings.dart';
 import 'package:healthsup/features/decision_tree/data/models/answer_model.dart';
+import 'package:healthsup/features/decision_tree/data/models/medical_appointment_model.dart';
 import 'package:healthsup/features/decision_tree/data/models/node_model.dart';
 import 'package:flutter/material.dart';
+import 'package:healthsup/features/decision_tree/domain/entities/medical_appointment.dart';
+import 'package:healthsup/features/disease/data/models/choosed_disease_model.dart';
 
 abstract class DecisionTreeRemoteDataSource {
-  Future<NodeModel> startNodeMedicalAppointment();
+  Future<MedicalAppointment> startNodeMedicalAppointment(
+      int patientId, int diseaseId);
   Future<NodeModel> setAnswer(AnswerModel answer);
   Future<NodeModel> getPreviousQuestion(
       int idMedicalAppointment, int idCurrentNode);
@@ -45,9 +49,7 @@ class DecisionTreeRemoteDataSourceImpl extends DecisionTreeRemoteDataSource {
 
       bool expiredToken =
           await authenticationSettings.validateTokenTime(tokenTimeKey);
-      print(expiredToken);
       if (expiredToken == true) {
-        print('oi');
         await authenticationSettings.resetSharedPreferences();
         String urlAuth = 'Authentication/agentAuthentication/token/';
         Map map = authUser.toJson();
@@ -61,7 +63,6 @@ class DecisionTreeRemoteDataSourceImpl extends DecisionTreeRemoteDataSource {
         request.add(utf8.encode(json.encode(map)));
         HttpClientResponse response = await request.close();
         String body = await response.transform(utf8.decoder).join();
-        print(body);
         Map jsonDecoded = json.decode(body);
 
         await authenticationSettings.setSharedPreferences(jsonDecoded);
@@ -76,11 +77,41 @@ class DecisionTreeRemoteDataSourceImpl extends DecisionTreeRemoteDataSource {
   }
 
   @override
-  Future<NodeModel> startNodeMedicalAppointment() async {
-    // TO DO
-    // Iremos usar o endpoint currentNode, mas no futuro deverá ser o endpoint de criação de consulta
+  Future<MedicalAppointment> startNodeMedicalAppointment(
+      int patientId, int diseaseId) async {
+    var client = new HttpClient();
+    settings.certificateHost(client);
 
-    return await getCurrentNode(appointmentId);
+    ChoosedDiseaseModel choosedDisease =
+        new ChoosedDiseaseModel(patientId: patientId, diseaseId: diseaseId);
+    String url = 'MedicalAppointment/create';
+
+    try {
+      await authenticatorAPI(authModel);
+      HttpClientRequest request = await client
+          .postUrl(Uri.parse(settings.getUrl(url)))
+          .timeout(Duration(seconds: 10));
+
+      await settings.setHeaders(request);
+      await settings.setToken(request);
+      request.add(utf8.encode(json.encode(choosedDisease.toJson())));
+
+      HttpClientResponse response = await request.close();
+
+      String body = await response.transform(utf8.decoder).join();
+      Map jsonResponse = json.decode(body);
+      Map jsonData = jsonResponse['data'];
+
+      if (response.statusCode == 200) {
+        print('statusCode: ' + response.statusCode.toString());
+        return MedicalAppointmentModel.fromJson(jsonData);
+      } else {
+        print('statusCode: ' + response.statusCode.toString());
+        throw ServerException();
+      }
+    } on Exception catch (_) {
+      throw ServerException();
+    }
   }
 
   @override
@@ -183,7 +214,7 @@ class DecisionTreeRemoteDataSourceImpl extends DecisionTreeRemoteDataSource {
     settings.certificateHost(client);
 
     String url = 'MedicalAppointment/$idAppointment/currentNode/';
-    print(url);
+
     try {
       await authenticatorAPI(authModel);
       HttpClientRequest request = await client

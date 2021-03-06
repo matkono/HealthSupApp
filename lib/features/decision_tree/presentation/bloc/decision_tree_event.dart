@@ -5,8 +5,16 @@ abstract class DecisionTreeEvent extends Equatable {
 }
 
 class StartDecisionTreeEvent extends DecisionTreeEvent {
+  final int patientId;
+  final int diseaseId;
+
+  StartDecisionTreeEvent({
+    @required this.patientId,
+    @required this.diseaseId,
+  });
+
   @override
-  List<Object> get props => [];
+  List<Object> get props => [patientId, diseaseId];
 }
 
 class GetCurrentNodeDecisionTreeEvent extends DecisionTreeEvent {

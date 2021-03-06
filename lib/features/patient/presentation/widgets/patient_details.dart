@@ -1,5 +1,6 @@
 import 'package:healthsup/features/decision_tree/presentation/bloc/decision_tree_bloc.dart';
 import 'package:healthsup/features/decision_tree/presentation/pages/medical_appointment.dart';
+import 'package:healthsup/features/disease/presentation/pages/disease.dart';
 import 'package:healthsup/features/patient/presentation/widgets/edit_patient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -172,7 +173,7 @@ class _PatientDetailsState extends State<PatientDetails> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            MedicalAppointment()),
+                                            MedicalAppointmentPage()),
                                   );
                                 },
                               ),
@@ -200,7 +201,7 @@ class _PatientDetailsState extends State<PatientDetails> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => MedicalAppointment(),
+                          builder: (context) => DiseaseHomePage(),
                         ),
                       );
                     },

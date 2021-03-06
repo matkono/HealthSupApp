@@ -3,18 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:healthsup/features/disease/domain/entities/diseases.dart';
 
 class DiseasesList extends Equatable {
-  final List<Diseases> disease;
+  final List<Diseases> patients;
   final int pageNumber;
   final int pageSize;
   final int totalRows;
 
   DiseasesList({
-    @required this.disease,
+    @required this.patients,
     @required this.pageNumber,
     @required this.pageSize,
     @required this.totalRows,
   });
 
   @override
-  List<Object> get props => [disease, pageNumber, pageSize, totalRows];
+  List<Object> get props => [patients, pageNumber, pageSize, totalRows];
 }
