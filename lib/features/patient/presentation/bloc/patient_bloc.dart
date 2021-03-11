@@ -56,6 +56,30 @@ class PatientBloc extends Bloc<PatientEvent, PatientState> {
           }
         },
       );
+    } else if (event is SearchPatientEvent) {
+      yield LoadingPatientState();
+
+      var failureOrNode = await searchPatient(ParamsSearchPatient(
+        registration: event.registration,
+      ));
+      yield failureOrNode.fold(
+        (failure) {
+          if (failure is ServerFailure)
+            return ErrorSearchedPatientState(message: failure.failureMessage);
+          else if (failure is NoInternetConnectionFailure)
+            return ErrorSearchedPatientState(message: failure.failureMessage);
+          else
+            return ErrorSearchedPatientState(message: 'Erro desconhecido');
+        },
+        (patient) {
+          if (patient != null) {
+            return SearchedPatientState(
+              patient: patient,
+            );
+          } else
+            return ErrorSearchedPatientState(message: 'Código inválido');
+        },
+      );
     }
   }
 }

@@ -14,3 +14,11 @@ class GetCepInfoEvent extends PatientEvent {
     @required this.patient,
   });
 }
+
+class SearchPatientEvent extends PatientEvent {
+  final String registration;
+
+  SearchPatientEvent({
+    @required this.registration,
+  });
+}

@@ -1,4 +1,5 @@
-import 'package:healthsup/features/patient/presentation/widgets/patient_details.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:healthsup/features/patient/presentation/bloc/patient_bloc.dart';
 import 'package:healthsup/features/patient/presentation/widgets/new_patient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,8 @@ class PatientHomePageWidget extends StatefulWidget {
 }
 
 class _PatientHomePageWidgetState extends State<PatientHomePageWidget> {
+  var registrationController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Stack(children: <Widget>[
@@ -17,6 +20,9 @@ class _PatientHomePageWidgetState extends State<PatientHomePageWidget> {
           child: Column(
             children: [
               AppBar(
+                iconTheme: IconThemeData(
+                  color: Colors.black,
+                ),
                 backgroundColor: Colors.grey[300],
                 title: Text(
                   'Home',
@@ -131,7 +137,8 @@ class _PatientHomePageWidgetState extends State<PatientHomePageWidget> {
                           ),
                         ],
                       ),
-                      child: TextField(
+                      child: TextFormField(
+                        controller: registrationController,
                         style: TextStyle(
                           color: Colors.black,
                         ),
@@ -161,10 +168,10 @@ class _PatientHomePageWidgetState extends State<PatientHomePageWidget> {
                           size: 35,
                         ),
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PatientDetails()),
+                          BlocProvider.of<PatientBloc>(context).add(
+                            SearchPatientEvent(
+                              registration: registrationController.text,
+                            ),
                           );
                         },
                       ),

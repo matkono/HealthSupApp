@@ -158,7 +158,10 @@ void _initPatient() {
 
   // Data sources
   sl.registerLazySingleton<PatientRemoteDataSource>(
-    () => PatientRemoteDataSourceImpl(),
+    () => PatientRemoteDataSourceImpl(
+      settings: sl(),
+      authenticationSettings: sl(),
+    ),
   );
 }
 

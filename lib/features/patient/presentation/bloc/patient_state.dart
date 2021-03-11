@@ -23,6 +23,14 @@ class LoadedPatientState extends PatientState {
   List<Object> get props => [patient];
 }
 
+class SearchedPatientState extends PatientState {
+  final Patient patient;
+
+  SearchedPatientState({
+    @required this.patient,
+  });
+}
+
 class LoadingPatientState extends PatientState {
   @override
   List<Object> get props => [];
@@ -33,7 +41,7 @@ class ErrorPatientState extends PatientState {
   final String message;
 
   ErrorPatientState({
-    @required this.patient,
+    this.patient,
     @required this.message,
   });
 
@@ -44,4 +52,14 @@ class ErrorPatientState extends PatientState {
 class PatientRegistrationFinished extends PatientState {
   @override
   List<Object> get props => [];
+}
+
+class ErrorSearchedPatientState extends PatientState {
+  final String message;
+
+  ErrorSearchedPatientState({
+    @required this.message,
+  });
+
+  List<Object> get props => [message];
 }

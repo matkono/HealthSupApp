@@ -24,8 +24,13 @@ class PatientRepositoryImpl implements PatientRepository {
   }
 
   @override
-  Future<Either<Failure, Patient>> searchPatient(String registration) {
-    throw UnimplementedError();
+  Future<Either<Failure, Patient>> searchPatient(String registration) async {
+    try {
+      final patient = await patientRemoteDataSource.searchPatient(registration);
+      return Right(patient);
+    } on ServerException catch (_) {
+      return Left(ServerFailure());
+    }
   }
 
   @override
