@@ -9,9 +9,12 @@ import 'package:healthsup/features/login/data/models/doctor_model.dart';
 import 'package:healthsup/core/error/exception.dart';
 import 'package:healthsup/features/login/data/models/loginApp_model.dart';
 import 'package:flutter/material.dart';
+import 'package:healthsup/features/login/data/models/update_password_model.dart';
 
 abstract class LoginRemoteDataSource {
   Future<DoctorModel> getLoginUser(String email, String password);
+  Future<bool> updatePassword(String email, String password, String newPassword,
+      String confirmNewPassword);
 }
 
 class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
@@ -105,6 +108,46 @@ class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
         print('statusCode: ${response.statusCode}');
 
         return doctorModel;
+      } else {
+        print('statusCode: ${response.statusCode}');
+        throw ServerException();
+      }
+    } on Exception catch (_) {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<bool> updatePassword(String email, String password, String newPassword,
+      String confirmNewPassword) async {
+    var client = new HttpClient();
+
+    settings.certificateHost(client);
+
+    var updatePass = new UpdatePasswordModel(
+      email: email,
+      password: password,
+      newPassword: newPassword,
+      confirmNewPassword: confirmNewPassword,
+    );
+    String urlUpdatePassword = 'Authentication/updateUserPassword';
+
+    try {
+      await authenticatorAPI(authModel);
+      HttpClientRequest request = await client
+          .postUrl(Uri.parse(settings.getUrl(urlUpdatePassword)))
+          .timeout(Duration(seconds: 10));
+
+      await settings.setHeaders(request);
+      await settings.setToken(request);
+      request.add(utf8.encode(json.encode(updatePass.toJson())));
+
+      HttpClientResponse response = await request.close();
+      print('aqui: ${response.statusCode}');
+      print(response);
+      if (response.statusCode == 204) {
+        print('statusCode: ${response.statusCode}');
+        return true;
       } else {
         print('statusCode: ${response.statusCode}');
         throw ServerException();

@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:healthsup/features/login/presentation/bloc/login_bloc.dart';
+import 'package:healthsup/features/login/presentation/widgets/alertDialog.dart';
 import 'package:healthsup/features/login/presentation/widgets/reset_password.dart';
 import 'package:healthsup/features/tutorial/presentation/widgets/icon.dart';
 import 'package:flutter/material.dart';
@@ -29,10 +31,94 @@ class _LoginPageState extends State<LoginPage> {
       body: SingleChildScrollView(
         child: BlocListener<LoginBloc, LoginState>(
           listener: (BuildContext context, state) {
+            print(state);
             if (state is LoginSuccessState) {
               setState(() {
                 Navigator.pushNamed(context, '/home');
               });
+            } else if (state is SearchSuccessState) {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return CupertinoAlertDialog(
+                    title: Text('Nova senha definida'),
+                    content: Text('Insira um CEP válido!'),
+                    actions: [
+                      CupertinoDialogAction(
+                        child: Text("Ok"),
+                        onPressed: () {
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (BuildContext context) => LoginPage(),
+                            ),
+                            (route) => false,
+                          );
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            } else if (state is SearchErrorState) {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return CupertinoAlertDialog(
+                    title: Text(state.props.toString()),
+                    content: Text('Insira um CEP válido!'),
+                    actions: [
+                      CupertinoDialogAction(
+                        child: Text("Ok"),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            } else if (state is UpdatePasswordSuccessState) {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return CupertinoAlertDialog(
+                    title: Text('Senha redefinida!'),
+                    actions: [
+                      CupertinoDialogAction(
+                        child: Text("Ok"),
+                        onPressed: () {
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (BuildContext context) => LoginPage(),
+                            ),
+                            (route) => false,
+                          );
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            } else if (state is UpdatePasswordErrorState) {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return CupertinoAlertDialog(
+                    title: Text('Ocorreu um erro!'),
+                    content: Text('Tente novamente!'),
+                    actions: [
+                      CupertinoDialogAction(
+                        child: Text("Ok"),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
             }
           },
           child: BlocBuilder<LoginBloc, LoginState>(
@@ -257,7 +343,7 @@ class _LoginPageState extends State<LoginPage> {
                                 );
                               },
                               child: Text(
-                                'Esqueceu a senha?',
+                                'Redefinir senha',
                                 style: TextStyle(
                                   fontSize: 18.0,
                                   color: Colors.blue,

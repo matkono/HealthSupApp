@@ -47,4 +47,23 @@ class LoginRepositoryImpl implements LoginRepository {
       }
     }
   }
+
+  @override
+  Future<Either<Failure, bool>> updatePassword(
+      email, password, newPassword, confirmNewPassword) async {
+    try {
+      final fromDoctorModel = await loginRemoteDataSource.updatePassword(
+          email, password, newPassword, confirmNewPassword);
+      return Right(fromDoctorModel);
+    } on TimeoutException catch (e) {
+      print(e);
+      return Left(ServerFailure(failureMessage: 'Connection timeout'));
+    } on SocketException catch (e) {
+      print(e);
+      return Left(ServerFailure(failureMessage: 'Connection timeout'));
+    } on Exception catch (e) {
+      print(e);
+      return Left(ServerFailure(failureMessage: "Email ou Senha inválidos"));
+    }
+  }
 }

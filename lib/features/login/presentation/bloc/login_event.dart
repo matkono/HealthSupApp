@@ -19,13 +19,17 @@ class SignInEvent extends LoginEvent {
 
 class ResetPasswordEvent extends LoginEvent {
   final String email;
-  final String crm;
+  final String password;
+  final String newPassword;
+  final String confirmNewPassword;
 
   ResetPasswordEvent({
     @required this.email,
-    @required this.crm,
+    @required this.password,
+    @required this.newPassword,
+    @required this.confirmNewPassword,
   });
 
   @override
-  List<Object> get props => [email, crm];
+  List<Object> get props => [email, password, newPassword, confirmNewPassword];
 }

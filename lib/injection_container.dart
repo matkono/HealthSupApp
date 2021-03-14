@@ -8,6 +8,7 @@ import 'package:healthsup/features/decision_tree/presentation/bloc/decision_tree
 import 'package:healthsup/features/login/data/datasources/local_datasource.dart';
 import 'package:healthsup/features/login/data/datasources/remote_datasource.dart';
 import 'package:healthsup/features/login/domain/repositories/repository.dart';
+import 'package:healthsup/features/login/domain/usecases/update_password.dart';
 import 'package:healthsup/features/login/presentation/bloc/login_bloc.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:get_it/get_it.dart';
@@ -106,11 +107,13 @@ void _initLogin() {
   sl.registerFactory(
     () => LoginBloc(
       loginUser: sl(),
+      updatePassword: sl(),
     ),
   );
 
   // Use cases
   sl.registerLazySingleton(() => LoginUser(sl()));
+  sl.registerLazySingleton(() => UpdatePassword(sl()));
 
   // Repository
   sl.registerLazySingleton<LoginRepository>(
