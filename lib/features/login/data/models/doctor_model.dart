@@ -3,6 +3,7 @@ import 'package:meta/meta.dart';
 
 class DoctorModel extends Doctor {
   DoctorModel({
+    // int id,
     String name,
     @required String crm,
     String phone,

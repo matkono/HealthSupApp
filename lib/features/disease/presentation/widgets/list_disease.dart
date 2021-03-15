@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:healthsup/features/decision_tree/presentation/bloc/decision_tree_bloc.dart';
 import 'package:healthsup/features/decision_tree/presentation/pages/medical_appointment.dart';
 import 'package:healthsup/features/disease/domain/entities/diseases.dart';
 import 'package:healthsup/features/disease/presentation/bloc/disease_bloc.dart';
+import 'package:healthsup/features/patient/domain/entities/patient.dart';
 
 class ListDisease extends StatefulWidget {
+  final Patient patient;
   final List<Diseases> diseasesList;
   final int totalRows;
 
@@ -12,6 +15,7 @@ class ListDisease extends StatefulWidget {
     Key key,
     @required this.diseasesList,
     @required this.totalRows,
+    @required this.patient,
   }) : super(key: key);
 
   @override
@@ -43,9 +47,9 @@ class _ListDiseaseState extends State<ListDisease> {
         return Container(
           child: FlatButton(
             onPressed: () {
-              BlocProvider.of<DiseaseBloc>(context).add(
-                StartNewDiseaseEvent(
-                  patientId: 1,
+              BlocProvider.of<DecisionTreeBloc>(context).add(
+                StartDecisionTreeEvent(
+                  patientId: widget.patient.id,
                   diseaseId: widget.diseasesList[index].id,
                 ),
               );

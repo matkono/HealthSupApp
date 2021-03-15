@@ -131,7 +131,9 @@ void _initLogin() {
     ),
   );
   sl.registerLazySingleton<LoginLocalDataSource>(
-    () => LoginLocalDataSourceImpl(),
+    () => LoginLocalDataSourceImpl(
+      sharedPreferences: sl(),
+    ),
   );
 }
 

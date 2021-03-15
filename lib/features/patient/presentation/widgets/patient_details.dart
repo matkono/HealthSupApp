@@ -215,7 +215,9 @@ class _PatientDetailsState extends State<PatientDetails> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => DiseaseHomePage(),
+                            builder: (context) => DiseaseHomePage(
+                              patient: widget.patient,
+                            ),
                           ),
                         );
                       },

@@ -1,59 +1,31 @@
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class LoginLocalDataSource {
-  Future<String> getTokenSharedPreferences(String key);
-  Future<int> getTimeTokenSharedPreferences(String key);
-  Future<void> setSharedPreferences(Map<String, dynamic> bodyResponse);
-  Future<bool> validateTokenTime(String key);
+  Future<int> getUserID();
+  Future<bool> saveUserID(int id);
 }
 
 class LoginLocalDataSourceImpl implements LoginLocalDataSource {
-  static final preferences = SharedPreferences.getInstance();
-  var tokenCurrentTime = DateTime.now().millisecondsSinceEpoch;
+  final SharedPreferences sharedPreferences;
+  static const String USER_ID_KEY = 'USER_ID_KEY';
+
+  LoginLocalDataSourceImpl({
+    @required this.sharedPreferences,
+  });
 
   @override
-  Future<String> getTokenSharedPreferences(String key) async {
-    var preferences = await SharedPreferences.getInstance();
+  Future<int> getUserID() async {
+    if (sharedPreferences.containsKey(USER_ID_KEY)) {
+      int getID = sharedPreferences.getInt(USER_ID_KEY);
 
-    if (preferences.containsKey(key)) {
-      var getToken = preferences.getString(key);
-  
-      return getToken;
+      return getID;
     }
     return null;
   }
 
   @override
-  Future<int> getTimeTokenSharedPreferences(String key) async {
-    var preferences = await SharedPreferences.getInstance();
-
-    if (preferences.containsKey(key)) {
-      int getToken = preferences.getInt(key);
-  
-      return getToken;
-    }
-    return null;
-  }
-
-  @override
-  Future<void> setSharedPreferences(Map<String, dynamic> bodyResponse) async {
-    var preferences = await SharedPreferences.getInstance();
-    var token = bodyResponse['data']['token'];
-    preferences.setString('tokenJWT', token);
-    preferences.setInt('tokenCurrentTime', tokenCurrentTime);
-  }
-
-  Future<bool> validateTokenTime(String key) async {
-    var preferences = await SharedPreferences.getInstance();
-    var timeNow = DateTime.now().millisecondsSinceEpoch;
-
-    if (preferences.containsKey(key)) {
-      var tokenTime = preferences.getInt(key);
-
-      if (timeNow - tokenTime > 29*60*1000) {
-        return true;
-      }
-    }
-    return false;
+  Future<bool> saveUserID(int id) async {
+    return await sharedPreferences.setInt(USER_ID_KEY, id);
   }
 }

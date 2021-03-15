@@ -37,6 +37,7 @@ class DecisionTreeBloc extends Bloc<DecisionTreeEvent, DecisionTreeState> {
   Stream<DecisionTreeState> mapEventToState(
     DecisionTreeEvent event,
   ) async* {
+    print(event);
     if (event is StartDecisionTreeEvent) {
       yield LoadingDecisionTreeState();
 
