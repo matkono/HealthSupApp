@@ -15,10 +15,14 @@ import 'package:get_it/get_it.dart';
 import 'package:healthsup/features/patient/data/repositories/patient_repository_impl.dart';
 import 'package:healthsup/features/patient/domain/repositories/patient_repository.dart';
 import 'package:healthsup/features/patient/domain/usecases/list_patient.dart';
-import 'package:healthsup/features/patient/domain/usecases/register_patient.dart';
 import 'package:healthsup/features/patient/domain/usecases/search_patient.dart';
-import 'package:healthsup/features/patient/domain/usecases/via_cep.dart';
 import 'package:healthsup/features/patient/presentation/bloc/patient_bloc.dart';
+import 'package:healthsup/features/registration/data/datasources/register_remote_datasource.dart';
+import 'package:healthsup/features/registration/data/repositories/registration_repository_impl.dart';
+import 'package:healthsup/features/registration/domain/repositories/registration_repository.dart';
+import 'package:healthsup/features/registration/domain/usecases/register_patient.dart';
+import 'package:healthsup/features/registration/domain/usecases/via_cep.dart';
+import 'package:healthsup/features/registration/presentation/bloc/registration_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'features/decision_tree/data/datasources/local_datasource_impl.dart';
@@ -49,6 +53,7 @@ Future<void> init() async {
   _initLogin();
   _initPatient();
   _initDisease();
+  _initRegistration();
 
   //Core
   sl.registerLazySingleton(() => Settings());
@@ -142,17 +147,13 @@ void _initPatient() {
   sl.registerFactory(
     () => PatientBloc(
       listPatient: sl(),
-      registerPatient: sl(),
       searchPatient: sl(),
-      viaCep: sl(),
     ),
   );
 
   // Use Cases
   sl.registerLazySingleton(() => ListPatient(sl()));
-  sl.registerLazySingleton(() => RegisterPatient(sl()));
   sl.registerLazySingleton(() => SearchPatient(sl()));
-  sl.registerLazySingleton(() => ViaCep(sl()));
 
   // Repository
   sl.registerLazySingleton<PatientRepository>(
@@ -191,6 +192,35 @@ void _initDisease() {
   // Data sources
   sl.registerLazySingleton<DiseaseRemoteDataSource>(
     () => DiseaseRemoteDataSourceImpl(
+      settings: sl(),
+      authenticationSettings: sl(),
+    ),
+  );
+}
+
+void _initRegistration() {
+  // Bloc
+  sl.registerFactory(
+    () => RegistrationBloc(
+      viaCep: sl(),
+      registerPatient: sl(),
+    ),
+  );
+
+  // Use cases
+  sl.registerLazySingleton(() => RegisterPatient(sl()));
+  sl.registerLazySingleton(() => ViaCep(sl()));
+
+  // Repository
+  sl.registerLazySingleton<RegistrationRepository>(
+    () => RegistrationRepositoryImpl(
+      registerRemoteDataSource: sl(),
+    ),
+  );
+
+  // Data sources
+  sl.registerLazySingleton<RegisterRemoteDataSource>(
+    () => RegisterRemoteDataSourceImpl(
       settings: sl(),
       authenticationSettings: sl(),
     ),

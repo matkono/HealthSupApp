@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:healthsup/features/patient/domain/entities/cep_info.dart';
-import 'package:healthsup/features/patient/domain/entities/patient.dart';
-import 'package:healthsup/features/patient/presentation/bloc/patient_bloc.dart';
+import 'package:healthsup/features/registration/domain/entities/cep_info.dart';
+import 'package:healthsup/features/registration/domain/entities/register_patient_entity.dart';
+import 'package:healthsup/features/registration/presentation/bloc/registration_bloc.dart';
 
 class PatientForm extends StatefulWidget {
-  final Patient patient;
+  final RegisterPatientEntity registerPatient;
 
   const PatientForm({
     Key key,
-    this.patient,
+    this.registerPatient,
   }) : super(key: key);
 
   @override
@@ -21,7 +21,6 @@ class _PatientFormState extends State<PatientForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   Map<String, dynamic> _formData = Map();
   TextEditingController _nameController;
-  TextEditingController _logradouroController;
   TextEditingController _cidadeController;
   TextEditingController _cepController;
   TextEditingController _bairroController;
@@ -29,17 +28,14 @@ class _PatientFormState extends State<PatientForm> {
 
   @override
   void initState() {
-    if (widget.patient != null) {
-      _formData['NOME'] = widget.patient?.name;
-      _formData['LOGRADOURO'] = widget.patient.addressInfo?.logradouro;
-      _formData['CIDADE'] = widget.patient.addressInfo?.localidade;
-      _formData['CEP'] = widget.patient.addressInfo?.cep;
-      _formData['BAIRRO'] = widget.patient.addressInfo?.bairro;
-      _formData['MATRICULA'] = widget.patient?.registration;
+    if (widget.registerPatient != null) {
+      _formData['NOME'] = widget.registerPatient?.name;
+      _formData['MATRICULA'] = widget.registerPatient?.registration;
+      _formData['CEP'] = widget.registerPatient.cepInfo?.cep;
+      _formData['BAIRRO'] = widget.registerPatient.cepInfo?.neighborhood;
+      _formData['CIDADE'] = widget.registerPatient.cepInfo?.city;
     }
     _nameController = TextEditingController(text: _formData['NOME']);
-    _logradouroController =
-        TextEditingController(text: _formData['LOGRADOURO']);
     _cidadeController = TextEditingController(text: _formData['CIDADE']);
     _cepController = TextEditingController(text: _formData['CEP']);
     _bairroController = TextEditingController(text: _formData['BAIRRO']);
@@ -304,17 +300,15 @@ class _PatientFormState extends State<PatientForm> {
                               },
                             );
                           } else {
-                            BlocProvider.of<PatientBloc>(context).add(
+                            BlocProvider.of<RegistrationBloc>(context).add(
                               GetCepInfoEvent(
-                                patient: Patient(
-                                  id: null,
+                                registerPatient: RegisterPatientEntity(
                                   name: _formData['NOME'],
                                   registration: _formData['MATRICULA'],
-                                  addressInfo: CepInfo(
-                                    logradouro: _formData['LOGRADOURO'],
-                                    localidade: _formData['CIDADE'],
+                                  cepInfo: CepInfo(
                                     cep: _formData['CEP'],
-                                    bairro: _formData['BAIRRO'],
+                                    neighborhood: _formData['BAIRRO'],
+                                    city: _formData['CIDADE'],
                                   ),
                                 ),
                               ),
@@ -369,45 +363,6 @@ class _PatientFormState extends State<PatientForm> {
                   padding: EdgeInsets.only(left: 32),
                   height: MediaQuery.of(context).size.height / 20,
                   child: Text(
-                    'Logradouro',
-                    style: TextStyle(
-                      fontSize: 17,
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.only(left: 10, right: 15),
-                  width: MediaQuery.of(context).size.width / 1.15,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: Colors.grey[300],
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black,
-                          blurRadius: 2,
-                        )
-                      ]),
-                  child: TextFormField(
-                    enabled: false,
-                    controller: _logradouroController,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                    ),
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                    onChanged: (value) {
-                      setState(() {
-                        _formData['LOGRADOURO'] = value;
-                      });
-                    },
-                  ),
-                ),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.only(left: 32),
-                  height: MediaQuery.of(context).size.height / 20,
-                  child: Text(
                     'Bairro',
                     style: TextStyle(
                       fontSize: 17,
@@ -448,7 +403,7 @@ class _PatientFormState extends State<PatientForm> {
           Container(
             height: MediaQuery.of(context).size.height / 14,
             width: MediaQuery.of(context).size.width,
-            margin: EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 20),
+            margin: EdgeInsets.only(top: 40, left: 20, right: 20, bottom: 20),
             child: RaisedButton(
               color: Colors.blue[600],
               child: Text(

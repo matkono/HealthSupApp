@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:healthsup/features/patient/presentation/bloc/patient_bloc.dart';
-import 'package:healthsup/features/patient/presentation/widgets/new_patient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:healthsup/features/registration/presentation/pages/new_patient.dart';
 
 class PatientHomePageWidget extends StatefulWidget {
   @override

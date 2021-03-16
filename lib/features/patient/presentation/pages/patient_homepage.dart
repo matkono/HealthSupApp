@@ -32,25 +32,6 @@ class _PatientHomePageState extends State<PatientHomePage> {
       child: SingleChildScrollView(
         child: BlocListener<PatientBloc, PatientState>(
           listener: (BuildContext context, state) {
-            if (state is ErrorPatientState) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return CupertinoAlertDialog(
-                    title: Text(state.message),
-                    content: Text('Insira um CEP válido!'),
-                    actions: [
-                      CupertinoDialogAction(
-                        child: Text("Ok"),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ],
-                  );
-                },
-              );
-            }
             if (state is ErrorSearchedPatientState) {
               showDialog(
                 context: context,
@@ -94,7 +75,6 @@ class _PatientHomePageState extends State<PatientHomePage> {
           child: BlocBuilder<PatientBloc, PatientState>(
             cubit: BlocProvider.of<PatientBloc>(context),
             builder: (context, state) {
-              print('PatientState: $state');
               return SizedBox(
                 height: MediaQuery.of(context).size.height,
                 child: Scaffold(

@@ -3,22 +3,22 @@ import 'package:flutter/material.dart';
 
 class CepInfo extends Equatable {
   final String cep;
-  final String logradouro;
-  final String bairro;
-  final String localidade;
+  // final String logradouro;
+  final String neighborhood;
+  final String city;
 
   CepInfo({
     @required this.cep,
-    @required this.logradouro,
-    @required this.bairro,
-    @required this.localidade,
+    // @required this.logradouro,
+    @required this.neighborhood,
+    @required this.city,
   });
 
   @override
   List<Object> get props => [
         cep,
-        logradouro,
-        bairro,
-        localidade,
+        // logradouro,
+        neighborhood,
+        city,
       ];
 }

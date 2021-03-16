@@ -6,5 +6,4 @@ abstract class PatientRepository {
   Future<Either<Failure, Patient>> getPatientList();
   Future<Either<Failure, Patient>> registerPatient(Patient patient);
   Future<Either<Failure, Patient>> searchPatient(String registration);
-  Future<Either<Failure, Patient>> viaCep(Patient patient);
 }

@@ -32,22 +32,4 @@ class PatientRepositoryImpl implements PatientRepository {
       return Left(ServerFailure());
     }
   }
-
-  @override
-  Future<Either<Failure, Patient>> viaCep(Patient patient) async {
-    try {
-      if (patient.addressInfo == null || patient.addressInfo.cep == null) {
-        return Left(ZipCodeFailure());
-      }
-      final cepInfo =
-          await patientRemoteDataSource.viaCep(patient.addressInfo.cep);
-      Patient patientResult = patient;
-      patientResult.addressInfo = cepInfo;
-      return Right(patientResult);
-    } on ServerException catch (_) {
-      return Left(ServerFailure());
-    } on ZipCodeException catch (_) {
-      return Left(ZipCodeFailure());
-    }
-  }
 }
