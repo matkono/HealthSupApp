@@ -41,27 +41,37 @@ class GetNextNodeDecisionTreeEvent extends DecisionTreeEvent {
 
 class GetPreviousNodeDecisionTreeEvent extends DecisionTreeEvent {
   final int idNode;
+  final int idAppointment;
 
   GetPreviousNodeDecisionTreeEvent({
     @required this.idNode,
+    @required this.idAppointment,
   });
 
   @override
-  List<Object> get props => [idNode];
+  List<Object> get props => [idNode, idAppointment];
 }
 
 class ConfirmDecisionDecisionTreeEvent extends DecisionTreeEvent {
+  final int idAppointment;
+
+  ConfirmDecisionDecisionTreeEvent({
+    @required this.idAppointment,
+  });
+
   @override
   List<Object> get props => [];
 }
 
 class ConfirmActionDecisionTreeEvent extends DecisionTreeEvent {
   final int idAction;
+  final int idAppointment;
 
   ConfirmActionDecisionTreeEvent({
     @required this.idAction,
+    @required this.idAppointment,
   });
 
   @override
-  List<Object> get props => [idAction];
+  List<Object> get props => [idAction, idAppointment];
 }

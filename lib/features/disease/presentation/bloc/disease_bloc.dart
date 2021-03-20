@@ -50,13 +50,13 @@ class DiseaseBloc extends Bloc<DiseaseEvent, DiseaseState> {
           }
         },
         (diseaseResult) {
-          if (diseaseResult.patients == null) {
+          if (diseaseResult.diseases == null) {
             return ErrorDiseaseState(message: 'Doenças não encontradas!');
           } else {
             if (diseaseResult.pageNumber == 0) {
               diseaseList.clear();
             }
-            diseaseList.addAll(diseaseResult.patients);
+            diseaseList.addAll(diseaseResult.diseases);
             return DiseaseLoaded(
                 diseasesList: diseaseList, totalRows: diseaseResult.totalRows);
           }

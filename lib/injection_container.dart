@@ -103,7 +103,9 @@ void _initDecisionTree() {
     ),
   );
   sl.registerLazySingleton<DecisionTreeLocalDataSource>(
-    () => DecisionTreeLocalDataSourceImpl(),
+    () => DecisionTreeLocalDataSourceImpl(
+      sharedPreferences: sl(),
+    ),
   );
 }
 

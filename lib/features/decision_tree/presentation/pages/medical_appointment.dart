@@ -55,7 +55,6 @@ class _MedicalAppointmentPageState extends State<MedicalAppointmentPage> {
                   builder: (BuildContext context, DecisionTreeState state) {
                     print('status: $state');
                     if (widget.medicalAppointment != null) {
-                      print('aqui: ${widget.medicalAppointment.id}');
                       return Container(
                         child: Center(
                           child: Text(widget
@@ -67,13 +66,20 @@ class _MedicalAppointmentPageState extends State<MedicalAppointmentPage> {
                       return (state.node.question.questionType.id == 1)
                           ? RadioQuestionLoaded(
                               node: state.node,
+                              idAppointment: state.idAppointment,
                             )
-                          : CheckBoxQuestion(node: state.node);
+                          : CheckBoxQuestion(
+                              node: state.node,
+                              idAppointment: state.idAppointment);
                     else if (state is DecisionDecisionTreeState)
-                      return DecisionLayout(node: state.node);
+                      return DecisionLayout(
+                        node: state.node,
+                        idAppointment: state.idAppointment,
+                      );
                     else if (state is ActionDecisionTreeState)
                       return ActionLayout(
                         node: state.node,
+                        idAppointment: state.idAppointment,
                       );
                     else if (state is LoadingDecisionTreeState)
                       return Center(

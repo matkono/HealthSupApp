@@ -28,7 +28,6 @@ class DecisionTreeRemoteDataSourceImpl extends DecisionTreeRemoteDataSource {
   // Parâmetros mocados
   final Settings settings;
   final AuthenticationSettings authenticationSettings;
-  final int appointmentId = 1;
   final int userId = 0;
   var tokenKey = 'tokenJWT';
   var tokenTimeKey = 'tokenCurrentTime';

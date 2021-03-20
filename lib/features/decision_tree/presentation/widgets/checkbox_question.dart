@@ -7,10 +7,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CheckBoxQuestion extends StatefulWidget {
   final Node node;
+  final int idAppointment;
 
   const CheckBoxQuestion({
     Key key,
     @required this.node,
+    @required this.idAppointment,
   }) : super(key: key);
 
   @override
@@ -184,8 +186,12 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
                               onPressed: () async {
                                 if (!widget.node.isInitial) {
                                   BlocProvider.of<DecisionTreeBloc>(context)
-                                      .add(GetPreviousNodeDecisionTreeEvent(
-                                          idNode: widget.node.id));
+                                      .add(
+                                    GetPreviousNodeDecisionTreeEvent(
+                                      idNode: widget.node.id,
+                                      idAppointment: widget.idAppointment,
+                                    ),
+                                  );
                                 }
                               },
                             ),
@@ -210,7 +216,8 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
                                       .add(
                                     GetNextNodeDecisionTreeEvent(
                                       answer: Answer(
-                                        medicalAppointmentId: 1,
+                                        medicalAppointmentId:
+                                            widget.idAppointment,
                                         doctorId: 1,
                                         questionId: widget.node.question.id,
                                         possibleAnswerGroupId: groupId,

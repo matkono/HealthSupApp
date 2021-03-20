@@ -25,6 +25,8 @@ class DecisionTreeRepositoryImpl implements DecisionTreeRepository {
     try {
       final startNode = await remoteDataSource.startNodeMedicalAppointment(
           patientId, diseaseId);
+
+      localDataSource.saveAppointmentID(startNode.id);
       return Right(startNode);
     } on ServerException catch (_) {
       return Left(ServerFailure());

@@ -13,6 +13,7 @@ class NodeModel extends Node {
     @required int id,
     @required bool isInitial,
     @required NodeTypeModel nodeTypeModel,
+    @required int idAppointment,
   }) : super(
           question: questionModel,
           decision: decisionModel,
@@ -20,6 +21,7 @@ class NodeModel extends Node {
           id: id,
           isInitial: isInitial,
           nodeType: nodeTypeModel,
+          idAppointment: idAppointment,
         );
 
   factory NodeModel.fromJson(Map<String, dynamic> json) {
@@ -31,6 +33,7 @@ class NodeModel extends Node {
         actionModel: ActionModel.fromJson(json['action']),
         id: json["id"],
         isInitial: json["isInitial"],
-        nodeTypeModel: NodeTypeModel.fromJson(json['nodeType']));
+        nodeTypeModel: NodeTypeModel.fromJson(json['nodeType']),
+        idAppointment: json["idAppointment"]);
   }
 }

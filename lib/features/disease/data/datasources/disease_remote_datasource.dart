@@ -9,7 +9,6 @@ import 'package:healthsup/core/error/exception.dart';
 import 'package:healthsup/core/settings/settings.dart';
 import 'package:healthsup/features/disease/data/models/disease_model.dart';
 import 'package:healthsup/features/disease/data/models/diseases_list_model.dart';
-import 'package:healthsup/features/disease/data/models/pagination_model.dart';
 import 'package:healthsup/features/disease/domain/entities/pagination.dart';
 
 abstract class DiseaseRemoteDataSource {
@@ -74,30 +73,33 @@ class DiseaseRemoteDataSourceImpl implements DiseaseRemoteDataSource {
     var client = new HttpClient();
     settings.certificateHost(client);
 
-    PaginationModel paginationModel = new PaginationModel(
-      pageSize: pagination.pageSize,
-      pageNumber: pagination.pageNumber,
-    );
+    // PaginationModel paginationModel = new PaginationModel(
+    //   pageSize: pagination.pageSize,
+    //   pageNumber: pagination.pageNumber,
+    // );
 
-    String url = 'Disease/listPaged';
-    Map page = {
-      "pagination": paginationModel.toJson(),
-    };
+    String url =
+        'Disease?PageSize=${pagination.pageSize}&PageNumber=${pagination.pageNumber}';
+
+    print(url);
+    // Map page = {
+    //   "pagination": paginationModel.toJson(),
+    // };
 
     try {
       await authenticatorAPI(authModel);
       HttpClientRequest request = await client
-          .postUrl(Uri.parse(settings.getUrl(url)))
+          .getUrl(Uri.parse(settings.getUrl(url)))
           .timeout(Duration(seconds: 10));
 
       await settings.setHeaders(request);
       await settings.setToken(request);
-      request.add(utf8.encode(json.encode(page)));
+      // request.add(utf8.encode(json.encode(page)));
 
       HttpClientResponse response = await request.close();
       String body = await response.transform(utf8.decoder).join();
       Map jsonResponse = json.decode(body);
-      List jsonDataDisease = jsonResponse['data']['patients'];
+      List jsonDataDisease = jsonResponse['data']['diseases'];
 
       int start = (pagination.pageNumber - 1) * pagination.pageSize;
       int end = start + pagination.pageSize;
@@ -107,7 +109,7 @@ class DiseaseRemoteDataSourceImpl implements DiseaseRemoteDataSource {
           end > (jsonDataDisease.length) ? (jsonDataDisease.length) : end);
 
       var diseaseList = new DiseaseListModel(
-        patients: DiseasesModel.listFromJson(currentList),
+        diseases: DiseasesModel.listFromJson(currentList),
         pageNumber: pagination.pageNumber,
         pageSize: pagination.pageSize,
         totalRows: jsonDataDisease.length,

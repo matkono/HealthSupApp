@@ -7,10 +7,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RadioQuestionLoaded extends StatefulWidget {
   final Node node;
+  final int idAppointment;
 
   const RadioQuestionLoaded({
     Key key,
     @required this.node,
+    @required this.idAppointment,
   }) : super(key: key);
 
   @override
@@ -160,6 +162,7 @@ class _RadioQuestionLoadedState extends State<RadioQuestionLoaded> {
                                       .add(
                                     GetPreviousNodeDecisionTreeEvent(
                                       idNode: widget.node.id,
+                                      idAppointment: widget.idAppointment,
                                     ),
                                   );
                                 }
@@ -181,12 +184,15 @@ class _RadioQuestionLoadedState extends State<RadioQuestionLoaded> {
                               onPressed: () {
                                 if (radioButton != null) {
                                   print(
+                                      'idAppointment: ${widget.idAppointment}');
+                                  print(
                                       'id: ${finalAnswer.possibleAnswers[0].id} | value: ${finalAnswer.possibleAnswers[0].title}');
                                   BlocProvider.of<DecisionTreeBloc>(context)
                                       .add(
                                     GetNextNodeDecisionTreeEvent(
                                       answer: Answer(
-                                        medicalAppointmentId: 1,
+                                        medicalAppointmentId:
+                                            widget.idAppointment,
                                         doctorId: 1,
                                         questionId: widget.node.question.id,
                                         possibleAnswerGroupId: mapAnswer.entries

@@ -5,10 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DecisionLayout extends StatefulWidget {
   final Node node;
+  final int idAppointment;
 
   const DecisionLayout({
     Key key,
     @required this.node,
+    @required this.idAppointment,
   }) : super(key: key);
 
   @override
@@ -87,6 +89,7 @@ class _DecisionLayoutState extends State<DecisionLayout> {
                                       .add(
                                     GetPreviousNodeDecisionTreeEvent(
                                       idNode: widget.node.id,
+                                      idAppointment: widget.idAppointment,
                                     ),
                                   );
                                 }
@@ -105,7 +108,9 @@ class _DecisionLayoutState extends State<DecisionLayout> {
                               ),
                               onPressed: () {
                                 BlocProvider.of<DecisionTreeBloc>(context)
-                                    .add(ConfirmDecisionDecisionTreeEvent());
+                                    .add(ConfirmDecisionDecisionTreeEvent(
+                                  idAppointment: widget.idAppointment,
+                                ));
                               },
                             ),
                           ),
