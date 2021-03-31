@@ -90,8 +90,8 @@ class DecisionTreeBloc extends Bloc<DecisionTreeEvent, DecisionTreeState> {
     } else if (event is GetCurrentNodeDecisionTreeEvent) {
       yield LoadingDecisionTreeState();
 
-      var failureOrNode =
-          await getCurrentNode(ParamsCurrentNode(idAppointment: 1));
+      var failureOrNode = await getCurrentNode(
+          ParamsCurrentNode(idAppointment: event.idAppointmment));
       yield failureOrNode.fold(
         (failure) {
           if (failure is ServerFailure)

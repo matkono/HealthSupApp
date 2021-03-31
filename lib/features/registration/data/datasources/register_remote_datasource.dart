@@ -80,7 +80,6 @@ class RegisterRemoteDataSourceImpl implements RegisterRemoteDataSource {
     if (viaCep.getResponse() == 200) {
       final cepInfo = CepInfoModel(
         cep: viaCep.getCEP(),
-        // logradouro: viaCep.getLogradouro(),
         neighborhood: viaCep.getBairro(),
         city: viaCep.getLocalidade(),
       );

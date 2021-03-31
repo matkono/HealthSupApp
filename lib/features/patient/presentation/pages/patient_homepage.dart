@@ -32,6 +32,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
       child: SingleChildScrollView(
         child: BlocListener<PatientBloc, PatientState>(
           listener: (BuildContext context, state) {
+            print('patientState: $state');
             if (state is ErrorSearchedPatientState) {
               showDialog(
                 context: context,
@@ -64,9 +65,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => PatientDetails(
-                      patient: state.patient,
-                    ),
+                    builder: (context) => PatientDetails(),
                   ),
                 );
               });

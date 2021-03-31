@@ -39,4 +39,16 @@ class MedicalAppointmentModel extends MedicalAppointment {
           StatusMedicalAppointmentModel.fromJson(json['status']),
     );
   }
+
+  static List<MedicalAppointmentModel> listFromJson(List<dynamic> json) {
+    if (json == null) return null;
+
+    List<MedicalAppointmentModel> list = [];
+
+    for (dynamic i in json) {
+      list.add(MedicalAppointmentModel.fromJson(i));
+    }
+
+    return list;
+  }
 }

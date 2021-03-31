@@ -7,6 +7,9 @@ import 'package:healthsup/core/authentication/authentication.dart';
 import 'package:healthsup/core/authentication/model/authentication_model.dart';
 import 'package:healthsup/core/error/exception.dart';
 import 'package:healthsup/core/settings/settings.dart';
+import 'package:healthsup/features/decision_tree/data/models/medical_appointment_list_model.dart';
+import 'package:healthsup/features/decision_tree/domain/entities/medical_appointment_list.dart';
+import 'package:healthsup/features/disease/domain/entities/pagination.dart';
 import 'package:healthsup/features/patient/data/models/patient_model.dart';
 import 'package:healthsup/features/patient/domain/entities/patient.dart';
 
@@ -14,6 +17,8 @@ abstract class PatientRemoteDataSource {
   Future<PatientModel> listPatient();
   Future<PatientModel> registerPatient(Patient patient);
   Future<PatientModel> searchPatient(String registration);
+  Future<MedicalAppointmentList> searchMedicalAppointmentList(
+      int patientID, Pagination pagination);
 }
 
 class PatientRemoteDataSourceImpl implements PatientRemoteDataSource {
@@ -103,6 +108,45 @@ class PatientRemoteDataSourceImpl implements PatientRemoteDataSource {
       if (response.statusCode == 200) {
         print('statusCode: ' + response.statusCode.toString());
         return PatientModel.fromJson(jsonData);
+      } else {
+        print('statusCode: ' + response.statusCode.toString());
+        throw ServerException();
+      }
+    } on Exception catch (_) {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<MedicalAppointmentList> searchMedicalAppointmentList(
+      int patientID, Pagination pagination) async {
+    var client = new HttpClient();
+    settings.certificateHost(client);
+
+    String url =
+        'Patient/$patientID/medicalAppointments?PageSize=${pagination.pageSize}&PageNumber=${pagination.pageNumber}';
+
+    print('url: $url');
+
+    try {
+      await authenticatorAPI(authModel);
+      HttpClientRequest request = await client
+          .getUrl(Uri.parse(settings.getUrl(url)))
+          .timeout(Duration(seconds: 10));
+
+      await settings.setHeaders(request);
+      await settings.setToken(request);
+
+      HttpClientResponse response = await request.close();
+
+      String body = await response.transform(utf8.decoder).join();
+      Map jsonResponse = json.decode(body);
+      Map jsonData = jsonResponse['data'];
+
+      if (response.statusCode == 200) {
+        print(MedicalAppointmentListModel.fromJson(jsonData));
+        print('statusCode: ' + response.statusCode.toString());
+        return MedicalAppointmentListModel.fromJson(jsonData);
       } else {
         print('statusCode: ' + response.statusCode.toString());
         throw ServerException();

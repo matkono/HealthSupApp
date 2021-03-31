@@ -7,6 +7,7 @@ import 'package:healthsup/core/error/failure.dart';
 import 'package:healthsup/features/disease/domain/entities/diseases.dart';
 import 'package:healthsup/features/disease/domain/entities/pagination.dart';
 import 'package:healthsup/features/disease/domain/usecases/get_disease_list.dart';
+import 'package:healthsup/features/patient/domain/usecases/list_medical_appointment.dart';
 
 part 'disease_event.dart';
 part 'disease_state.dart';
@@ -14,10 +15,12 @@ part 'disease_state.dart';
 class DiseaseBloc extends Bloc<DiseaseEvent, DiseaseState> {
   List<Diseases> diseaseList = [];
   final GetDiseaseList getDiseaseList;
+  final ListMedicalAppointment listMedicalAppointment;
   Pagination currentPagination;
 
   DiseaseBloc({
     @required this.getDiseaseList,
+    @required this.listMedicalAppointment,
   }) : super(DiseaseInitial()) {
     this.add(GetNextDiseaseListEvent());
   }

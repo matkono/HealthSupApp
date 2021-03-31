@@ -13,4 +13,9 @@ class SearchPatientEvent extends PatientEvent {
   SearchPatientEvent({
     @required this.registration,
   });
+
+  @override
+  List<Object> get props => [registration];
 }
+
+class GetNextAppointmentListEvent extends PatientEvent {}

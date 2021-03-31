@@ -83,7 +83,7 @@ class _MedicalAppointmentPageState extends State<MedicalAppointmentPage> {
                       );
                     else if (state is LoadingDecisionTreeState)
                       return Center(
-                        child: Text('Deveria ter um Loading'),
+                        child: Text('Loading'),
                       );
                     else if (state is ErrorDecisionTreeState)
                       return ErrorLayout();

@@ -63,6 +63,16 @@ class _ActionLayoutState extends State<ActionLayout> {
               ),
             ),
             backgroundColor: Colors.grey[300],
+            leading: Navigator.canPop(context)
+                ? IconButton(
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: Colors.black,
+                      size: 47,
+                    ),
+                    onPressed: () => Navigator.pop(context),
+                  )
+                : null,
           ),
           Expanded(
             child: Container(

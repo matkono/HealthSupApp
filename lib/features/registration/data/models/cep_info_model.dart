@@ -4,12 +4,10 @@ import 'package:healthsup/features/registration/domain/entities/cep_info.dart';
 class CepInfoModel extends CepInfo {
   CepInfoModel({
     @required String cep,
-    // @required String logradouro,
     @required String neighborhood,
     @required String city,
   }) : super(
           cep: cep,
-          // logradouro: logradouro,
           neighborhood: neighborhood,
           city: city,
         );
@@ -20,7 +18,6 @@ class CepInfoModel extends CepInfo {
     }
     return CepInfoModel(
       cep: json['cep'],
-      // logradouro: json['logradouro'],
       neighborhood: json['neighborhood'],
       city: json['city'],
     );
@@ -29,7 +26,6 @@ class CepInfoModel extends CepInfo {
   Map<String, dynamic> toJson() {
     return {
       'cep': cep,
-      // 'logradouro': logradouro,
       'neighborhood': neighborhood,
       'city': city,
     };

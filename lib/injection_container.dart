@@ -14,6 +14,7 @@ import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:get_it/get_it.dart';
 import 'package:healthsup/features/patient/data/repositories/patient_repository_impl.dart';
 import 'package:healthsup/features/patient/domain/repositories/patient_repository.dart';
+import 'package:healthsup/features/patient/domain/usecases/list_medical_appointment.dart';
 import 'package:healthsup/features/patient/domain/usecases/list_patient.dart';
 import 'package:healthsup/features/patient/domain/usecases/search_patient.dart';
 import 'package:healthsup/features/patient/presentation/bloc/patient_bloc.dart';
@@ -150,6 +151,7 @@ void _initPatient() {
     () => PatientBloc(
       listPatient: sl(),
       searchPatient: sl(),
+      listMedicalAppointment: sl(),
     ),
   );
 
@@ -178,11 +180,13 @@ void _initDisease() {
   sl.registerFactory(
     () => DiseaseBloc(
       getDiseaseList: sl(),
+      listMedicalAppointment: sl(),
     ),
   );
 
   // Use cases
   sl.registerLazySingleton(() => GetDiseaseList(sl()));
+  sl.registerLazySingleton(() => ListMedicalAppointment(sl()));
 
   // Repository
   sl.registerLazySingleton<DiseaseRepository>(

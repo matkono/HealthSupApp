@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
             color: Color(0xFFF5F5F5),
           ),
         ),
-        home: BasePage(),
+        home: LoginPage(),
         debugShowCheckedModeBanner: false,
         routes: {
           '/login': (context) => LoginPage(),

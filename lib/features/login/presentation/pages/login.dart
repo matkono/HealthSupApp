@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:healthsup/features/login/presentation/bloc/login_bloc.dart';
-import 'package:healthsup/features/login/presentation/widgets/alertDialog.dart';
 import 'package:healthsup/features/login/presentation/widgets/reset_password.dart';
 import 'package:healthsup/features/tutorial/presentation/widgets/icon.dart';
 import 'package:flutter/material.dart';
