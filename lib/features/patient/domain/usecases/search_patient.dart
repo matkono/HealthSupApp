@@ -7,7 +7,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:healthsup/features/patient/domain/repositories/patient_repository.dart';
 
-class SearchPatient extends UseCase<Patient, PatientParams> {
+class SearchPatient extends UseCase<Patient, ParamsSearchPatient> {
   final PatientRepository patientRepository;
 
   SearchPatient(
@@ -15,7 +15,7 @@ class SearchPatient extends UseCase<Patient, PatientParams> {
   );
 
   @override
-  Future<Either<Failure, Patient>> call(PatientParams params) async {
+  Future<Either<Failure, Patient>> call(ParamsSearchPatient params) async {
     try {
       final searchPatient =
           await patientRepository.searchPatient(params.registration);
@@ -26,10 +26,10 @@ class SearchPatient extends UseCase<Patient, PatientParams> {
   }
 }
 
-class PatientParams extends Equatable {
+class ParamsSearchPatient extends Equatable {
   final String registration;
 
-  PatientParams({
+  ParamsSearchPatient({
     @required this.registration,
   });
 

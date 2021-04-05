@@ -1,23 +1,25 @@
+import 'package:healthsup/features/decision_tree/domain/entities/medical_appointment.dart';
 import 'package:healthsup/features/decision_tree/presentation/bloc/decision_tree_bloc.dart';
 import 'package:healthsup/features/decision_tree/presentation/widgets/action_layout.dart';
 import 'package:healthsup/features/decision_tree/presentation/widgets/checkbox_question.dart';
 import 'package:healthsup/features/decision_tree/presentation/widgets/decision_layout.dart';
 import 'package:healthsup/features/decision_tree/presentation/widgets/error_layout.dart';
 import 'package:healthsup/features/decision_tree/presentation/widgets/radio_question.dart';
-import 'package:healthsup/features/decision_tree/presentation/widgets/start_decision_tree.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class MedicalAppointment extends StatefulWidget {
-  final String title;
-
-  MedicalAppointment({Key key, this.title}) : super(key: key);
+class MedicalAppointmentPage extends StatefulWidget {
+  final MedicalAppointment medicalAppointment;
+  MedicalAppointmentPage({
+    Key key,
+    this.medicalAppointment,
+  }) : super(key: key);
 
   @override
-  _MedicalAppointmentState createState() => _MedicalAppointmentState();
+  _MedicalAppointmentPageState createState() => _MedicalAppointmentPageState();
 }
 
-class _MedicalAppointmentState extends State<MedicalAppointment> {
+class _MedicalAppointmentPageState extends State<MedicalAppointmentPage> {
   void initState() {
     super.initState();
   }
@@ -51,23 +53,37 @@ class _MedicalAppointmentState extends State<MedicalAppointment> {
                 },
                 child: BlocBuilder<DecisionTreeBloc, DecisionTreeState>(
                   builder: (BuildContext context, DecisionTreeState state) {
-                    if (state is DecisionTreeInitial)
-                      return StartDecisionTree();
-                    else if (state is QuestionDecisionTreeState)
+                    print('status: $state');
+                    if (widget.medicalAppointment != null) {
+                      return Container(
+                        child: Center(
+                          child: Text(widget
+                              .medicalAppointment.currentNode.isInitial
+                              .toString()),
+                        ),
+                      );
+                    } else if (state is QuestionDecisionTreeState)
                       return (state.node.question.questionType.id == 1)
                           ? RadioQuestionLoaded(
                               node: state.node,
+                              idAppointment: state.idAppointment,
                             )
-                          : CheckBoxQuestion(node: state.node);
+                          : CheckBoxQuestion(
+                              node: state.node,
+                              idAppointment: state.idAppointment);
                     else if (state is DecisionDecisionTreeState)
-                      return DecisionLayout(node: state.node);
+                      return DecisionLayout(
+                        node: state.node,
+                        idAppointment: state.idAppointment,
+                      );
                     else if (state is ActionDecisionTreeState)
                       return ActionLayout(
                         node: state.node,
+                        idAppointment: state.idAppointment,
                       );
                     else if (state is LoadingDecisionTreeState)
                       return Center(
-                        child: Text('Deveria ter um Loading'),
+                        child: Text('Loading'),
                       );
                     else if (state is ErrorDecisionTreeState)
                       return ErrorLayout();

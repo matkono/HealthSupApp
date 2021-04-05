@@ -1,5 +1,4 @@
 import 'package:healthsup/features/login/presentation/bloc/login_bloc.dart';
-import 'package:healthsup/features/login/presentation/widgets/alertDialog.dart';
 import 'package:healthsup/features/tutorial/presentation/widgets/icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,20 +19,16 @@ class _ResetPasswordState extends State<ResetPassword> {
   }
 
   var emailController = TextEditingController();
-  var crmController = TextEditingController();
+  var passwordController = TextEditingController();
+  var newPasswordController = TextEditingController();
+  var confirmNewPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: BlocListener<LoginBloc, LoginState>(
-          listener: (BuildContext context, state) {
-            if (state is LoginSuccessState) {
-              setState(() {
-                Navigator.pushNamed(context, '/logged');
-              });
-            }
-          },
+          listener: (BuildContext context, state) {},
           child: BlocBuilder<LoginBloc, LoginState>(
             cubit: BlocProvider.of<LoginBloc>(context),
             builder: (BuildContext context, LoginState state) {
@@ -59,7 +54,6 @@ class _ResetPasswordState extends State<ResetPassword> {
                         children: <Widget>[
                           Container(
                             color: Colors.transparent,
-                            padding: EdgeInsets.only(top: 30.0),
                             child: Form(
                               key: _formKey,
                               child: Column(
@@ -71,7 +65,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                                           1.2,
                                       height:
                                           MediaQuery.of(context).size.height /
-                                              13,
+                                              15,
                                       padding: EdgeInsets.only(
                                         left: 16.0,
                                         right: 16.0,
@@ -95,7 +89,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                                           MediaQuery.of(context).size.height /
                                               7,
                                       child: Container(
-                                        margin: EdgeInsets.only(top: 15),
+                                        margin: EdgeInsets.only(top: 25),
                                         width:
                                             MediaQuery.of(context).size.width /
                                                 1.3,
@@ -131,7 +125,145 @@ class _ResetPasswordState extends State<ResetPassword> {
                             ),
                           ),
                           Container(
-                            padding: EdgeInsets.only(top: 100),
+                            color: Colors.transparent,
+                            padding: EdgeInsets.only(bottom: 10),
+                            child: Column(
+                              children: <Widget>[
+                                Container(
+                                  width:
+                                      MediaQuery.of(context).size.width / 1.2,
+                                  height:
+                                      MediaQuery.of(context).size.height / 15,
+                                  padding: EdgeInsets.only(
+                                    left: 16.0,
+                                    right: 16.0,
+                                    bottom: 4.0,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        blurRadius: 5.0,
+                                      ),
+                                    ],
+                                  ),
+                                  child: Container(
+                                    child: TextFormField(
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                      ),
+                                      controller: passwordController,
+                                      decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          icon: Icon(
+                                            Icons.lock,
+                                            color: Colors.grey,
+                                          ),
+                                          labelText: 'Senha atual'),
+                                      obscureText: true,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            color: Colors.transparent,
+                            padding: EdgeInsets.only(top: 10.0, bottom: 10),
+                            child: Column(
+                              children: <Widget>[
+                                Container(
+                                  width:
+                                      MediaQuery.of(context).size.width / 1.2,
+                                  height:
+                                      MediaQuery.of(context).size.height / 15,
+                                  padding: EdgeInsets.only(
+                                    left: 16.0,
+                                    right: 16.0,
+                                    bottom: 4.0,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        blurRadius: 5.0,
+                                      ),
+                                    ],
+                                  ),
+                                  child: Container(
+                                    child: TextFormField(
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                      ),
+                                      controller: newPasswordController,
+                                      decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          icon: Icon(
+                                            Icons.lock,
+                                            color: Colors.grey,
+                                          ),
+                                          labelText: 'Nova senha'),
+                                      obscureText: true,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            color: Colors.transparent,
+                            padding: EdgeInsets.only(top: 10.0, bottom: 10),
+                            child: Column(
+                              children: <Widget>[
+                                Container(
+                                  width:
+                                      MediaQuery.of(context).size.width / 1.2,
+                                  height:
+                                      MediaQuery.of(context).size.height / 15,
+                                  padding: EdgeInsets.only(
+                                    left: 16.0,
+                                    right: 16.0,
+                                    bottom: 4.0,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        blurRadius: 5.0,
+                                      ),
+                                    ],
+                                  ),
+                                  child: Container(
+                                    child: TextFormField(
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                      ),
+                                      controller: confirmNewPasswordController,
+                                      decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          icon: Icon(
+                                            Icons.lock,
+                                            color: Colors.grey,
+                                          ),
+                                          labelText: 'Confirmar nova senha'),
+                                      obscureText: true,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(top: 20),
                             child: FlatButton(
                               color: Colors.blue,
                               child: Column(
@@ -159,15 +291,14 @@ class _ResetPasswordState extends State<ResetPassword> {
                               onPressed: () async {
                                 if (_formKey.currentState.validate()) {
                                   setState(() {
-                                    showDialog(
-                                      context: context,
-                                      builder: (_) => RecoveryAlertDialog(),
-                                      barrierDismissible: false,
-                                    );
                                     BlocProvider.of<LoginBloc>(context).add(
                                       ResetPasswordEvent(
-                                          email: emailController.text,
-                                          crm: crmController.text),
+                                        email: emailController.text,
+                                        password: passwordController.text,
+                                        newPassword: newPasswordController.text,
+                                        confirmNewPassword:
+                                            confirmNewPasswordController.text,
+                                      ),
                                     );
                                   });
                                 }
@@ -175,7 +306,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                             ),
                           ),
                           Container(
-                            padding: EdgeInsets.only(top: 40.0),
+                            padding: EdgeInsets.only(top: 25.0),
                             child: FlatButton(
                               onPressed: () {
                                 Navigator.pushNamedAndRemoveUntil(

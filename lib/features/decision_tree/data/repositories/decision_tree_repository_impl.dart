@@ -1,11 +1,10 @@
-import 'package:healthsup/core/authentication/authentication.dart';
 import 'package:healthsup/core/error/exception.dart';
 import 'package:healthsup/core/error/failure.dart';
-import 'package:healthsup/core/settings/settings.dart';
 import 'package:healthsup/features/decision_tree/data/datasources/local_datasource_impl.dart';
 import 'package:healthsup/features/decision_tree/data/datasources/remote_datasource_impl.dart';
 import 'package:healthsup/features/decision_tree/data/models/answer_model.dart';
 import 'package:healthsup/features/decision_tree/domain/entities/answer.dart';
+import 'package:healthsup/features/decision_tree/domain/entities/medical_appointment.dart';
 import 'package:healthsup/features/decision_tree/domain/entities/node.dart';
 import 'package:healthsup/features/decision_tree/domain/repositories/decision_tree_repository.dart';
 import 'package:dartz/dartz.dart';
@@ -21,17 +20,13 @@ class DecisionTreeRepositoryImpl implements DecisionTreeRepository {
   });
 
   @override
-  Future<Either<Failure, Node>> startMedicalAppointment() async {
+  Future<Either<Failure, MedicalAppointment>> startMedicalAppointment(
+      int patientId, int diseaseId) async {
     try {
-      Settings settings;
-      AuthenticationSettings authenticationSettings;
+      final startNode = await remoteDataSource.startNodeMedicalAppointment(
+          patientId, diseaseId);
 
-      final remoteDataSource = DecisionTreeRemoteDataSourceImpl(
-        settings: settings,
-        authenticationSettings: authenticationSettings,
-      );
-
-      final startNode = await remoteDataSource.startNodeMedicalAppointment();
+      localDataSource.saveAppointmentID(startNode.id);
       return Right(startNode);
     } on ServerException catch (_) {
       return Left(ServerFailure());

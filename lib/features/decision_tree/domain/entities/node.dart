@@ -12,6 +12,7 @@ class Node extends Equatable {
   final int id;
   final bool isInitial;
   final NodeType nodeType;
+  final int idAppointment;
 
   Node({
     @required this.question,
@@ -20,6 +21,7 @@ class Node extends Equatable {
     @required this.id,
     @required this.isInitial,
     @required this.nodeType,
+    @required this.idAppointment,
   });
 
   @override
@@ -28,5 +30,6 @@ class Node extends Equatable {
         id,
         isInitial,
         nodeType,
+        idAppointment,
       ];
 }

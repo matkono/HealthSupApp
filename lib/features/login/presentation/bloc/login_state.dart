@@ -10,7 +10,6 @@ class LoginInitial extends LoginState {
 }
 
 class LoginStartState extends LoginState {
-
   @override
   List<Object> get props => [];
 }
@@ -43,4 +42,36 @@ class LoginErrorState extends LoginState {
 
   @override
   List<Object> get props => [message2];
+}
+
+class SearchSuccessState extends LoginState {
+  @override
+  List<Object> get props => [];
+}
+
+class SearchErrorState extends LoginState {
+  @override
+  List<Object> get props => ['Ocorreu um erro!'];
+}
+
+class UpdatePasswordSuccessState extends LoginState {
+  final String message;
+
+  UpdatePasswordSuccessState({
+    @required this.message,
+  });
+
+  @override
+  List<Object> get props => [message];
+}
+
+class UpdatePasswordErrorState extends LoginState {
+  final String message;
+
+  UpdatePasswordErrorState({
+    @required this.message,
+  });
+
+  @override
+  List<Object> get props => [message];
 }

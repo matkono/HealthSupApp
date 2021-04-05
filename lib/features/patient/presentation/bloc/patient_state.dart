@@ -12,10 +12,39 @@ class PatientInitial extends PatientState {
   List<Object> get props => [];
 }
 
-class LoadedPatientState extends PatientState {
+class SearchedPatientState extends PatientState {
+  final Patient patient;
+  final List<MedicalAppointment> medicalAppointmentList;
+  final int totalRows;
+
+  SearchedPatientState({
+    @required this.patient,
+    @required this.medicalAppointmentList,
+    @required this.totalRows,
+  });
+
+  @override
+  List<Object> get props => [patient, medicalAppointmentList, totalRows];
+}
+
+class ListedAppointmentState extends PatientState {
+  final Patient patient;
+  final List<MedicalAppointment> medicalAppointment;
+  final int totalRows;
+
+  ListedAppointmentState({
+    @required this.patient,
+    @required this.medicalAppointment,
+    @required this.totalRows,
+  });
+
+  List<Object> get props => [patient, medicalAppointment, totalRows];
+}
+
+class LoadingPatientState extends PatientState {
   final Patient patient;
 
-  LoadedPatientState({
+  LoadingPatientState({
     @required this.patient,
   });
 
@@ -23,25 +52,28 @@ class LoadedPatientState extends PatientState {
   List<Object> get props => [patient];
 }
 
-class LoadingPatientState extends PatientState {
+class PatientRegistrationFinished extends PatientState {
   @override
   List<Object> get props => [];
 }
 
-class ErrorPatientState extends PatientState {
-  final Patient patient;
+class ErrorSearchedPatientState extends PatientState {
   final String message;
 
-  ErrorPatientState({
-    @required this.patient,
+  ErrorSearchedPatientState({
+    @required this.message,
+  });
+
+  List<Object> get props => [message];
+}
+
+class ErrorSearchMedicalAppointmentState extends PatientState {
+  final String message;
+
+  ErrorSearchMedicalAppointmentState({
     @required this.message,
   });
 
   @override
-  List<Object> get props => [patient, message];
-}
-
-class PatientRegistrationFinished extends PatientState {
-  @override
-  List<Object> get props => [];
+  List<Object> get props => [message];
 }

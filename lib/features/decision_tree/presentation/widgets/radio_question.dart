@@ -4,13 +4,16 @@ import 'package:healthsup/features/decision_tree/domain/entities/possible_answer
 import 'package:healthsup/features/decision_tree/presentation/bloc/decision_tree_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:healthsup/features/patient/presentation/widgets/patient_details.dart';
 
 class RadioQuestionLoaded extends StatefulWidget {
   final Node node;
+  final int idAppointment;
 
   const RadioQuestionLoaded({
     Key key,
     @required this.node,
+    @required this.idAppointment,
   }) : super(key: key);
 
   @override
@@ -103,6 +106,16 @@ class _RadioQuestionLoadedState extends State<RadioQuestionLoaded> {
               ),
             ),
             backgroundColor: Colors.grey[300],
+            leading: Navigator.canPop(context)
+                ? IconButton(
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: Colors.black,
+                      size: 47,
+                    ),
+                    onPressed: () => Navigator.pop(context),
+                  )
+                : null,
           ),
           Expanded(
             child: Container(
@@ -156,12 +169,31 @@ class _RadioQuestionLoadedState extends State<RadioQuestionLoaded> {
                               ),
                               onPressed: () async {
                                 if (!widget.node.isInitial) {
-                                  BlocProvider.of<DecisionTreeBloc>(context)
-                                      .add(
-                                    GetPreviousNodeDecisionTreeEvent(
-                                      idNode: widget.node.id,
-                                    ),
-                                  );
+                                  if (widget.node.action != null) {
+                                    BlocProvider.of<DecisionTreeBloc>(context)
+                                        .add(
+                                      GetPreviousNodeDecisionTreeEvent(
+                                        idNode: widget.node.action.id,
+                                        idAppointment: widget.idAppointment,
+                                      ),
+                                    );
+                                  } else if (widget.node.decision != null) {
+                                    BlocProvider.of<DecisionTreeBloc>(context)
+                                        .add(
+                                      GetPreviousNodeDecisionTreeEvent(
+                                        idNode: widget.node.decision.id,
+                                        idAppointment: widget.idAppointment,
+                                      ),
+                                    );
+                                  } else if (widget.node.question != null) {
+                                    BlocProvider.of<DecisionTreeBloc>(context)
+                                        .add(
+                                      GetPreviousNodeDecisionTreeEvent(
+                                        idNode: widget.node.question.id,
+                                        idAppointment: widget.idAppointment,
+                                      ),
+                                    );
+                                  }
                                 }
                               },
                             ),
@@ -181,12 +213,15 @@ class _RadioQuestionLoadedState extends State<RadioQuestionLoaded> {
                               onPressed: () {
                                 if (radioButton != null) {
                                   print(
+                                      'idAppointment: ${widget.idAppointment}');
+                                  print(
                                       'id: ${finalAnswer.possibleAnswers[0].id} | value: ${finalAnswer.possibleAnswers[0].title}');
                                   BlocProvider.of<DecisionTreeBloc>(context)
                                       .add(
                                     GetNextNodeDecisionTreeEvent(
                                       answer: Answer(
-                                        medicalAppointmentId: 1,
+                                        medicalAppointmentId:
+                                            widget.idAppointment,
                                         doctorId: 1,
                                         questionId: widget.node.question.id,
                                         possibleAnswerGroupId: mapAnswer.entries

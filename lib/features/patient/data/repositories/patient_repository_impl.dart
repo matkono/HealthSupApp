@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:healthsup/core/error/exception.dart';
+import 'package:healthsup/features/disease/domain/entities/pagination.dart';
+import 'package:healthsup/features/decision_tree/domain/entities/medical_appointment_list.dart';
 import 'package:healthsup/features/patient/data/datasources/patient_remote_datasource_impl.dart';
 import 'package:healthsup/features/patient/domain/entities/patient.dart';
 import 'package:healthsup/core/error/failure.dart';
@@ -24,25 +26,24 @@ class PatientRepositoryImpl implements PatientRepository {
   }
 
   @override
-  Future<Either<Failure, Patient>> searchPatient(String registration) {
-    throw UnimplementedError();
+  Future<Either<Failure, Patient>> searchPatient(String registration) async {
+    try {
+      final patient = await patientRemoteDataSource.searchPatient(registration);
+      return Right(patient);
+    } on ServerException catch (_) {
+      return Left(ServerFailure());
+    }
   }
 
   @override
-  Future<Either<Failure, Patient>> viaCep(Patient patient) async {
+  Future<Either<Failure, MedicalAppointmentList>> searchMedicalAppointment(
+      int patientID, Pagination pagination) async {
     try {
-      if (patient.addressInfo == null || patient.addressInfo.cep == null) {
-        return Left(ZipCodeFailure());
-      }
-      final cepInfo =
-          await patientRemoteDataSource.viaCep(patient.addressInfo.cep);
-      Patient patientResult = patient;
-      patientResult.addressInfo = cepInfo;
-      return Right(patientResult);
+      final patient = await patientRemoteDataSource
+          .searchMedicalAppointmentList(patientID, pagination);
+      return Right(patient);
     } on ServerException catch (_) {
       return Left(ServerFailure());
-    } on ZipCodeException catch (_) {
-      return Left(ZipCodeFailure());
     }
   }
 }

@@ -1,68 +1,31 @@
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class DecisionTreeLocalDataSource {
-  Future<String> getTokenSharedPreferences(String key);
-  Future<int> getTimeTokenSharedPreferences(String key);
-  Future<void> setSharedPreferences(Map<String, dynamic> bodyResponse);
-  Future<bool> validateTokenTime(String key);
+  Future<int> getAppointmentID();
+  Future<bool> saveAppointmentID(int id);
 }
 
 class DecisionTreeLocalDataSourceImpl implements DecisionTreeLocalDataSource {
-  static final preferences = SharedPreferences.getInstance();
-  var tokenCurrentTime = DateTime.now().millisecondsSinceEpoch;
+  final SharedPreferences sharedPreferences;
+  static const String APPOINTMENT_ID_KEY = 'APPOINTMENT_ID_KEY';
+
+  DecisionTreeLocalDataSourceImpl({
+    @required this.sharedPreferences,
+  });
 
   @override
-  Future<String> getTokenSharedPreferences(String key) async {
-    var preferences = await SharedPreferences.getInstance();
+  Future<int> getAppointmentID() async {
+    if (sharedPreferences.containsKey(APPOINTMENT_ID_KEY)) {
+      int getID = sharedPreferences.getInt(APPOINTMENT_ID_KEY);
 
-    if (preferences.containsKey(key)) {
-      var getToken = preferences.getString(key);
-  
-      return getToken;
+      return getID;
     }
     return null;
   }
 
   @override
-  Future<int> getTimeTokenSharedPreferences(String key) async {
-    var preferences = await SharedPreferences.getInstance();
-
-    if (preferences.containsKey(key)) {
-      int getToken = preferences.getInt(key);
-  
-      return getToken;
-    }
-    return null;
-  }
-
-  @override
-  Future<void> setSharedPreferences(Map<String, dynamic> bodyResponse) async {
-    var preferences = await SharedPreferences.getInstance();
-    var token = bodyResponse['data']['token'];
-    preferences.setString('tokenJWT', token);
-    preferences.setInt('tokenCurrentTime', tokenCurrentTime);
-  }
-
-  Future<bool> validateTokenTime(String key) async {
-    var preferences = await SharedPreferences.getInstance();
-    var timeNow = DateTime.now().millisecondsSinceEpoch;
-
-    if (preferences.containsKey(key)) {
-      var tokenTime = preferences.getInt(key);
-
-      // print('tokenTime Armazenado: $tokenTime');
-      // print('tokenTime Atual: $timeNow');
-
-      if (timeNow - tokenTime > 29*60*1000) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  Future<void> resetSharedPreferences() async {
-    var preferences = await SharedPreferences.getInstance();
-
-    preferences.clear();
+  Future<bool> saveAppointmentID(int id) async {
+    return await sharedPreferences.setInt(APPOINTMENT_ID_KEY, id);
   }
 }

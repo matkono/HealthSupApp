@@ -7,10 +7,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CheckBoxQuestion extends StatefulWidget {
   final Node node;
+  final int idAppointment;
 
   const CheckBoxQuestion({
     Key key,
     @required this.node,
+    @required this.idAppointment,
   }) : super(key: key);
 
   @override
@@ -131,6 +133,16 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
               ),
             ),
             backgroundColor: Colors.grey[300],
+            leading: Navigator.canPop(context)
+                ? IconButton(
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: Colors.black,
+                      size: 47,
+                    ),
+                    onPressed: () => Navigator.pop(context),
+                  )
+                : null,
           ),
           Expanded(
             child: Container(
@@ -184,8 +196,12 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
                               onPressed: () async {
                                 if (!widget.node.isInitial) {
                                   BlocProvider.of<DecisionTreeBloc>(context)
-                                      .add(GetPreviousNodeDecisionTreeEvent(
-                                          idNode: widget.node.id));
+                                      .add(
+                                    GetPreviousNodeDecisionTreeEvent(
+                                      idNode: widget.node.id,
+                                      idAppointment: widget.idAppointment,
+                                    ),
+                                  );
                                 }
                               },
                             ),
@@ -210,7 +226,8 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
                                       .add(
                                     GetNextNodeDecisionTreeEvent(
                                       answer: Answer(
-                                        medicalAppointmentId: 1,
+                                        medicalAppointmentId:
+                                            widget.idAppointment,
                                         doctorId: 1,
                                         questionId: widget.node.question.id,
                                         possibleAnswerGroupId: groupId,

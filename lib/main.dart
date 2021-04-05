@@ -1,5 +1,6 @@
 import 'package:healthsup/features/decision_tree/presentation/bloc/decision_tree_bloc.dart';
 import 'package:healthsup/features/decision_tree/presentation/pages/medical_appointment.dart';
+import 'package:healthsup/features/disease/presentation/bloc/disease_bloc.dart';
 import 'package:healthsup/features/login/presentation/bloc/login_bloc.dart';
 import 'package:healthsup/features/login/presentation/pages/login.dart';
 import 'package:healthsup/features/patient/presentation/bloc/patient_bloc.dart';
@@ -9,6 +10,7 @@ import 'package:healthsup/features/patient/presentation/pages/patient_homepage.d
 import 'package:healthsup/features/patient/presentation/widgets/patient_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:healthsup/features/registration/presentation/bloc/registration_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'features/tutorial/presentation/pages/base_page.dart';
 import 'injection_container.dart' as di;
@@ -34,6 +36,12 @@ class MyApp extends StatelessWidget {
         BlocProvider<DecisionTreeBloc>(
           create: (context) => di.sl<DecisionTreeBloc>(),
         ),
+        BlocProvider<DiseaseBloc>(
+          create: (context) => di.sl<DiseaseBloc>(),
+        ),
+        BlocProvider<RegistrationBloc>(
+          create: (context) => di.sl<RegistrationBloc>(),
+        )
       ],
       child: MaterialApp(
         theme: ThemeData(canvasColor: Colors.white),
@@ -53,12 +61,12 @@ class MyApp extends StatelessWidget {
             color: Color(0xFFF5F5F5),
           ),
         ),
-        home: BasePage(),
+        home: LoginPage(),
         debugShowCheckedModeBanner: false,
         routes: {
           '/login': (context) => LoginPage(),
           '/home': (context) => PatientHomePage(),
-          '/medicalAppointment': (context) => MedicalAppointment(),
+          '/medicalAppointment': (context) => MedicalAppointmentPage(),
           '/overlayPatientHomePage': (context) => OverlayHomePage(),
           '/overlayPatientDetails': (context) => OverlayPatientDetails(),
           '/patientDetails': (context) => PatientDetails(),

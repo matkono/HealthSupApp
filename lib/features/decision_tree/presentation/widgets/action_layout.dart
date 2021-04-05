@@ -6,10 +6,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ActionLayout extends StatefulWidget {
   final Node node;
+  final int idAppointment;
 
   const ActionLayout({
     Key key,
     @required this.node,
+    @required this.idAppointment,
   }) : super(key: key);
 
   @override
@@ -61,6 +63,16 @@ class _ActionLayoutState extends State<ActionLayout> {
               ),
             ),
             backgroundColor: Colors.grey[300],
+            leading: Navigator.canPop(context)
+                ? IconButton(
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: Colors.black,
+                      size: 47,
+                    ),
+                    onPressed: () => Navigator.pop(context),
+                  )
+                : null,
           ),
           Expanded(
             child: Container(
@@ -124,6 +136,7 @@ class _ActionLayoutState extends State<ActionLayout> {
                                       .add(
                                     GetPreviousNodeDecisionTreeEvent(
                                       idNode: widget.node.id,
+                                      idAppointment: widget.idAppointment,
                                     ),
                                   );
                                 }
@@ -175,6 +188,7 @@ class _ActionLayoutState extends State<ActionLayout> {
                                         .add(
                                       ConfirmActionDecisionTreeEvent(
                                         idAction: widget.node.action.id,
+                                        idAppointment: widget.idAppointment,
                                       ),
                                     );
                                   }

@@ -7,10 +7,15 @@ abstract class PatientEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetCepInfoEvent extends PatientEvent {
-  final Patient patient;
+class SearchPatientEvent extends PatientEvent {
+  final String registration;
 
-  GetCepInfoEvent({
-    @required this.patient,
+  SearchPatientEvent({
+    @required this.registration,
   });
+
+  @override
+  List<Object> get props => [registration];
 }
+
+class GetNextAppointmentListEvent extends PatientEvent {}

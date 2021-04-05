@@ -11,9 +11,11 @@ class DecisionTreeInitial extends DecisionTreeState {
 
 class QuestionDecisionTreeState extends DecisionTreeState {
   final Node node;
+  final int idAppointment;
 
   QuestionDecisionTreeState({
     @required this.node,
+    @required this.idAppointment,
   });
 
   @override
@@ -22,24 +24,28 @@ class QuestionDecisionTreeState extends DecisionTreeState {
 
 class DecisionDecisionTreeState extends DecisionTreeState {
   final Node node;
+  final int idAppointment;
 
   DecisionDecisionTreeState({
     @required this.node,
+    @required this.idAppointment,
   });
 
   @override
-  List<Object> get props => [node];
+  List<Object> get props => [node, idAppointment];
 }
 
 class ActionDecisionTreeState extends DecisionTreeState {
   final Node node;
+  final int idAppointment;
 
   ActionDecisionTreeState({
     @required this.node,
+    @required this.idAppointment,
   });
 
   @override
-  List<Object> get props => [node];
+  List<Object> get props => [node, idAppointment];
 }
 
 class LoadingDecisionTreeState extends DecisionTreeState {
