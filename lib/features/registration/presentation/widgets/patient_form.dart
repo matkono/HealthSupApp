@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:healthsup/features/patient/presentation/pages/patient_homepage.dart';
 import 'package:healthsup/features/registration/domain/entities/cep_info.dart';
 import 'package:healthsup/features/registration/domain/entities/register_patient_entity.dart';
 import 'package:healthsup/features/registration/presentation/bloc/registration_bloc.dart';
@@ -31,9 +32,15 @@ class _PatientFormState extends State<PatientForm> {
     if (widget.registerPatient != null) {
       _formData['NOME'] = widget.registerPatient?.name;
       _formData['MATRICULA'] = widget.registerPatient?.registration;
-      _formData['CEP'] = widget.registerPatient.cepInfo?.cep;
-      _formData['BAIRRO'] = widget.registerPatient.cepInfo?.neighborhood;
-      _formData['CIDADE'] = widget.registerPatient.cepInfo?.city;
+      _formData['CEP'] = widget.registerPatient.address?.cep;
+      _formData['BAIRRO'] = widget.registerPatient.address?.neighborhood;
+      _formData['CIDADE'] = widget.registerPatient.address?.city;
+    } else {
+      _formData['NOME'] = null;
+      _formData['MATRICULA'] = null;
+      _formData['CEP'] = null;
+      _formData['BAIRRO'] = null;
+      _formData['CIDADE'] = null;
     }
     _nameController = TextEditingController(text: _formData['NOME']);
     _cidadeController = TextEditingController(text: _formData['CIDADE']);
@@ -42,6 +49,29 @@ class _PatientFormState extends State<PatientForm> {
     _matriculaController = TextEditingController(text: _formData['MATRICULA']);
 
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (widget.registerPatient != null) {
+      _formData['NOME'] = widget.registerPatient?.name;
+      _formData['MATRICULA'] = widget.registerPatient?.registration;
+      _formData['CEP'] = widget.registerPatient.address?.cep;
+      _formData['BAIRRO'] = widget.registerPatient.address?.neighborhood;
+      _formData['CIDADE'] = widget.registerPatient.address?.city;
+    } else {
+      _formData['NOME'] = '';
+      _formData['MATRICULA'] = '';
+      _formData['CEP'] = '';
+      _formData['BAIRRO'] = '';
+      _formData['CIDADE'] = '';
+    }
+    _nameController = TextEditingController(text: _formData['NOME']);
+    _cidadeController = TextEditingController(text: _formData['CIDADE']);
+    _cepController = TextEditingController(text: _formData['CEP']);
+    _bairroController = TextEditingController(text: _formData['BAIRRO']);
+    _matriculaController = TextEditingController(text: _formData['MATRICULA']);
   }
 
   @override
@@ -62,17 +92,41 @@ class _PatientFormState extends State<PatientForm> {
                 fontSize: 30,
               ),
             ),
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => PatientHomePage(),
+                  ),
+                  (route) => false,
+                );
+              },
+            ),
           ),
           Container(
             alignment: Alignment.bottomLeft,
             padding: EdgeInsets.only(left: 32),
             height: MediaQuery.of(context).size.height / 20,
             width: MediaQuery.of(context).size.width,
-            child: Text(
-              'NOVO PACIENTE',
-              style: TextStyle(
-                fontSize: 20,
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'NOVO PACIENTE',
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+                // InkWell(
+                //   child: Text('Limpar'),
+                //   onTap: () {
+                //     BlocProvider.of<RegistrationBloc>(context)
+                //         .add(ClearEvent());
+                //   },
+                // ),
+              ],
             ),
           ),
           Container(
@@ -305,7 +359,7 @@ class _PatientFormState extends State<PatientForm> {
                                 registerPatient: RegisterPatientEntity(
                                   name: _formData['NOME'],
                                   registration: _formData['MATRICULA'],
-                                  cepInfo: CepInfo(
+                                  address: CepInfo(
                                     cep: _formData['CEP'],
                                     neighborhood: _formData['BAIRRO'],
                                     city: _formData['CIDADE'],
@@ -417,7 +471,20 @@ class _PatientFormState extends State<PatientForm> {
                 if (!_formKey.currentState.validate()) {
                   return;
                 }
-                print(_formData['NAME']);
+                BlocProvider.of<RegistrationBloc>(context).add(
+                  RegisterPatientEvent(
+                    name: _formData['NOME'],
+                    registration: _formData['MATRICULA'],
+                    neighborhood: _formData['BAIRRO'],
+                    cep: _formData['CEP']?.replaceAll('-', ''),
+                    city: _formData['CIDADE'],
+                  ),
+                );
+                print(_formData['NOME']);
+                print(_formData['MATRICULA']);
+                print(_formData['BAIRRO']);
+                print(_formData['CEP']?.replaceAll('-', ''));
+                print(_formData['CIDADE']);
               },
             ),
           ),

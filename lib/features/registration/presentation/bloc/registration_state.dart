@@ -9,14 +9,23 @@ abstract class RegistrationState extends Equatable {
 
 class RegistrationInitial extends RegistrationState {}
 
-class LoadedRegistrationState extends RegistrationState {
+class LoadedCepState extends RegistrationState {
   final RegisterPatientEntity registerPatient;
 
-  LoadedRegistrationState({
+  LoadedCepState({
     @required this.registerPatient,
   });
   @override
   List<Object> get props => [registerPatient];
+}
+
+class LoadedRegistrationState extends RegistrationState {
+  final RegisterPatientEntity registerPatientEntity;
+
+  LoadedRegistrationState({
+    @required this.registerPatientEntity,
+  });
+  List<Object> get props => [registerPatientEntity];
 }
 
 class LoadingRegistrationState extends RegistrationState {

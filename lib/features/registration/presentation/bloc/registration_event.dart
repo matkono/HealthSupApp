@@ -8,11 +8,20 @@ abstract class RegistrationEvent extends Equatable {
 }
 
 class RegisterPatientEvent extends RegistrationEvent {
-  final RegisterPatientEntity registerPatient;
+  final String name;
+  final String registration;
+  final String neighborhood;
+  final String cep;
+  final String city;
 
   RegisterPatientEvent({
-    @required this.registerPatient,
+    @required this.name,
+    @required this.registration,
+    @required this.neighborhood,
+    @required this.cep,
+    @required this.city,
   });
+  List<Object> get props => [name, registration, neighborhood, cep, city];
 }
 
 class GetCepInfoEvent extends RegistrationEvent {
@@ -21,4 +30,7 @@ class GetCepInfoEvent extends RegistrationEvent {
   GetCepInfoEvent({
     @required this.registerPatient,
   });
+  List<Object> get props => [registerPatient];
 }
+
+class ClearEvent extends RegistrationEvent {}

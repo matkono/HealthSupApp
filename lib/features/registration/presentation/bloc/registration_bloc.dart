@@ -12,6 +12,7 @@ part 'registration_event.dart';
 part 'registration_state.dart';
 
 class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
+  RegisterPatientEntity registerPatientEntity;
   final ViaCep viaCep;
   final RegisterPatient registerPatient;
 
@@ -46,12 +47,12 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
           }
         },
         (patientResult) {
-          if (patientResult.cepInfo.cep == null) {
+          if (patientResult.address.cep == null) {
             return ErrorRegistrationState(
                 message: 'CEP inválido!',
                 registerPatient: event.registerPatient);
           } else {
-            return LoadedRegistrationState(registerPatient: patientResult);
+            return LoadedCepState(registerPatient: patientResult);
           }
         },
       );
@@ -59,7 +60,11 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       yield LoadingRegistrationState();
 
       var failureOrNode = await registerPatient(ParamsRegistrationPatient(
-        registerPatient: event.registerPatient,
+        name: event.name,
+        registration: event.registration,
+        neighborhood: event.neighborhood,
+        cep: event.cep,
+        city: event.city,
       ));
       yield failureOrNode.fold(
         (failure) {
@@ -73,12 +78,17 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
         (patient) {
           if (patient != null) {
             return LoadedRegistrationState(
-              registerPatient: patient,
+              registerPatientEntity: patient,
             );
           } else
             return ErrorRegistrationState(message: 'Código inválido');
         },
       );
+    } else if (event is ClearEvent) {
+      yield LoadingRegistrationState();
+      registerPatientEntity = null;
+
+      yield LoadedCepState(registerPatient: registerPatientEntity);
     }
   }
 }
