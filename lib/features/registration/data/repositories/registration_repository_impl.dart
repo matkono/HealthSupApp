@@ -3,6 +3,7 @@ import 'package:healthsup/core/error/exception.dart';
 import 'package:healthsup/core/error/failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:healthsup/features/registration/data/datasources/register_remote_datasource.dart';
+import 'package:healthsup/features/registration/domain/entities/cep_info.dart';
 import 'package:healthsup/features/registration/domain/entities/register_patient_entity.dart';
 import 'package:healthsup/features/registration/domain/repositories/registration_repository.dart';
 
@@ -36,6 +37,23 @@ class RegistrationRepositoryImpl extends RegistrationRepository {
           await registerRemoteDataSource.viaCep(registerPatient.address.cep);
       RegisterPatientEntity patientResult = registerPatient;
       patientResult.address = cepInfo;
+      return Right(patientResult);
+    } on ServerException catch (_) {
+      return Left(ServerFailure());
+    } on ZipCodeException catch (_) {
+      return Left(ZipCodeFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, RegisterPatientEntity>> updatePatient(
+      int patientID, CepInfo address) async {
+    try {
+      if (address == null || address.cep == null) {
+        return Left(ZipCodeFailure());
+      }
+      final patientResult =
+          await registerRemoteDataSource.updatePatient(patientID, address);
       return Right(patientResult);
     } on ServerException catch (_) {
       return Left(ServerFailure());

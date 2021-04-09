@@ -22,6 +22,7 @@ import 'package:healthsup/features/registration/data/datasources/register_remote
 import 'package:healthsup/features/registration/data/repositories/registration_repository_impl.dart';
 import 'package:healthsup/features/registration/domain/repositories/registration_repository.dart';
 import 'package:healthsup/features/registration/domain/usecases/register_patient.dart';
+import 'package:healthsup/features/registration/domain/usecases/update_patient.dart';
 import 'package:healthsup/features/registration/domain/usecases/via_cep.dart';
 import 'package:healthsup/features/registration/presentation/bloc/registration_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -210,10 +211,12 @@ void _initRegistration() {
     () => RegistrationBloc(
       viaCep: sl(),
       registerPatient: sl(),
+      updatePatient: sl(),
     ),
   );
 
   // Use cases
+  sl.registerLazySingleton(() => UpdatePatient(sl()));
   sl.registerLazySingleton(() => RegisterPatient(sl()));
   sl.registerLazySingleton(() => ViaCep(sl()));
 

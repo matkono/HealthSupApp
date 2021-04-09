@@ -11,11 +11,8 @@ import 'package:healthsup/features/decision_tree/data/models/medical_appointment
 import 'package:healthsup/features/decision_tree/domain/entities/medical_appointment_list.dart';
 import 'package:healthsup/features/disease/domain/entities/pagination.dart';
 import 'package:healthsup/features/patient/data/models/patient_model.dart';
-import 'package:healthsup/features/patient/domain/entities/patient.dart';
 
 abstract class PatientRemoteDataSource {
-  Future<PatientModel> listPatient();
-  Future<PatientModel> registerPatient(Patient patient);
   Future<PatientModel> searchPatient(String registration);
   Future<MedicalAppointmentList> searchMedicalAppointmentList(
       int patientID, Pagination pagination);
@@ -71,16 +68,6 @@ class PatientRemoteDataSourceImpl implements PatientRemoteDataSource {
     } on Exception catch (_) {
       throw ServerException();
     }
-  }
-
-  @override
-  Future<PatientModel> listPatient() {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<PatientModel> registerPatient(Patient patient) {
-    throw UnimplementedError();
   }
 
   @override

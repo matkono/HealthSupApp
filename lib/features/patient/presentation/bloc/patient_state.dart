@@ -52,9 +52,18 @@ class LoadingPatientState extends PatientState {
   List<Object> get props => [patient];
 }
 
-class PatientRegistrationFinished extends PatientState {
+class PatientLoaded extends PatientState {
+  final Patient patient;
+  final List<MedicalAppointment> medicalAppointmentList;
+  final int totalRows;
+
+  PatientLoaded({
+    @required this.patient,
+    @required this.medicalAppointmentList,
+    @required this.totalRows,
+  });
   @override
-  List<Object> get props => [];
+  List<Object> get props => [patient, medicalAppointmentList, totalRows];
 }
 
 class ErrorSearchedPatientState extends PatientState {

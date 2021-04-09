@@ -57,9 +57,6 @@ class _PatientHomePageState extends State<PatientHomePage> {
                 child: CircularProgressIndicator(),
               );
             }
-            if (state is PatientRegistrationFinished) {
-              Navigator.pop(context);
-            }
             if (state is SearchedPatientState) {
               setState(() {
                 Navigator.push(
@@ -71,47 +68,42 @@ class _PatientHomePageState extends State<PatientHomePage> {
               });
             }
           },
-          child: BlocBuilder<PatientBloc, PatientState>(
-            cubit: BlocProvider.of<PatientBloc>(context),
-            builder: (context, state) {
-              return SizedBox(
-                height: MediaQuery.of(context).size.height,
-                child: Scaffold(
-                  body: Container(
-                    child: _children[_currentIndex],
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Scaffold(
+              body: Container(
+                child: _children[_currentIndex],
+              ),
+              bottomNavigationBar: BottomNavigationBar(
+                onTap: _onTabTapped,
+                currentIndex: _currentIndex,
+                type: BottomNavigationBarType.fixed,
+                unselectedItemColor: Colors.black,
+                selectedItemColor: Colors.blue,
+                backgroundColor: Colors.grey[300],
+                iconSize: 40,
+                items: [
+                  BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.local_hospital,
+                    ),
+                    title: Text('Paciente'),
                   ),
-                  bottomNavigationBar: BottomNavigationBar(
-                    onTap: _onTabTapped,
-                    currentIndex: _currentIndex,
-                    type: BottomNavigationBarType.fixed,
-                    unselectedItemColor: Colors.black,
-                    selectedItemColor: Colors.blue,
-                    backgroundColor: Colors.grey[300],
-                    iconSize: 40,
-                    items: [
-                      BottomNavigationBarItem(
-                        icon: Icon(
-                          Icons.local_hospital,
-                        ),
-                        title: Text('Paciente'),
-                      ),
-                      BottomNavigationBarItem(
-                        icon: Icon(
-                          Icons.folder,
-                        ),
-                        title: Text('Doença'),
-                      ),
-                      BottomNavigationBarItem(
-                        icon: Icon(
-                          Icons.settings,
-                        ),
-                        title: Text('Configuração'),
-                      ),
-                    ],
+                  BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.folder,
+                    ),
+                    title: Text('Doença'),
                   ),
-                ),
-              );
-            },
+                  BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.settings,
+                    ),
+                    title: Text('Configuração'),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ),

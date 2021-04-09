@@ -4,12 +4,14 @@ import 'package:healthsup/features/decision_tree/presentation/pages/medical_appo
 import 'package:healthsup/features/disease/presentation/pages/disease.dart';
 import 'package:healthsup/features/patient/domain/entities/patient.dart';
 import 'package:healthsup/features/patient/presentation/bloc/patient_bloc.dart';
-import 'package:healthsup/features/patient/presentation/pages/patient_homepage.dart';
-import 'package:healthsup/features/patient/presentation/widgets/edit_patient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:healthsup/features/registration/domain/entities/cep_info.dart';
 import 'package:healthsup/features/registration/domain/entities/register_patient_entity.dart';
+import 'package:healthsup/features/registration/presentation/bloc/registration_bloc.dart'
+    as registration_bloc;
+import 'package:healthsup/features/registration/presentation/pages/new_patient.dart';
 
 class PatientDetails extends StatefulWidget {
   final RegisterPatientEntity patientEntity;
@@ -22,6 +24,7 @@ class PatientDetails extends StatefulWidget {
 }
 
 class _PatientDetailsState extends State<PatientDetails> {
+  int updateType = 0;
   var searchPatient = TextEditingController();
   ScrollController _scrollController =
       new ScrollController(keepScrollOffset: true);
@@ -105,6 +108,9 @@ class _PatientDetailsState extends State<PatientDetails> {
     String name,
     String registration,
     List<MedicalAppointment> medicalAppointmentList,
+    String cep,
+    String neighborhood,
+    String city,
     int totalRows,
   ) {
     return SingleChildScrollView(
@@ -117,13 +123,7 @@ class _PatientDetailsState extends State<PatientDetails> {
                 leading: IconButton(
                   icon: Icon(Icons.arrow_back),
                   onPressed: () {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (BuildContext context) => PatientHomePage(),
-                      ),
-                      (route) => false,
-                    );
+                    Navigator.pop(context);
                   },
                 ),
                 iconTheme: IconThemeData(
@@ -177,9 +177,28 @@ class _PatientDetailsState extends State<PatientDetails> {
                       size: 35,
                     ),
                     onPressed: () {
+                      BlocProvider.of<registration_bloc.RegistrationBloc>(
+                              context)
+                          .add(
+                        registration_bloc.EditPatientEvent(
+                          patientEntity: new RegisterPatientEntity(
+                            id: id,
+                            name: name,
+                            registration: registration,
+                            address: new CepInfo(
+                                cep: cep,
+                                neighborhood: neighborhood,
+                                city: city),
+                          ),
+                        ),
+                      );
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => EditPatient()),
+                        MaterialPageRoute(
+                            builder: (context) => NewPatient(
+                                  patientID: id,
+                                  type: updateType,
+                                )),
                       );
                     },
                   ),
@@ -214,10 +233,21 @@ class _PatientDetailsState extends State<PatientDetails> {
                         margin: EdgeInsets.only(left: 10, top: 5),
                         width: MediaQuery.of(context).size.width / 1.6,
                         child: Text(
-                          'Endereço: Avenida Presidente Juscelino Kubitschek, 901 - Jardim Ypê',
+                          'Bairro: $neighborhood',
                           softWrap: true,
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 20,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 10, top: 5),
+                        width: MediaQuery.of(context).size.width / 1.6,
+                        child: Text(
+                          'Cidade: $city',
+                          softWrap: true,
+                          style: TextStyle(
+                            fontSize: 20,
                           ),
                         ),
                       ),
@@ -299,6 +329,9 @@ class _PatientDetailsState extends State<PatientDetails> {
                   state.patient.name,
                   state.patient.registration,
                   state.medicalAppointment,
+                  state.patient.address.cep,
+                  state.patient.address.neighborhood,
+                  state.patient.address.city,
                   state.totalRows,
                 );
               } else if (state is SearchedPatientState) {
@@ -308,6 +341,21 @@ class _PatientDetailsState extends State<PatientDetails> {
                   state.patient.name,
                   state.patient.registration,
                   state.medicalAppointmentList,
+                  state.patient.address.cep,
+                  state.patient.address.neighborhood,
+                  state.patient.address.city,
+                  state.totalRows,
+                );
+              } else if (state is PatientLoaded) {
+                return _buildBody(
+                  context,
+                  state.patient.id,
+                  state.patient.name,
+                  state.patient.registration,
+                  state.medicalAppointmentList,
+                  state.patient.address.cep,
+                  state.patient.address.neighborhood,
+                  state.patient.address.city,
                   state.totalRows,
                 );
               } else {
@@ -317,6 +365,9 @@ class _PatientDetailsState extends State<PatientDetails> {
                     widget.patientEntity.name,
                     widget.patientEntity.registration,
                     null,
+                    widget.patientEntity.address.cep,
+                    widget.patientEntity.address.neighborhood,
+                    widget.patientEntity.address.city,
                     null);
               }
             }),

@@ -18,4 +18,15 @@ class SearchPatientEvent extends PatientEvent {
   List<Object> get props => [registration];
 }
 
+class GetPatientInfoEvent extends PatientEvent {
+  final String registration;
+
+  GetPatientInfoEvent({
+    @required this.registration,
+  });
+
+  @override
+  List<Object> get props => [registration];
+}
+
 class GetNextAppointmentListEvent extends PatientEvent {}

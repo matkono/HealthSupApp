@@ -2,6 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:healthsup/features/patient/presentation/bloc/patient_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:healthsup/features/registration/presentation/bloc/registration_bloc.dart'
+    as registration_bloc;
 import 'package:healthsup/features/registration/presentation/pages/new_patient.dart';
 
 class PatientHomePageWidget extends StatefulWidget {
@@ -10,6 +12,7 @@ class PatientHomePageWidget extends StatefulWidget {
 }
 
 class _PatientHomePageWidgetState extends State<PatientHomePageWidget> {
+  int registryType = 1;
   var registrationController = TextEditingController();
 
   @override
@@ -90,10 +93,17 @@ class _PatientHomePageWidgetState extends State<PatientHomePageWidget> {
                             size: 35,
                           ),
                           onPressed: () {
+                            BlocProvider.of<registration_bloc.RegistrationBloc>(
+                                    context)
+                                .add(
+                              registration_bloc.AddPatientEvent(),
+                            );
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => NewPatient()),
+                                  builder: (context) => NewPatient(
+                                        type: registryType,
+                                      )),
                             );
                           },
                         )),
