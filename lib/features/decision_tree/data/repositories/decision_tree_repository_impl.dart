@@ -58,10 +58,10 @@ class DecisionTreeRepositoryImpl implements DecisionTreeRepository {
 
   @override
   Future<Either<Failure, void>> finishAppointment(
-      int idAppointment, bool finished) async {
+      int idAppointment, int idDecision) async {
     try {
       return Right(
-          await remoteDataSource.finishAppointment(idAppointment, finished));
+          await remoteDataSource.finishAppointment(idAppointment, idDecision));
     } on ServerException catch (_) {
       return Left(ServerFailure());
     }

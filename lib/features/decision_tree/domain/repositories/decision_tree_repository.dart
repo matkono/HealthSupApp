@@ -11,7 +11,7 @@ abstract class DecisionTreeRepository {
   Future<Either<Failure, Node>> previousQuestion(
       int idAppointment, int idCurrentNode);
   Future<Either<Failure, void>> finishAppointment(
-      int idAppointment, bool finished);
+      int idAppointment, int idDecision);
   Future<Either<Failure, Node>> getCurrentNode(int idAppointment);
   Future<Either<Failure, Node>> confirmAction(int idAction, int idAppointment);
 }

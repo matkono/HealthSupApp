@@ -2,6 +2,9 @@ part of 'decision_tree_bloc.dart';
 
 abstract class DecisionTreeEvent extends Equatable {
   const DecisionTreeEvent();
+
+  @override
+  List<Object> get props => [];
 }
 
 class StartDecisionTreeEvent extends DecisionTreeEvent {
@@ -54,13 +57,15 @@ class GetPreviousNodeDecisionTreeEvent extends DecisionTreeEvent {
 
 class ConfirmDecisionDecisionTreeEvent extends DecisionTreeEvent {
   final int idAppointment;
+  final int idDecision;
 
   ConfirmDecisionDecisionTreeEvent({
     @required this.idAppointment,
+    @required this.idDecision,
   });
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [idAppointment, idDecision];
 }
 
 class ConfirmActionDecisionTreeEvent extends DecisionTreeEvent {

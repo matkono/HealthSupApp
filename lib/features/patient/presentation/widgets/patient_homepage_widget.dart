@@ -62,7 +62,7 @@ class _PatientHomePageWidgetState extends State<PatientHomePageWidget> {
                     Container(
                       width: MediaQuery.of(context).size.width / 1.2,
                       child: Text(
-                        'Bem-vindo, Dr. Leandro',
+                        'Bem-vindo, Doutor',
                         style: TextStyle(
                           fontSize: 30,
                         ),
@@ -117,9 +117,11 @@ class _PatientHomePageWidgetState extends State<PatientHomePageWidget> {
               Container(
                 margin: EdgeInsets.only(left: 16, right: 16),
                 height: MediaQuery.of(context).size.height / 2.5,
+                width: MediaQuery.of(context).size.height / 2.5,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/images/Illustration1.png'),
+                    image: AssetImage(
+                        'assets/images/HealthSup-logo-sem-nome-homepage.png'),
                     fit: BoxFit.fill,
                   ),
                 ),

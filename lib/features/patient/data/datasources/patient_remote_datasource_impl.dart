@@ -89,10 +89,10 @@ class PatientRemoteDataSourceImpl implements PatientRemoteDataSource {
       HttpClientResponse response = await request.close();
 
       String body = await response.transform(utf8.decoder).join();
-      Map jsonResponse = json.decode(body);
-      Map jsonData = jsonResponse['data'];
 
       if (response.statusCode == 200) {
+        Map jsonResponse = json.decode(body);
+        Map jsonData = jsonResponse['data'];
         print('statusCode: ' + response.statusCode.toString());
         return PatientModel.fromJson(jsonData);
       } else {
@@ -113,8 +113,6 @@ class PatientRemoteDataSourceImpl implements PatientRemoteDataSource {
     String url =
         'Patient/$patientID/medicalAppointments?PageSize=${pagination.pageSize}&PageNumber=${pagination.pageNumber}';
 
-    print('url: $url');
-
     try {
       await authenticatorAPI(authModel);
       HttpClientRequest request = await client
@@ -131,7 +129,6 @@ class PatientRemoteDataSourceImpl implements PatientRemoteDataSource {
       Map jsonData = jsonResponse['data'];
 
       if (response.statusCode == 200) {
-        print(MedicalAppointmentListModel.fromJson(jsonData));
         print('statusCode: ' + response.statusCode.toString());
         return MedicalAppointmentListModel.fromJson(jsonData);
       } else {

@@ -45,7 +45,9 @@ class _ListDiseaseState extends State<ListDisease> {
           }
         }
         return Container(
+          margin: EdgeInsets.only(left: 20, right: 20, bottom: 5, top: 5),
           child: FlatButton(
+            color: Colors.blue[300],
             onPressed: () {
               BlocProvider.of<DecisionTreeBloc>(context).add(
                 StartDecisionTreeEvent(
@@ -53,15 +55,16 @@ class _ListDiseaseState extends State<ListDisease> {
                   diseaseId: widget.diseasesList[index].id,
                 ),
               );
-              Navigator.push(
+              Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                       builder: (context) => MedicalAppointmentPage()));
-              print(widget.diseasesList[index].name);
             },
             child: Text(
-              widget.diseasesList[index].name,
-              style: TextStyle(fontSize: 20),
+              '${widget.diseasesList[index].id} - ${widget.diseasesList[index].name}',
+              style: TextStyle(
+                fontSize: 20,
+              ),
             ),
           ),
         );
@@ -108,12 +111,6 @@ class _ListDiseaseState extends State<ListDisease> {
         ),
         Expanded(
           child: Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/background.png'),
-                fit: BoxFit.fill,
-              ),
-            ),
             child: Center(
               child: Column(
                 children: <Widget>[
@@ -125,6 +122,13 @@ class _ListDiseaseState extends State<ListDisease> {
                     child: Center(
                       child: Container(
                         alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage(
+                                'assets/images/HealthSup-logo-sem-nome-homepage.png'),
+                            fit: BoxFit.fill,
+                          ),
+                        ),
                       ),
                     ),
                   ),

@@ -314,24 +314,40 @@ class _UpdatePatientFormState extends State<UpdatePatientForm> {
                   ),
                 ),
                 onPressed: () {
-                  if (!_formKey.currentState.validate()) {
-                    return;
-                  }
-                  BlocProvider.of<RegistrationBloc>(context).add(
-                    UpdatePatientEvent(
-                      patientID: widget.registerPatient.id,
-                      address: CepInfo(
-                        cep: _formData['CEP']?.replaceAll('-', ''),
-                        neighborhood: _formData['BAIRRO'],
-                        city: _formData['CIDADE'],
-                      ),
-                    ),
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return CupertinoAlertDialog(
+                        title: Text("Confirmar alteração?"),
+                        actions: [
+                          CupertinoDialogAction(
+                            child: Text("Cancelar"),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                          CupertinoDialogAction(
+                            child: Text("Ok"),
+                            onPressed: () {
+                              if (!_formKey.currentState.validate()) {
+                                return;
+                              }
+                              BlocProvider.of<RegistrationBloc>(context).add(
+                                UpdatePatientEvent(
+                                  patientID: widget.registerPatient.id,
+                                  address: CepInfo(
+                                    cep: _formData['CEP']?.replaceAll('-', ''),
+                                    neighborhood: _formData['BAIRRO'],
+                                    city: _formData['CIDADE'],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      );
+                    },
                   );
-                  print(_formData['NOME']);
-                  print(_formData['MATRICULA']);
-                  print(_formData['BAIRRO']);
-                  print(_formData['CEP']?.replaceAll('-', ''));
-                  print(_formData['CIDADE']);
                 },
               ),
             ),

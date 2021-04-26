@@ -55,11 +55,15 @@ class LoadingDecisionTreeState extends DecisionTreeState {
 
 class ErrorDecisionTreeState extends DecisionTreeState {
   final String message;
+  final int idAppointment;
 
-  ErrorDecisionTreeState({@required this.message});
+  ErrorDecisionTreeState({
+    @required this.message,
+    this.idAppointment,
+  });
 
   @override
-  List<Object> get props => [message];
+  List<Object> get props => [message, idAppointment];
 }
 
 class AppointmentFinished extends DecisionTreeState {

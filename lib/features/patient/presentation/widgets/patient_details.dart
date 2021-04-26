@@ -7,6 +7,7 @@ import 'package:healthsup/features/patient/presentation/bloc/patient_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:healthsup/features/patient/presentation/pages/patient_homepage.dart';
 import 'package:healthsup/features/registration/domain/entities/cep_info.dart';
 import 'package:healthsup/features/registration/domain/entities/register_patient_entity.dart';
 import 'package:healthsup/features/registration/presentation/bloc/registration_bloc.dart'
@@ -75,26 +76,27 @@ class _PatientDetailsState extends State<PatientDetails> {
           }
         }
         return Container(
+          margin: EdgeInsets.only(left: 20, right: 20, bottom: 5, top: 5),
           child: FlatButton(
+            color: medicalAppointmentList[index].status.id == 2
+                ? Colors.grey
+                : Colors.blue[300],
             onPressed: () {
-              BlocProvider.of<DecisionTreeBloc>(context).add(
-                GetCurrentNodeDecisionTreeEvent(
-                  idAppointmment: medicalAppointmentList[index].id,
-                ),
-              );
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => MedicalAppointmentPage()));
-              print(
-                medicalAppointmentList[index]
-                    .statusMedicalAppointment
-                    .toString(),
-              );
+              if (medicalAppointmentList[index].status.id == 1) {
+                BlocProvider.of<DecisionTreeBloc>(context).add(
+                  GetCurrentNodeDecisionTreeEvent(
+                    idAppointmment: medicalAppointmentList[index].id,
+                  ),
+                );
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MedicalAppointmentPage()));
+              }
             },
             child: Text(
-              medicalAppointmentList[index].id.toString(),
-              style: TextStyle(fontSize: 20),
+              '${medicalAppointmentList[index].status.name} - ${medicalAppointmentList[index].decisionTree.diseases.name}',
+              style: TextStyle(fontSize: 19.5),
             ),
           ),
         );
@@ -123,7 +125,13 @@ class _PatientDetailsState extends State<PatientDetails> {
                 leading: IconButton(
                   icon: Icon(Icons.arrow_back),
                   onPressed: () {
-                    Navigator.pop(context);
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => PatientHomePage(),
+                      ),
+                      (route) => false,
+                    );
                   },
                 ),
                 iconTheme: IconThemeData(
@@ -159,7 +167,7 @@ class _PatientDetailsState extends State<PatientDetails> {
                 children: [
                   Container(
                     alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.only(left: 20, right: 10),
+                    padding: EdgeInsets.only(left: 20, right: 5),
                     width: MediaQuery.of(context).size.width / 1.70,
                     height: MediaQuery.of(context).size.height / 12,
                     child: Text(
@@ -169,38 +177,40 @@ class _PatientDetailsState extends State<PatientDetails> {
                       ),
                     ),
                   ),
-                  IconButton(
-                    padding: EdgeInsets.only(bottom: 10, left: 2),
-                    icon: Icon(
-                      Icons.edit,
-                      color: Colors.blue,
-                      size: 35,
-                    ),
-                    onPressed: () {
-                      BlocProvider.of<registration_bloc.RegistrationBloc>(
-                              context)
-                          .add(
-                        registration_bloc.EditPatientEvent(
-                          patientEntity: new RegisterPatientEntity(
-                            id: id,
-                            name: name,
-                            registration: registration,
-                            address: new CepInfo(
-                                cep: cep,
-                                neighborhood: neighborhood,
-                                city: city),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10, left: 15),
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.edit,
+                        color: Colors.blue,
+                        size: 35,
+                      ),
+                      onPressed: () {
+                        BlocProvider.of<registration_bloc.RegistrationBloc>(
+                                context)
+                            .add(
+                          registration_bloc.EditPatientEvent(
+                            patientEntity: new RegisterPatientEntity(
+                              id: id,
+                              name: name,
+                              registration: registration,
+                              address: new CepInfo(
+                                  cep: cep,
+                                  neighborhood: neighborhood,
+                                  city: city),
+                            ),
                           ),
-                        ),
-                      );
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => NewPatient(
-                                  patientID: id,
-                                  type: updateType,
-                                )),
-                      );
-                    },
+                        );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => NewPatient(
+                                    patientID: id,
+                                    type: updateType,
+                                  )),
+                        );
+                      },
+                    ),
                   ),
                 ],
               ),

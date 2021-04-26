@@ -29,4 +29,6 @@ class GetPatientInfoEvent extends PatientEvent {
   List<Object> get props => [registration];
 }
 
+class RefreshPatientEvent extends PatientEvent {}
+
 class GetNextAppointmentListEvent extends PatientEvent {}

@@ -15,19 +15,19 @@ class FinishAppointment extends UseCase<void, ParamsFinishAppointment> {
   @override
   Future<Either<Failure, void>> call(ParamsFinishAppointment params) async {
     return await treeRepository.finishAppointment(
-        params.medicalAppointmentId, params.finished);
+        params.medicalAppointmentId, params.idDecision);
   }
 }
 
 class ParamsFinishAppointment extends Equatable {
   final int medicalAppointmentId;
-  final bool finished;
+  final int idDecision;
 
   ParamsFinishAppointment({
     @required this.medicalAppointmentId,
-    @required this.finished,
+    @required this.idDecision,
   });
 
   @override
-  List<Object> get props => [medicalAppointmentId, finished];
+  List<Object> get props => [medicalAppointmentId, idDecision];
 }

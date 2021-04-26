@@ -21,7 +21,7 @@ class InvertedClipperCircle extends CustomClipper<Path> {
           ),
         Path()
           ..addOval(Rect.fromCircle(
-              center: Offset(size.width - widthClipper, size.height / 2),
+              center: Offset(size.width - 2 - widthClipper, size.height / 2),
               radius: radiusClipper)))
       ..close();
   }

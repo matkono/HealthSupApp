@@ -51,9 +51,11 @@ class AuthenticationSettings {
 
       if (timeNow - tokenTime > 29 * 60 * 1000) {
         return true;
+      } else {
+        return false;
       }
     }
-    return false;
+    return true;
   }
 
   Future<void> resetSharedPreferences() async {

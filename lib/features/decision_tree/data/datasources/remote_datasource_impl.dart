@@ -19,7 +19,7 @@ abstract class DecisionTreeRemoteDataSource {
   Future<NodeModel> setAnswer(AnswerModel answer);
   Future<NodeModel> getPreviousQuestion(
       int idMedicalAppointment, int idCurrentNode);
-  Future<void> finishAppointment(int idAppointment, bool finished);
+  Future<void> finishAppointment(int idAppointment, int idDecision);
   Future<NodeModel> getCurrentNode(int idAppointment);
   Future<NodeModel> confirmAction(int idAction, int idAppointment);
 }
@@ -211,7 +211,7 @@ class DecisionTreeRemoteDataSourceImpl extends DecisionTreeRemoteDataSource {
   Future<NodeModel> getCurrentNode(int idAppointment) async {
     var client = new HttpClient();
     settings.certificateHost(client);
-
+    print('idAppointment: $idAppointment');
     String url = 'MedicalAppointment/$idAppointment/currentNode/';
 
     try {
@@ -228,10 +228,10 @@ class DecisionTreeRemoteDataSourceImpl extends DecisionTreeRemoteDataSource {
       String body = await response.transform(utf8.decoder).join();
       Map jsonResponse = json.decode(body);
       Map jsonData = jsonResponse['data'];
-
+      print('qweqwe $jsonData');
       // TO DO
       // Confirmar contrato de erro
-
+      print(response.statusCode);
       if (jsonData == null) {
         throw ServerException(
             exceptionMessage: jsonResponse['errors'][0]['message']);
@@ -240,6 +240,8 @@ class DecisionTreeRemoteDataSourceImpl extends DecisionTreeRemoteDataSource {
       if (response.statusCode == 200) {
         print('statusCode: ' + response.statusCode.toString());
         return NodeModel.fromJson(jsonData);
+      } else if (response.statusCode == 400) {
+        throw ServerException();
       } else {
         print('statusCode: ' + response.statusCode.toString());
         throw ServerException();
@@ -250,17 +252,37 @@ class DecisionTreeRemoteDataSourceImpl extends DecisionTreeRemoteDataSource {
   }
 
   @override
-  Future<void> finishAppointment(int idAppointment, bool finished) async {
-    // TO DO
-    // REFAZER
+  Future<void> finishAppointment(int idAppointment, int idDecision) async {
+    var client = new HttpClient();
+    settings.certificateHost(client);
 
-    var currentNode = await getCurrentNode(idAppointment);
-    while (currentNode.id != 1) {
-      currentNode = await getPreviousQuestion(idAppointment, currentNode.id);
+    Map decision = {
+      'medicalAppointmentId': idAppointment,
+      'decisionId': idDecision,
+    };
+
+    String url = 'DecisionEngine/node/decision/confirm/';
+
+    try {
+      await authenticatorAPI(authModel);
+      HttpClientRequest request = await client
+          .postUrl(Uri.parse(settings.getUrl(url)))
+          .timeout(Duration(seconds: 10));
+
+      await settings.setHeaders(request);
+      await settings.setToken(request);
+      request.add(utf8.encode(json.encode(decision)));
+
+      HttpClientResponse response = await request.close();
+
+      if (response.statusCode == 204) {
+        return true;
+      } else {
+        return false;
+      }
+    } on Exception catch (_) {
+      throw ServerException();
     }
-
-    print('Finish Appointment');
-    return null;
   }
 
   @override

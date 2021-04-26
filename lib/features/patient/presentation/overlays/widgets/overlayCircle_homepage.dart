@@ -111,7 +111,7 @@ class _OverlayTestCircleState extends State<OverlayTestCircle> {
   Positioned _getHint() {
     return Positioned(
       child: Container(
-        margin: EdgeInsets.only(left: 30),
+        margin: EdgeInsets.only(left: 80),
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
           color: Colors.white,

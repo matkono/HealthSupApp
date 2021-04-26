@@ -54,7 +54,6 @@ class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
         request.add(utf8.encode(json.encode(map)));
         HttpClientResponse response = await request.close();
         String body = await response.transform(utf8.decoder).join();
-        print(body);
         Map jsonDecoded = json.decode(body);
 
         await authenticationSettings.setSharedPreferences(jsonDecoded);
@@ -143,8 +142,7 @@ class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
       request.add(utf8.encode(json.encode(updatePass.toJson())));
 
       HttpClientResponse response = await request.close();
-      print('aqui: ${response.statusCode}');
-      print(response);
+
       if (response.statusCode == 204) {
         print('statusCode: ${response.statusCode}');
         return true;

@@ -37,7 +37,6 @@ class DecisionTreeBloc extends Bloc<DecisionTreeEvent, DecisionTreeState> {
   Stream<DecisionTreeState> mapEventToState(
     DecisionTreeEvent event,
   ) async* {
-    print(event);
     if (event is StartDecisionTreeEvent) {
       yield LoadingDecisionTreeState();
 
@@ -54,13 +53,11 @@ class DecisionTreeBloc extends Bloc<DecisionTreeEvent, DecisionTreeState> {
             idAppointment: failureOrMedicalAppointment.fold(
               (failure) => null,
               (medicalAppointment) {
-                print('medicalAppointment: ${medicalAppointment.id}');
                 return medicalAppointment.id;
               },
             ),
           ),
         );
-        print('teste: $teste');
         yield failureOrNode.fold(
           (failure) {
             if (failure is ServerFailure)
@@ -95,11 +92,20 @@ class DecisionTreeBloc extends Bloc<DecisionTreeEvent, DecisionTreeState> {
       yield failureOrNode.fold(
         (failure) {
           if (failure is ServerFailure)
-            return ErrorDecisionTreeState(message: failure.failureMessage);
+            return ErrorDecisionTreeState(
+              message: failure.failureMessage,
+              idAppointment: event.idAppointmment,
+            );
           else if (failure is NoInternetConnectionFailure)
-            return ErrorDecisionTreeState(message: failure.failureMessage);
+            return ErrorDecisionTreeState(
+              message: failure.failureMessage,
+              idAppointment: event.idAppointmment,
+            );
           else
-            return ErrorDecisionTreeState(message: 'Erro desconhecido');
+            return ErrorDecisionTreeState(
+              message: 'Erro desconhecido',
+              idAppointment: event.idAppointmment,
+            );
         },
         (node) {
           if (node.nodeType.id == 1) {
@@ -118,17 +124,16 @@ class DecisionTreeBloc extends Bloc<DecisionTreeEvent, DecisionTreeState> {
               idAppointment: event.idAppointmment,
             );
           else
-            return ErrorDecisionTreeState(message: 'Código inválido');
+            return ErrorDecisionTreeState(
+              message: 'Código inválido',
+              idAppointment: event.idAppointmment,
+            );
         },
       );
     } else if (event is GetNextNodeDecisionTreeEvent) {
       yield LoadingDecisionTreeState();
 
       var failureOrNode = await sendAnswer(ParamsAnswer(answer: event.answer));
-      var teste = failureOrNode.fold(
-        (l) => null,
-        (appointment) => appointment.idAppointment,
-      );
       yield failureOrNode.fold(
         (failure) {
           if (failure is ServerFailure)
@@ -164,7 +169,7 @@ class DecisionTreeBloc extends Bloc<DecisionTreeEvent, DecisionTreeState> {
 
       var failureOrNode = await finishAppointment(ParamsFinishAppointment(
         medicalAppointmentId: event.idAppointment,
-        finished: true,
+        idDecision: event.idDecision,
       ));
       yield failureOrNode.fold(
         (failure) {
@@ -223,11 +228,20 @@ class DecisionTreeBloc extends Bloc<DecisionTreeEvent, DecisionTreeState> {
       yield failureOrNode.fold(
         (failure) {
           if (failure is ServerFailure)
-            return ErrorDecisionTreeState(message: failure.failureMessage);
+            return ErrorDecisionTreeState(
+              message: failure.failureMessage,
+              idAppointment: event.idAppointment,
+            );
           else if (failure is NoInternetConnectionFailure)
-            return ErrorDecisionTreeState(message: failure.failureMessage);
+            return ErrorDecisionTreeState(
+              message: failure.failureMessage,
+              idAppointment: event.idAppointment,
+            );
           else
-            return ErrorDecisionTreeState(message: 'Erro desconhecido');
+            return ErrorDecisionTreeState(
+              message: 'Erro desconhecido',
+              idAppointment: event.idAppointment,
+            );
         },
         (node) {
           if (node.nodeType.id == 1) {
@@ -246,7 +260,10 @@ class DecisionTreeBloc extends Bloc<DecisionTreeEvent, DecisionTreeState> {
               idAppointment: event.idAppointment,
             );
           else
-            return ErrorDecisionTreeState(message: 'Código inválido');
+            return ErrorDecisionTreeState(
+              message: 'Código inválido',
+              idAppointment: event.idAppointment,
+            );
         },
       );
     }

@@ -32,7 +32,6 @@ class _PatientHomePageState extends State<PatientHomePage> {
       child: SingleChildScrollView(
         child: BlocListener<PatientBloc, PatientState>(
           listener: (BuildContext context, state) {
-            print('patientState: $state');
             if (state is ErrorSearchedPatientState) {
               showDialog(
                 context: context,
@@ -87,19 +86,19 @@ class _PatientHomePageState extends State<PatientHomePage> {
                     icon: Icon(
                       Icons.local_hospital,
                     ),
-                    title: Text('Paciente'),
+                    title: Text('Pacientes'),
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(
                       Icons.folder,
                     ),
-                    title: Text('Doença'),
+                    title: Text('Doenças'),
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(
                       Icons.settings,
                     ),
-                    title: Text('Configuração'),
+                    title: Text('Configurações'),
                   ),
                 ],
               ),
