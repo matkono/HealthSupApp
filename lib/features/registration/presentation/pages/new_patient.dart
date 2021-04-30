@@ -21,24 +21,11 @@ class NewPatient extends StatefulWidget {
 }
 
 class _NewPatientState extends State<NewPatient> {
-  // Widget _buildBody(
-  //     BuildContext context, RegisterPatientEntity registerPatient) {
-  //   return Stack(
-  //     children: <Widget>[
-  //       PatientForm(
-  //         registerPatient: registerPatient,
-  //       ),
-  //       Container(),
-  //     ],
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocListener<RegistrationBloc, RegistrationState>(
         listener: (context, state) {
-          print('registration: $state');
           if (state is LoadedRegistryState) {
             BlocProvider.of<patient_bloc.PatientBloc>(context).add(
               patient_bloc.SearchPatientEvent(
@@ -97,7 +84,6 @@ class _NewPatientState extends State<NewPatient> {
                 registerPatient: state.registerPatient,
               );
             } else if (state is ErrorRegistrationState) {
-              // Não mexer
               if (widget.type == 1) {
                 return PatientForm(
                   registerPatient: state.registerPatient,

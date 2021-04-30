@@ -107,43 +107,6 @@ class _SettingsState extends State<Settings> {
                       },
                     ),
                   ),
-                  // Container(
-                  //   height: MediaQuery.of(context).size.height / 10,
-                  //   child: RaisedButton(
-                  //     color: Colors.white,
-                  //     child: Row(
-                  //       children: [
-                  //         Icon(
-                  //           Icons.help,
-                  //           size: 60,
-                  //           color: Colors.blue[700],
-                  //         ),
-                  //         Container(
-                  //           margin: EdgeInsets.only(left: 20),
-                  //           width: MediaQuery.of(context).size.width / 1.5,
-                  //           child: Text(
-                  //             'Relatar problema',
-                  //             style: TextStyle(
-                  //               fontSize: 30,
-                  //             ),
-                  //           ),
-                  //         ),
-                  //         Icon(
-                  //           Icons.arrow_forward_ios,
-                  //           size: 25,
-                  //         )
-                  //       ],
-                  //     ),
-                  //     onPressed: () {
-                  //       Navigator.push(
-                  //         context,
-                  //         MaterialPageRoute(
-                  //           builder: (context) => ReportProblem(),
-                  //         ),
-                  //       );
-                  //     },
-                  //   ),
-                  // ),
                   Container(
                     height: MediaQuery.of(context).size.height / 10,
                     child: RaisedButton(

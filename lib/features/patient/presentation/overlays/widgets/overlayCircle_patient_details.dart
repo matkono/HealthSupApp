@@ -52,9 +52,6 @@ class _OverlayCirclePatientDetailsState
                   ),
                   Expanded(
                     child: Container(
-                      // color: Colors.black38,
-                      // alignment: Alignment.center,
-                      // padding: EdgeInsets.only(right: 20),
                       height: MediaQuery.of(context).size.height / 14,
                       child: _getClipPathOverlay(),
                     ),

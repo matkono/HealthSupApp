@@ -48,10 +48,7 @@ class _OverlayRectPatientDetailsState extends State<OverlayRectPatientDetails> {
             ),
             Container(
               height: MediaQuery.of(context).size.height / 2,
-              // color: Colors.transparent,
-              // alignment: Alignment.topCenter,
               child: Container(
-                // height: MediaQuery.of(context).size.height / 5,
                 color: Colors.transparent,
                 child: Column(
                   children: [
@@ -59,7 +56,6 @@ class _OverlayRectPatientDetailsState extends State<OverlayRectPatientDetails> {
                       color: Colors.black38,
                       height: MediaQuery.of(context).size.height / 14,
                       width: MediaQuery.of(context).size.width / 1,
-                      // padding: EdgeInsets.only(top: 25),
                       child: Stack(
                         alignment: Alignment.topCenter,
                         children: [
@@ -67,16 +63,9 @@ class _OverlayRectPatientDetailsState extends State<OverlayRectPatientDetails> {
                         ],
                       ),
                     ),
-                    // Expanded(
-                    // child:
                     Container(
-                      // padding: EdgeInsets.only(left: 250),
-                      // height: MediaQuery.of(context).size.height / 13,
-                      // width: MediaQuery.of(context).size.width / 2,
-                      // color: Colors.red,
                       child: _getClipPathOverlay(),
                     ),
-                    // ),
                   ],
                 ),
               ),

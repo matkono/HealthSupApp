@@ -20,8 +20,7 @@ class DiseaseListModel extends DiseasesList {
     if (json == null) return null;
 
     return DiseaseListModel(
-      diseases:
-          DiseasesModel.listFromJson(json['patients']), // mudar para diseases
+      diseases: DiseasesModel.listFromJson(json['diseases']),
       pageNumber: json['pageNumber'],
       pageSize: json['pageSize'],
       totalRows: json['totalRows'],

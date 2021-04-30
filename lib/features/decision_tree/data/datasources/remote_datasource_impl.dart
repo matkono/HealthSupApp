@@ -136,9 +136,6 @@ class DecisionTreeRemoteDataSourceImpl extends DecisionTreeRemoteDataSource {
       Map jsonResponse = json.decode(body);
       Map jsonData = jsonResponse['data'];
 
-      // TO DO
-      // Confirmar contrato de erro
-
       if (jsonData == null) {
         throw ServerException(
             exceptionMessage: jsonResponse['errors'][0]['message']);
@@ -186,9 +183,6 @@ class DecisionTreeRemoteDataSourceImpl extends DecisionTreeRemoteDataSource {
       Map jsonResponse = json.decode(body);
       Map jsonData = jsonResponse['data'];
 
-      // TO DO
-      // Confirmar contrato de erro
-
       if (jsonData == null) {
         throw ServerException(
             exceptionMessage: jsonResponse['errors'][0]['message']);
@@ -228,10 +222,7 @@ class DecisionTreeRemoteDataSourceImpl extends DecisionTreeRemoteDataSource {
       String body = await response.transform(utf8.decoder).join();
       Map jsonResponse = json.decode(body);
       Map jsonData = jsonResponse['data'];
-      print('qweqwe $jsonData');
-      // TO DO
-      // Confirmar contrato de erro
-      print(response.statusCode);
+
       if (jsonData == null) {
         throw ServerException(
             exceptionMessage: jsonResponse['errors'][0]['message']);
@@ -312,9 +303,6 @@ class DecisionTreeRemoteDataSourceImpl extends DecisionTreeRemoteDataSource {
       String body = await response.transform(utf8.decoder).join();
       Map jsonResponse = json.decode(body);
       Map jsonData = jsonResponse['data'];
-
-      // TO DO
-      // Confirmar contrato de erro
 
       if (jsonData == null) {
         throw ServerException(
