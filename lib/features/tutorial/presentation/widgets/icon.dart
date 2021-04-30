@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class LoginIcon extends StatelessWidget {
-
   const LoginIcon({
     Key key,
   }) : super(key: key);
@@ -19,12 +18,7 @@ class LoginIcon extends StatelessWidget {
       )),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          // Image.asset('assets/images/HealthSupRender.png',
-          //   alignment: Alignment.bottomCenter,
-          //   height: 200,
-          // ),
-        ],
+        children: <Widget>[],
       ),
     );
   }

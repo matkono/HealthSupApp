@@ -49,13 +49,10 @@ class _OverlayRectPatientDetailsNewState
             ),
             Container(
               height: MediaQuery.of(context).size.height / 1.9,
-              // color: Colors.transparent,
-              // alignment: Alignment.topCenter,
               child: Container(
                 height: MediaQuery.of(context).size.height / 1.9,
                 color: Colors.black38,
                 child: Container(
-                  // color: Colors.black38,
                   height: MediaQuery.of(context).size.height / 1.9,
                   width: MediaQuery.of(context).size.width,
                   padding: EdgeInsets.only(top: 50),
@@ -73,7 +70,6 @@ class _OverlayRectPatientDetailsNewState
               color: Colors.transparent,
               child: Container(
                 child: _getClipPathOverlay(),
-                // margin: EdgeInsets.only(bottom: 10),
               ),
             ),
             Expanded(

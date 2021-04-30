@@ -60,7 +60,6 @@ class _OverlayTestRectState extends State<OverlayTestRect> {
             Container(
               height: MediaQuery.of(context).size.height / 13.5,
               color: Colors.transparent,
-              // child: _getClipPathOverlay(),
             ),
             Expanded(
               child: Container(

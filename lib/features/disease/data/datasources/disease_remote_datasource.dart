@@ -73,18 +73,8 @@ class DiseaseRemoteDataSourceImpl implements DiseaseRemoteDataSource {
     var client = new HttpClient();
     settings.certificateHost(client);
 
-    // PaginationModel paginationModel = new PaginationModel(
-    //   pageSize: pagination.pageSize,
-    //   pageNumber: pagination.pageNumber,
-    // );
-
     String url =
         'Disease?PageSize=${pagination.pageSize}&PageNumber=${pagination.pageNumber}';
-
-    print(url);
-    // Map page = {
-    //   "pagination": paginationModel.toJson(),
-    // };
 
     try {
       await authenticatorAPI(authModel);
@@ -94,7 +84,6 @@ class DiseaseRemoteDataSourceImpl implements DiseaseRemoteDataSource {
 
       await settings.setHeaders(request);
       await settings.setToken(request);
-      // request.add(utf8.encode(json.encode(page)));
 
       HttpClientResponse response = await request.close();
       String body = await response.transform(utf8.decoder).join();

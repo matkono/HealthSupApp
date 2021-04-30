@@ -89,29 +89,6 @@ class AccountDetails extends StatelessWidget {
               ],
             ),
           ),
-          // Container(
-          //   margin: EdgeInsets.all(20),
-          //   height: MediaQuery.of(context).size.height / 14,
-          //   width: MediaQuery.of(context).size.width,
-          //   child: FlatButton(
-          //     color: Colors.blue[600],
-          //     child: Text(
-          //       'Alterar dados',
-          //       style: TextStyle(
-          //         color: Colors.white,
-          //         fontSize: 20,
-          //       ),
-          //     ),
-          //     onPressed: () {
-          //       Navigator.push(
-          //         context,
-          //         MaterialPageRoute(
-          //           builder: (context) => AlterDataAccount(),
-          //         ),
-          //       );
-          //     },
-          //   ),
-          // ),
           Container(
             margin: EdgeInsets.only(left: 20, right: 20),
             height: MediaQuery.of(context).size.height / 14,
