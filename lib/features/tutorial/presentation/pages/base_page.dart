@@ -25,8 +25,8 @@ class _BasePageState extends State<BasePage> {
           children: <Widget>[
             Image.asset(
               image,
-              width: 400,
-              height: 350,
+              width: MediaQuery.of(context).size.height / 2,
+              height: MediaQuery.of(context).size.height / 2,
             ),
             Container(
               width: MediaQuery.of(context).size.width / 1.2,
@@ -61,26 +61,17 @@ class _BasePageState extends State<BasePage> {
     widgetView.add(bodyWidget(
         'assets/images/Illustration2.png',
         'Pra quem é o aplicativo?',
-        'Lorem ipsum dolor sit amet, consectetur'
-            'adipiscing elit. Suspendisse nonneque at'
-            'sapien placerat aliquam eget at turpis.'
-            'Sed sapien ódio.'));
+        'É destinado aos médicos, independente da sua especialização.'));
 
     widgetView.add(bodyWidget(
         'assets/images/Illustration3.png',
-        'Gerencie seus atendimentos',
-        'Lorem ipsum dolor sit amet, consectetur'
-            'adipiscing elit. Suspendisse nonneque at'
-            'sapien placerat aliquam eget at turpis.'
-            'Sed sapien ódio.'));
+        'Obtenha suporte nas suas consultas',
+        'O fluxo de decisão foi elaborado por profissionais especializados na área de saúde do Rio de Janeiro.'));
 
     widgetView.add(bodyWidget(
         'assets/images/Illustration4.png',
         'Como criar um cadastro no HealthSup?',
-        'Lorem ipsum dolor sit amet, consectetur'
-            'adipiscing elit. Suspendisse nonneque at'
-            'sapien placerat aliquam eget at turpis.'
-            'Sed sapien ódio.'));
+        'Somente é necessário o envio de uma selfie segurando o CRM para o nosso e-mail healthsup.oficial@gmail.com'));
   }
 
   @override
@@ -93,10 +84,7 @@ class _BasePageState extends State<BasePage> {
               bodyWidget(
                   'assets/images/Illustration1.png',
                   'O que é o HealthSup?',
-                  'Lorem ipsum dolor sit amet, consectetur'
-                      'adipiscing elit. Suspendisse nonneque at'
-                      'sapien placerat aliquam eget at turpis.'
-                      'Sed sapien ódio.'),
+                  'É um aplicativo universitário desenvolvido para auxiliar a tomada de decisões na área da medicina, compartilhar conhecimento e armazenar dados para identificar polos de doenças no Brasil.'),
             Container(
               width: MediaQuery.of(context).size.width / 1.2,
               height: MediaQuery.of(context).size.height / 15,
@@ -109,7 +97,6 @@ class _BasePageState extends State<BasePage> {
                 onPressed: () {
                   if (widgetView.isEmpty) {
                     addBodyWidget();
-                    print(widgetView);
                     widgetKey++;
                   } else if (widgetView.isEmpty && widgetKey != 0) {
                     Navigator.push(

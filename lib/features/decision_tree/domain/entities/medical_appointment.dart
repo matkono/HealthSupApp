@@ -11,7 +11,7 @@ class MedicalAppointment extends Equatable {
   final Patient patient;
   final DecisionTree decisionTree;
   final Node currentNode;
-  final StatusMedicalAppointment statusMedicalAppointment;
+  final StatusMedicalAppointment status;
 
   MedicalAppointment({
     @required this.id,
@@ -19,7 +19,7 @@ class MedicalAppointment extends Equatable {
     @required this.patient,
     @required this.decisionTree,
     @required this.currentNode,
-    @required this.statusMedicalAppointment,
+    @required this.status,
   });
 
   @override
@@ -29,6 +29,6 @@ class MedicalAppointment extends Equatable {
         patient,
         decisionTree,
         currentNode,
-        statusMedicalAppointment,
+        status,
       ];
 }

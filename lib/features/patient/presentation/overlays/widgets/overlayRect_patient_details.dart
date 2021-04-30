@@ -47,33 +47,36 @@ class _OverlayRectPatientDetailsState extends State<OverlayRectPatientDetails> {
               color: Colors.black38,
             ),
             Container(
-              height: MediaQuery.of(context).size.height / 7,
-              color: Colors.transparent,
-              alignment: Alignment.topCenter,
+              height: MediaQuery.of(context).size.height / 2,
+              // color: Colors.transparent,
+              // alignment: Alignment.topCenter,
               child: Container(
-                height: MediaQuery.of(context).size.height / 7,
+                // height: MediaQuery.of(context).size.height / 5,
                 color: Colors.transparent,
-                child: Row(
+                child: Column(
                   children: [
                     Container(
                       color: Colors.black38,
-                      height: MediaQuery.of(context).size.height / 7,
-                      width: MediaQuery.of(context).size.width / 1.5,
-                      padding: EdgeInsets.only(left: 25),
+                      height: MediaQuery.of(context).size.height / 14,
+                      width: MediaQuery.of(context).size.width / 1,
+                      // padding: EdgeInsets.only(top: 25),
                       child: Stack(
-                        alignment: Alignment.bottomCenter,
+                        alignment: Alignment.topCenter,
                         children: [
                           _getHint(),
                         ],
                       ),
                     ),
-                    Expanded(
-                      child: Container(
-                        height: MediaQuery.of(context).size.height / 7,
-                        color: Colors.transparent,
-                        child: _getClipPathOverlay(),
-                      ),
+                    // Expanded(
+                    // child:
+                    Container(
+                      // padding: EdgeInsets.only(left: 250),
+                      // height: MediaQuery.of(context).size.height / 13,
+                      // width: MediaQuery.of(context).size.width / 2,
+                      // color: Colors.red,
+                      child: _getClipPathOverlay(),
                     ),
+                    // ),
                   ],
                 ),
               ),
@@ -98,7 +101,7 @@ class _OverlayRectPatientDetailsState extends State<OverlayRectPatientDetails> {
   ClipPath _getClipPathOverlay() {
     return ClipPath(
       clipper: InvertedClipperRect(
-        widthBox: 140,
+        widthBox: 640,
         widthClipper: widget.width,
         heightClipper: widget.height,
         radiusClipper: widget.radius,
@@ -111,9 +114,7 @@ class _OverlayRectPatientDetailsState extends State<OverlayRectPatientDetails> {
 
   Positioned _getHint() {
     return Positioned(
-      bottom: 10,
-      // top: 15,
-      // right: 150,
+      bottom: 15,
       child: Container(
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(

@@ -49,18 +49,18 @@ class _OverlayRectPatientDetailsNewState
             ),
             Container(
               height: MediaQuery.of(context).size.height / 1.9,
-              color: Colors.transparent,
-              alignment: Alignment.topCenter,
+              // color: Colors.transparent,
+              // alignment: Alignment.topCenter,
               child: Container(
                 height: MediaQuery.of(context).size.height / 1.9,
                 color: Colors.black38,
                 child: Container(
-                  color: Colors.transparent,
+                  // color: Colors.black38,
                   height: MediaQuery.of(context).size.height / 1.9,
                   width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.only(left: 25),
+                  padding: EdgeInsets.only(top: 50),
                   child: Stack(
-                    alignment: Alignment.bottomCenter,
+                    alignment: Alignment.center,
                     children: [
                       _getHint(),
                     ],
@@ -109,9 +109,7 @@ class _OverlayRectPatientDetailsNewState
 
   Positioned _getHint() {
     return Positioned(
-      bottom: 50,
-      // top: 15,
-      // right: 150,
+      bottom: 10,
       child: Container(
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(

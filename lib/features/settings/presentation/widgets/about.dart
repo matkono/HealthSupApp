@@ -21,13 +21,13 @@ class AppDetails extends StatelessWidget {
           ),
           Container(
             margin: EdgeInsets.all(20),
-            height: MediaQuery.of(context).size.height / 4,
-            width: MediaQuery.of(context).size.width / 2,
+            height: MediaQuery.of(context).size.height / 3.5,
+            width: MediaQuery.of(context).size.width / 2.5,
             decoration: BoxDecoration(
-              border: Border.all(
-                width: 1,
+              image: DecorationImage(
+                image: AssetImage('assets/images/UFF-LOGO.PNG'),
+                fit: BoxFit.fill,
               ),
-              borderRadius: BorderRadius.circular(25),
             ),
           ),
           Container(

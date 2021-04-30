@@ -1,169 +1,328 @@
+import 'package:healthsup/features/login/presentation/bloc/login_bloc.dart';
+import 'package:healthsup/features/tutorial/presentation/widgets/icon.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AlterPassword extends StatelessWidget {
+class AlterPassword extends StatefulWidget {
+  @override
+  _AlterPasswordState createState() => _AlterPasswordState();
+}
+
+class _AlterPasswordState extends State<AlterPassword> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  var emailController = TextEditingController();
+  var passwordController = TextEditingController();
+  var newPasswordController = TextEditingController();
+  var confirmNewPasswordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Column(
-        children: [
-          AppBar(
-            iconTheme: IconThemeData(
-              color: Colors.black,
-            ),
-            backgroundColor: Colors.grey[300],
-            title: Text(
-              'Conta',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 30,
-              ),
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.all(20),
-            height: MediaQuery.of(context).size.height / 2.5,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              border: Border.all(
-                width: 1,
-              ),
-              borderRadius: BorderRadius.circular(2),
-            ),
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.only(left: 15, top: 20),
-                  margin: EdgeInsets.only(bottom: 10),
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'ALTERAR SENHA',
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: BlocListener<LoginBloc, LoginState>(
+          listener: (BuildContext context, state) {},
+          child: BlocBuilder<LoginBloc, LoginState>(
+            cubit: BlocProvider.of<LoginBloc>(context),
+            builder: (BuildContext context, LoginState state) {
+              return Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/Base.png'),
+                    fit: BoxFit.fill,
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(
-                      width: 1,
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/background.png'),
                     ),
                   ),
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.only(left: 10),
-                        child: Text(
-                          'Senha atual: ',
-                          style: TextStyle(
-                            fontSize: 20,
+                  child: Column(
+                    children: <Widget>[
+                      LoginIcon(),
+                      Column(
+                        children: <Widget>[
+                          Container(
+                            color: Colors.transparent,
+                            child: Form(
+                              key: _formKey,
+                              child: Column(
+                                children: <Widget>[
+                                  Stack(alignment: Alignment.center, children: <
+                                      Widget>[
+                                    Container(
+                                      width: MediaQuery.of(context).size.width /
+                                          1.2,
+                                      height:
+                                          MediaQuery.of(context).size.height /
+                                              15,
+                                      padding: EdgeInsets.only(
+                                        left: 16.0,
+                                        right: 16.0,
+                                        bottom: 4.0,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black26,
+                                            blurRadius: 5.0,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.only(top: 5),
+                                      height:
+                                          MediaQuery.of(context).size.height /
+                                              7,
+                                      child: Container(
+                                        margin: EdgeInsets.only(top: 25),
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                1.3,
+                                        child: TextFormField(
+                                          validator: (value) {
+                                            if (value.contains('@'))
+                                              return null;
+
+                                            return 'Email inválido!';
+                                          },
+                                          controller: emailController,
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                          ),
+                                          decoration: InputDecoration(
+                                              errorStyle: TextStyle(
+                                                fontSize: 15,
+                                              ),
+                                              border: InputBorder.none,
+                                              icon: Icon(
+                                                Icons.email,
+                                                color: Colors.grey,
+                                              ),
+                                              labelText: 'Email'),
+                                          keyboardType:
+                                              TextInputType.emailAddress,
+                                        ),
+                                      ),
+                                    ),
+                                  ]),
+                                ],
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width / 1.9,
-                        child: TextFormField(
-                          obscureText: true,
-                          style: TextStyle(
-                            fontSize: 20,
+                          Container(
+                            color: Colors.transparent,
+                            padding: EdgeInsets.only(bottom: 10),
+                            child: Column(
+                              children: <Widget>[
+                                Container(
+                                  width:
+                                      MediaQuery.of(context).size.width / 1.2,
+                                  height:
+                                      MediaQuery.of(context).size.height / 15,
+                                  padding: EdgeInsets.only(
+                                    left: 16.0,
+                                    right: 16.0,
+                                    bottom: 4.0,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        blurRadius: 5.0,
+                                      ),
+                                    ],
+                                  ),
+                                  child: Container(
+                                    child: TextFormField(
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                      ),
+                                      controller: passwordController,
+                                      decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          icon: Icon(
+                                            Icons.lock,
+                                            color: Colors.grey,
+                                          ),
+                                          labelText: 'Senha atual'),
+                                      obscureText: true,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
+                          Container(
+                            color: Colors.transparent,
+                            padding: EdgeInsets.only(top: 10.0, bottom: 10),
+                            child: Column(
+                              children: <Widget>[
+                                Container(
+                                  width:
+                                      MediaQuery.of(context).size.width / 1.2,
+                                  height:
+                                      MediaQuery.of(context).size.height / 15,
+                                  padding: EdgeInsets.only(
+                                    left: 16.0,
+                                    right: 16.0,
+                                    bottom: 4.0,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        blurRadius: 5.0,
+                                      ),
+                                    ],
+                                  ),
+                                  child: Container(
+                                    child: TextFormField(
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                      ),
+                                      controller: newPasswordController,
+                                      decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          icon: Icon(
+                                            Icons.lock,
+                                            color: Colors.grey,
+                                          ),
+                                          labelText: 'Nova senha'),
+                                      obscureText: true,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
+                          Container(
+                            color: Colors.transparent,
+                            padding: EdgeInsets.only(top: 10.0, bottom: 10),
+                            child: Column(
+                              children: <Widget>[
+                                Container(
+                                  width:
+                                      MediaQuery.of(context).size.width / 1.2,
+                                  height:
+                                      MediaQuery.of(context).size.height / 15,
+                                  padding: EdgeInsets.only(
+                                    left: 16.0,
+                                    right: 16.0,
+                                    bottom: 4.0,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        blurRadius: 5.0,
+                                      ),
+                                    ],
+                                  ),
+                                  child: Container(
+                                    child: TextFormField(
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                      ),
+                                      controller: confirmNewPasswordController,
+                                      decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          icon: Icon(
+                                            Icons.lock,
+                                            color: Colors.grey,
+                                          ),
+                                          labelText: 'Confirmar nova senha'),
+                                      obscureText: true,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(top: 20),
+                            child: FlatButton(
+                              color: Colors.blue,
+                              child: Column(
+                                children: <Widget>[
+                                  Container(
+                                    width:
+                                        MediaQuery.of(context).size.width / 1.3,
+                                    height:
+                                        MediaQuery.of(context).size.height / 15,
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        "Alterar senha",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 25.0,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              onPressed: () async {
+                                if (_formKey.currentState.validate()) {
+                                  setState(() {
+                                    BlocProvider.of<LoginBloc>(context).add(
+                                      ResetPasswordEvent(
+                                        email: emailController.text,
+                                        password: passwordController.text,
+                                        newPassword: newPasswordController.text,
+                                        confirmNewPassword:
+                                            confirmNewPasswordController.text,
+                                      ),
+                                    );
+                                  });
+                                }
+                              },
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(top: 25.0),
+                            child: FlatButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                "Voltar",
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.blue,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(
-                      width: 1,
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.only(left: 10),
-                        child: Text(
-                          'Nova senha: ',
-                          style: TextStyle(
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width / 1.9,
-                        child: TextFormField(
-                          obscureText: true,
-                          style: TextStyle(
-                            fontSize: 20,
-                          ),
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(
-                      width: 1,
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.only(left: 10),
-                        child: Text(
-                          'Confirma senha: ',
-                          style: TextStyle(
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width / 2.3,
-                        child: TextFormField(
-                          obscureText: true,
-                          style: TextStyle(
-                            fontSize: 20,
-                          ),
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+              );
+            },
           ),
-          Container(
-            margin: EdgeInsets.all(20),
-            height: MediaQuery.of(context).size.height / 14,
-            width: MediaQuery.of(context).size.width,
-            child: FlatButton(
-              color: Colors.blue[600],
-              child: Text(
-                'Enviar',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                ),
-              ),
-              onPressed: () {},
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:healthsup/features/login/presentation/bloc/login_bloc.dart';
-import 'package:healthsup/features/login/presentation/widgets/reset_password.dart';
+import 'package:healthsup/features/patient/presentation/pages/patient_homepage.dart';
 import 'package:healthsup/features/tutorial/presentation/widgets/icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -30,10 +30,15 @@ class _LoginPageState extends State<LoginPage> {
       body: SingleChildScrollView(
         child: BlocListener<LoginBloc, LoginState>(
           listener: (BuildContext context, state) {
-            print(state);
             if (state is LoginSuccessState) {
               setState(() {
-                Navigator.pushNamed(context, '/home');
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => PatientHomePage(),
+                  ),
+                  (route) => false,
+                );
               });
             } else if (state is SearchSuccessState) {
               showDialog(
@@ -59,24 +64,6 @@ class _LoginPageState extends State<LoginPage> {
                   );
                 },
               );
-            } else if (state is SearchErrorState) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return CupertinoAlertDialog(
-                    title: Text(state.props.toString()),
-                    content: Text('Insira um CEP válido!'),
-                    actions: [
-                      CupertinoDialogAction(
-                        child: Text("Ok"),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ],
-                  );
-                },
-              );
             } else if (state is UpdatePasswordSuccessState) {
               showDialog(
                 context: context,
@@ -87,13 +74,8 @@ class _LoginPageState extends State<LoginPage> {
                       CupertinoDialogAction(
                         child: Text("Ok"),
                         onPressed: () {
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (BuildContext context) => LoginPage(),
-                            ),
-                            (route) => false,
-                          );
+                          Navigator.pop(context);
+                          Navigator.pop(context);
                         },
                       ),
                     ],
@@ -126,18 +108,14 @@ class _LoginPageState extends State<LoginPage> {
               return Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/images/Base.png'),
+                    image:
+                        AssetImage('assets/images/HealthSup-logo-sem-nome.png'),
                     fit: BoxFit.fill,
                   ),
                 ),
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('assets/images/background.png'),
-                    ),
-                  ),
                   child: Column(
                     children: <Widget>[
                       LoginIcon(),
@@ -295,7 +273,7 @@ class _LoginPageState extends State<LoginPage> {
                           Container(
                             padding: EdgeInsets.only(top: 10),
                             child: FlatButton(
-                              color: Colors.blue,
+                              color: Colors.blue[900],
                               child: Column(
                                 children: <Widget>[
                                   Container(
@@ -331,25 +309,6 @@ class _LoginPageState extends State<LoginPage> {
                               },
                             ),
                           ),
-                          Container(
-                            padding: EdgeInsets.only(top: 40),
-                            child: FlatButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ResetPassword()),
-                                );
-                              },
-                              child: Text(
-                                'Redefinir senha',
-                                style: TextStyle(
-                                  fontSize: 18.0,
-                                  color: Colors.blue,
-                                ),
-                              ),
-                            ),
-                          )
                         ],
                       ),
                     ],

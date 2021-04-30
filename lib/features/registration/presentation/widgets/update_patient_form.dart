@@ -1,53 +1,43 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:healthsup/features/patient/presentation/pages/patient_homepage.dart';
 import 'package:healthsup/features/registration/domain/entities/cep_info.dart';
 import 'package:healthsup/features/registration/domain/entities/register_patient_entity.dart';
 import 'package:healthsup/features/registration/presentation/bloc/registration_bloc.dart';
 
-class PatientForm extends StatefulWidget {
+class UpdatePatientForm extends StatefulWidget {
   final RegisterPatientEntity registerPatient;
 
-  const PatientForm({
+  const UpdatePatientForm({
     Key key,
     this.registerPatient,
   }) : super(key: key);
 
   @override
-  _PatientFormState createState() => _PatientFormState();
+  _UpdatePatientFormState createState() => _UpdatePatientFormState();
 }
 
-class _PatientFormState extends State<PatientForm> {
+class _UpdatePatientFormState extends State<UpdatePatientForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   Map<String, dynamic> _formData = Map();
-  TextEditingController _nameController;
   TextEditingController _cidadeController;
   TextEditingController _cepController;
   TextEditingController _bairroController;
-  TextEditingController _matriculaController;
 
   @override
   void initState() {
     if (widget.registerPatient != null) {
-      _formData['NOME'] = widget.registerPatient?.name;
-      _formData['MATRICULA'] = widget.registerPatient?.registration;
       _formData['CEP'] = widget.registerPatient.address?.cep;
       _formData['BAIRRO'] = widget.registerPatient.address?.neighborhood;
       _formData['CIDADE'] = widget.registerPatient.address?.city;
     } else {
-      _formData['NOME'] = null;
-      _formData['MATRICULA'] = null;
       _formData['CEP'] = null;
       _formData['BAIRRO'] = null;
       _formData['CIDADE'] = null;
     }
-    _nameController = TextEditingController(text: _formData['NOME']);
-    _cidadeController = TextEditingController(text: _formData['CIDADE']);
     _cepController = TextEditingController(text: _formData['CEP']);
     _bairroController = TextEditingController(text: _formData['BAIRRO']);
-    _matriculaController = TextEditingController(text: _formData['MATRICULA']);
-
+    _cidadeController = TextEditingController(text: _formData['CIDADE']);
     super.initState();
   }
 
@@ -55,23 +45,17 @@ class _PatientFormState extends State<PatientForm> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (widget.registerPatient != null) {
-      _formData['NOME'] = widget.registerPatient?.name;
-      _formData['MATRICULA'] = widget.registerPatient?.registration;
       _formData['CEP'] = widget.registerPatient.address?.cep;
       _formData['BAIRRO'] = widget.registerPatient.address?.neighborhood;
       _formData['CIDADE'] = widget.registerPatient.address?.city;
     } else {
-      _formData['NOME'] = '';
-      _formData['MATRICULA'] = '';
       _formData['CEP'] = '';
       _formData['BAIRRO'] = '';
       _formData['CIDADE'] = '';
     }
-    _nameController = TextEditingController(text: _formData['NOME']);
-    _cidadeController = TextEditingController(text: _formData['CIDADE']);
     _cepController = TextEditingController(text: _formData['CEP']);
     _bairroController = TextEditingController(text: _formData['BAIRRO']);
-    _matriculaController = TextEditingController(text: _formData['MATRICULA']);
+    _cidadeController = TextEditingController(text: _formData['CIDADE']);
   }
 
   @override
@@ -87,7 +71,7 @@ class _PatientFormState extends State<PatientForm> {
                 color: Colors.black,
               ),
               title: Text(
-                'Cadastrar paciente',
+                'Editar Paciente',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 30,
@@ -96,13 +80,7 @@ class _PatientFormState extends State<PatientForm> {
               leading: IconButton(
                 icon: Icon(Icons.arrow_back),
                 onPressed: () {
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => PatientHomePage(),
-                    ),
-                    (route) => false,
-                  );
+                  Navigator.pop(context);
                 },
               ),
             ),
@@ -115,7 +93,7 @@ class _PatientFormState extends State<PatientForm> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'NOVO PACIENTE',
+                    'EDITAR PACIENTE',
                     style: TextStyle(
                       fontSize: 20,
                     ),
@@ -126,132 +104,6 @@ class _PatientFormState extends State<PatientForm> {
             Container(
               child: Column(
                 children: [
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.only(left: 32),
-                    height: MediaQuery.of(context).size.height / 20,
-                    child: Text(
-                      '* Nome',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 17,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width / 1.15,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: Colors.white,
-                    ),
-                    child: TextFormField(
-                      controller: _nameController,
-                      decoration: InputDecoration(
-                        fillColor: Colors.white,
-                        focusColor: Colors.white,
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 0, horizontal: 8),
-                        filled: true,
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(
-                              color: Colors.black54, style: BorderStyle.solid),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(
-                              color: Colors.black54, style: BorderStyle.solid),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(
-                              color: Colors.black54, style: BorderStyle.solid),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(
-                              color: Colors.black54, style: BorderStyle.solid),
-                        ),
-                      ),
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return '*Campo obrigatório!';
-                        }
-                        return null;
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          _formData['NOME'] = value;
-                        });
-                      },
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.only(left: 32),
-                    height: MediaQuery.of(context).size.height / 20,
-                    child: Text(
-                      '* Matrícula',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 17,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width / 1.15,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: Colors.white,
-                    ),
-                    child: TextFormField(
-                      controller: _matriculaController,
-                      decoration: InputDecoration(
-                        fillColor: Colors.white,
-                        focusColor: Colors.white,
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 0, horizontal: 8),
-                        filled: true,
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(
-                              color: Colors.black54, style: BorderStyle.solid),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(
-                              color: Colors.black54, style: BorderStyle.solid),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(
-                              color: Colors.black54, style: BorderStyle.solid),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(
-                              color: Colors.black54, style: BorderStyle.solid),
-                        ),
-                      ),
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return '*Campo obrigatório!';
-                        }
-                        return null;
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          _formData['MATRICULA'] = value;
-                        });
-                      },
-                    ),
-                  ),
                   Container(
                     alignment: Alignment.centerLeft,
                     padding: EdgeInsets.only(left: 32, top: 10),
@@ -349,10 +201,10 @@ class _PatientFormState extends State<PatientForm> {
                               );
                             } else {
                               BlocProvider.of<RegistrationBloc>(context).add(
-                                GetCepRegistryEvent(
+                                GetCepUpdateEvent(
                                   registerPatient: RegisterPatientEntity(
-                                    name: _formData['NOME'],
-                                    registration: _formData['MATRICULA'],
+                                    name: null,
+                                    registration: null,
                                     address: CepInfo(
                                       cep: _formData['CEP'],
                                       neighborhood: _formData['BAIRRO'],
@@ -455,30 +307,47 @@ class _PatientFormState extends State<PatientForm> {
               child: RaisedButton(
                 color: Colors.blue[600],
                 child: Text(
-                  'Cadastrar',
+                  'Editar',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20,
                   ),
                 ),
                 onPressed: () {
-                  if (!_formKey.currentState.validate()) {
-                    return;
-                  }
-                  BlocProvider.of<RegistrationBloc>(context).add(
-                    RegisterPatientEvent(
-                      name: _formData['NOME'],
-                      registration: _formData['MATRICULA'],
-                      neighborhood: _formData['BAIRRO'],
-                      cep: _formData['CEP']?.replaceAll('-', ''),
-                      city: _formData['CIDADE'],
-                    ),
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return CupertinoAlertDialog(
+                        title: Text("Confirmar alteração?"),
+                        actions: [
+                          CupertinoDialogAction(
+                            child: Text("Cancelar"),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                          CupertinoDialogAction(
+                            child: Text("Ok"),
+                            onPressed: () {
+                              if (!_formKey.currentState.validate()) {
+                                return;
+                              }
+                              BlocProvider.of<RegistrationBloc>(context).add(
+                                UpdatePatientEvent(
+                                  patientID: widget.registerPatient.id,
+                                  address: CepInfo(
+                                    cep: _formData['CEP']?.replaceAll('-', ''),
+                                    neighborhood: _formData['BAIRRO'],
+                                    city: _formData['CIDADE'],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      );
+                    },
                   );
-                  print(_formData['NOME']);
-                  print(_formData['MATRICULA']);
-                  print(_formData['BAIRRO']);
-                  print(_formData['CEP']?.replaceAll('-', ''));
-                  print(_formData['CIDADE']);
                 },
               ),
             ),

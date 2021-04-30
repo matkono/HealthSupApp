@@ -1,10 +1,12 @@
-import 'package:healthsup/features/decision_tree/presentation/bloc/decision_tree_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:healthsup/features/decision_tree/presentation/bloc/decision_tree_bloc.dart';
 
 class ErrorLayout extends StatelessWidget {
+  final int idAppointment;
   const ErrorLayout({
     Key key,
+    @required this.idAppointment,
   }) : super(key: key);
 
   @override
@@ -12,16 +14,27 @@ class ErrorLayout extends StatelessWidget {
     return Column(
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.only(top: 25, left: 20, right: 20),
+          padding: const EdgeInsets.only(left: 20, right: 20),
           child: Container(
             child: Center(
-              child: Text(BlocProvider.of<DecisionTreeBloc>(context)
-                  .state
-                  .props
-                  .toString()),
+              child: FlatButton(
+                height: MediaQuery.of(context).size.width / 10,
+                color: Colors.blue,
+                child: Text(
+                  'Recarregar',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                  ),
+                ),
+                onPressed: () {
+                  BlocProvider.of<DecisionTreeBloc>(context).add(
+                      GetCurrentNodeDecisionTreeEvent(
+                          idAppointmment: idAppointment));
+                },
+              ),
             ),
-            alignment: Alignment.topCenter,
-            height: MediaQuery.of(context).size.height / 1.5,
+            height: MediaQuery.of(context).size.height / 1,
             width: MediaQuery.of(context).size.width / 1,
           ),
         ),

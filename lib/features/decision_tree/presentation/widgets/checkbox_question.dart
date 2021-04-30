@@ -4,6 +4,7 @@ import 'package:healthsup/features/decision_tree/domain/entities/possible_answer
 import 'package:healthsup/features/decision_tree/presentation/bloc/decision_tree_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:healthsup/features/patient/presentation/bloc/patient_bloc.dart';
 
 class CheckBoxQuestion extends StatefulWidget {
   final Node node;
@@ -105,7 +106,6 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
                         },
                       );
                     }
-                    print(possibleAnswersResult);
                   },
                 );
               },
@@ -138,9 +138,13 @@ class _CheckBoxQuestionState extends State<CheckBoxQuestion> {
                     icon: Icon(
                       Icons.arrow_back,
                       color: Colors.black,
-                      size: 47,
+                      size: 25,
                     ),
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () {
+                      BlocProvider.of<PatientBloc>(context)
+                          .add(RefreshPatientEvent());
+                      Navigator.pop(context);
+                    },
                   )
                 : null,
           ),

@@ -11,11 +11,8 @@ import 'package:healthsup/features/decision_tree/data/models/medical_appointment
 import 'package:healthsup/features/decision_tree/domain/entities/medical_appointment_list.dart';
 import 'package:healthsup/features/disease/domain/entities/pagination.dart';
 import 'package:healthsup/features/patient/data/models/patient_model.dart';
-import 'package:healthsup/features/patient/domain/entities/patient.dart';
 
 abstract class PatientRemoteDataSource {
-  Future<PatientModel> listPatient();
-  Future<PatientModel> registerPatient(Patient patient);
   Future<PatientModel> searchPatient(String registration);
   Future<MedicalAppointmentList> searchMedicalAppointmentList(
       int patientID, Pagination pagination);
@@ -74,16 +71,6 @@ class PatientRemoteDataSourceImpl implements PatientRemoteDataSource {
   }
 
   @override
-  Future<PatientModel> listPatient() {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<PatientModel> registerPatient(Patient patient) {
-    throw UnimplementedError();
-  }
-
-  @override
   Future<PatientModel> searchPatient(String registration) async {
     var client = new HttpClient();
     settings.certificateHost(client);
@@ -102,10 +89,10 @@ class PatientRemoteDataSourceImpl implements PatientRemoteDataSource {
       HttpClientResponse response = await request.close();
 
       String body = await response.transform(utf8.decoder).join();
-      Map jsonResponse = json.decode(body);
-      Map jsonData = jsonResponse['data'];
 
       if (response.statusCode == 200) {
+        Map jsonResponse = json.decode(body);
+        Map jsonData = jsonResponse['data'];
         print('statusCode: ' + response.statusCode.toString());
         return PatientModel.fromJson(jsonData);
       } else {
@@ -126,8 +113,6 @@ class PatientRemoteDataSourceImpl implements PatientRemoteDataSource {
     String url =
         'Patient/$patientID/medicalAppointments?PageSize=${pagination.pageSize}&PageNumber=${pagination.pageNumber}';
 
-    print('url: $url');
-
     try {
       await authenticatorAPI(authModel);
       HttpClientRequest request = await client
@@ -144,7 +129,6 @@ class PatientRemoteDataSourceImpl implements PatientRemoteDataSource {
       Map jsonData = jsonResponse['data'];
 
       if (response.statusCode == 200) {
-        print(MedicalAppointmentListModel.fromJson(jsonData));
         print('statusCode: ' + response.statusCode.toString());
         return MedicalAppointmentListModel.fromJson(jsonData);
       } else {

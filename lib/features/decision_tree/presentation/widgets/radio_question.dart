@@ -4,6 +4,7 @@ import 'package:healthsup/features/decision_tree/domain/entities/possible_answer
 import 'package:healthsup/features/decision_tree/presentation/bloc/decision_tree_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:healthsup/features/patient/presentation/bloc/patient_bloc.dart';
 import 'package:healthsup/features/patient/presentation/widgets/patient_details.dart';
 
 class RadioQuestionLoaded extends StatefulWidget {
@@ -111,9 +112,13 @@ class _RadioQuestionLoadedState extends State<RadioQuestionLoaded> {
                     icon: Icon(
                       Icons.arrow_back,
                       color: Colors.black,
-                      size: 47,
+                      size: 25,
                     ),
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () {
+                      BlocProvider.of<PatientBloc>(context)
+                          .add(RefreshPatientEvent());
+                      Navigator.pop(context);
+                    },
                   )
                 : null,
           ),
@@ -212,10 +217,6 @@ class _RadioQuestionLoadedState extends State<RadioQuestionLoaded> {
                               ),
                               onPressed: () {
                                 if (radioButton != null) {
-                                  print(
-                                      'idAppointment: ${widget.idAppointment}');
-                                  print(
-                                      'id: ${finalAnswer.possibleAnswers[0].id} | value: ${finalAnswer.possibleAnswers[0].title}');
                                   BlocProvider.of<DecisionTreeBloc>(context)
                                       .add(
                                     GetNextNodeDecisionTreeEvent(

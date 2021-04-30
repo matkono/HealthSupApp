@@ -4,15 +4,35 @@ import 'package:healthsup/features/registration/domain/entities/register_patient
 
 class RegisterPatientModel extends RegisterPatientEntity {
   RegisterPatientModel({
+    int id,
     @required String name,
     @required String registration,
     @required CepInfoModel cepInfo,
   }) : super(
+          id: id,
           name: name,
           registration: registration,
-          cepInfo: cepInfo,
+          address: cepInfo,
         );
 
-  @override
-  List<Object> get props => [name, registration, cepInfo];
+  factory RegisterPatientModel.fromJson(Map<String, dynamic> json) {
+    if (json == null) {
+      return null;
+    }
+    return RegisterPatientModel(
+      id: json['id'],
+      name: json['name'],
+      registration: json['registration'],
+      cepInfo: CepInfoModel.fromJson(json['address']),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'registration': registration,
+      'address': address,
+    };
+  }
 }

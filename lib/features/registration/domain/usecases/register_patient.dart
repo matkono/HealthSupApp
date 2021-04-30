@@ -17,17 +17,26 @@ class RegisterPatient
   @override
   Future<Either<Failure, RegisterPatientEntity>> call(
       ParamsRegistrationPatient params) async {
-    return await registrationRepository.registerPatient(params.registerPatient);
+    return await registrationRepository.registerPatient(params.name,
+        params.registration, params.neighborhood, params.cep, params.city);
   }
 }
 
 class ParamsRegistrationPatient extends Equatable {
-  final RegisterPatientEntity registerPatient;
+  final String name;
+  final String registration;
+  final String neighborhood;
+  final String cep;
+  final String city;
 
   ParamsRegistrationPatient({
-    @required this.registerPatient,
+    @required this.name,
+    @required this.registration,
+    @required this.neighborhood,
+    @required this.cep,
+    @required this.city,
   });
 
   @override
-  List<Object> get props => [registerPatient];
+  List<Object> get props => [name, registration, neighborhood, cep, city];
 }

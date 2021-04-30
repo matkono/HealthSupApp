@@ -16,14 +16,14 @@ class MedicalAppointmentModel extends MedicalAppointment {
     @required Patient patient,
     @required DecisionTree decisionTree,
     @required Node currentNode,
-    @required StatusMedicalAppointment statusMedicalAppointment,
+    @required StatusMedicalAppointment status,
   }) : super(
           id: id,
           isDiagnostic: isDiagnostic,
           patient: patient,
           decisionTree: decisionTree,
           currentNode: currentNode,
-          statusMedicalAppointment: statusMedicalAppointment,
+          status: status,
         );
 
   factory MedicalAppointmentModel.fromJson(Map<dynamic, dynamic> json) {
@@ -35,8 +35,7 @@ class MedicalAppointmentModel extends MedicalAppointment {
       patient: PatientModel.fromJson(json['patient']),
       decisionTree: DecisionTreeModel.fromJson(json['decisionTree']),
       currentNode: NodeModel.fromJson(json['currentNode']),
-      statusMedicalAppointment:
-          StatusMedicalAppointmentModel.fromJson(json['status']),
+      status: StatusMedicalAppointmentModel.fromJson(json['status']),
     );
   }
 

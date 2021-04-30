@@ -55,7 +55,6 @@ class _BodyPageState extends State<BodyPage> {
                     ),
                     onPressed: () {
                       setState(() {
-                        print(widget.index);
                         if (widget.index < widget.widgetList.length - 1) {
                           Navigator.push(
                               context,

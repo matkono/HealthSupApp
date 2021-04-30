@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:healthsup/core/error/exception.dart';
-import 'package:healthsup/features/patient/domain/entities/patient.dart';
 import 'package:healthsup/core/error/failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:healthsup/features/registration/data/datasources/register_remote_datasource.dart';
+import 'package:healthsup/features/registration/domain/entities/cep_info.dart';
 import 'package:healthsup/features/registration/domain/entities/register_patient_entity.dart';
 import 'package:healthsup/features/registration/domain/repositories/registration_repository.dart';
 
@@ -14,12 +14,12 @@ class RegistrationRepositoryImpl extends RegistrationRepository {
     @required this.registerRemoteDataSource,
   });
   @override
-  Future<Either<Failure, RegisterPatientEntity>> registerPatient(
-      RegisterPatientEntity registerPatient) async {
+  Future<Either<Failure, RegisterPatientEntity>> registerPatient(String name,
+      String registration, String neighborhood, String cep, String city) async {
     try {
-      final registration =
-          await registerRemoteDataSource.registerPatient(registerPatient);
-      return Right(registration);
+      final registrationResponse = await registerRemoteDataSource
+          .registerPatient(name, registration, neighborhood, cep, city);
+      return Right(registrationResponse);
     } on ServerException catch (_) {
       return Left(ServerFailure());
     }
@@ -29,14 +29,31 @@ class RegistrationRepositoryImpl extends RegistrationRepository {
   Future<Either<Failure, RegisterPatientEntity>> viaCep(
       RegisterPatientEntity registerPatient) async {
     try {
-      if (registerPatient.cepInfo == null ||
-          registerPatient.cepInfo.cep == null) {
+      if (registerPatient.address == null ||
+          registerPatient.address.cep == null) {
         return Left(ZipCodeFailure());
       }
       final cepInfo =
-          await registerRemoteDataSource.viaCep(registerPatient.cepInfo.cep);
+          await registerRemoteDataSource.viaCep(registerPatient.address.cep);
       RegisterPatientEntity patientResult = registerPatient;
-      patientResult.cepInfo = cepInfo;
+      patientResult.address = cepInfo;
+      return Right(patientResult);
+    } on ServerException catch (_) {
+      return Left(ServerFailure());
+    } on ZipCodeException catch (_) {
+      return Left(ZipCodeFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, RegisterPatientEntity>> updatePatient(
+      int patientID, CepInfo address) async {
+    try {
+      if (address == null || address.cep == null) {
+        return Left(ZipCodeFailure());
+      }
+      final patientResult =
+          await registerRemoteDataSource.updatePatient(patientID, address);
       return Right(patientResult);
     } on ServerException catch (_) {
       return Left(ServerFailure());

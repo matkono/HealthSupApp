@@ -1,4 +1,3 @@
-import 'package:healthsup/features/settings/presentation/widgets/alter_data_account.dart';
 import 'package:healthsup/features/settings/presentation/widgets/alter_password.dart';
 import 'package:flutter/material.dart';
 
@@ -49,7 +48,7 @@ class AccountDetails extends StatelessWidget {
                   margin: EdgeInsets.only(bottom: 15),
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'Nome: Leandro Shibahara',
+                    'Nome: Mateus Teixeira',
                     style: TextStyle(
                       fontSize: 20,
                     ),
@@ -60,7 +59,7 @@ class AccountDetails extends StatelessWidget {
                   margin: EdgeInsets.only(bottom: 15),
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'E-mail: leandroshibahara@id.uff.br',
+                    'E-mail: mateusft@gmail.com',
                     style: TextStyle(
                       fontSize: 20,
                     ),
@@ -90,29 +89,29 @@ class AccountDetails extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-            margin: EdgeInsets.all(20),
-            height: MediaQuery.of(context).size.height / 14,
-            width: MediaQuery.of(context).size.width,
-            child: FlatButton(
-              color: Colors.blue[600],
-              child: Text(
-                'Alterar dados',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                ),
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AlterDataAccount(),
-                  ),
-                );
-              },
-            ),
-          ),
+          // Container(
+          //   margin: EdgeInsets.all(20),
+          //   height: MediaQuery.of(context).size.height / 14,
+          //   width: MediaQuery.of(context).size.width,
+          //   child: FlatButton(
+          //     color: Colors.blue[600],
+          //     child: Text(
+          //       'Alterar dados',
+          //       style: TextStyle(
+          //         color: Colors.white,
+          //         fontSize: 20,
+          //       ),
+          //     ),
+          //     onPressed: () {
+          //       Navigator.push(
+          //         context,
+          //         MaterialPageRoute(
+          //           builder: (context) => AlterDataAccount(),
+          //         ),
+          //       );
+          //     },
+          //   ),
+          // ),
           Container(
             margin: EdgeInsets.only(left: 20, right: 20),
             height: MediaQuery.of(context).size.height / 14,

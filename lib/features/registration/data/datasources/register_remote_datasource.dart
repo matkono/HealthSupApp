@@ -8,12 +8,16 @@ import 'package:healthsup/core/authentication/model/authentication_model.dart';
 import 'package:healthsup/core/error/exception.dart';
 import 'package:healthsup/core/settings/settings.dart';
 import 'package:healthsup/features/registration/data/models/cep_info_model.dart';
+import 'package:healthsup/features/registration/data/models/register_patient_model.dart';
+import 'package:healthsup/features/registration/domain/entities/cep_info.dart';
 import 'package:healthsup/features/registration/domain/entities/register_patient_entity.dart';
 import 'package:via_cep/via_cep.dart';
 
 abstract class RegisterRemoteDataSource {
-  Future<RegisterPatientEntity> registerPatient(RegisterPatientEntity patient);
+  Future<RegisterPatientEntity> registerPatient(String name,
+      String registration, String neighborhood, String cep, String city);
   Future<CepInfoModel> viaCep(String cep);
+  Future<RegisterPatientEntity> updatePatient(int patientID, CepInfo address);
 }
 
 class RegisterRemoteDataSourceImpl implements RegisterRemoteDataSource {
@@ -67,14 +71,51 @@ class RegisterRemoteDataSourceImpl implements RegisterRemoteDataSource {
   }
 
   @override
-  Future<RegisterPatientEntity> registerPatient(RegisterPatientEntity patient) {
-    return null;
+  Future<RegisterPatientEntity> registerPatient(String name,
+      String registration, String neighborhood, String cep, String city) async {
+    var client = new HttpClient();
+    settings.certificateHost(client);
+
+    var address =
+        new CepInfoModel(cep: cep, neighborhood: neighborhood, city: city);
+
+    var requestBody = {
+      "patient": {
+        "name": name,
+        "registration": registration,
+        "address": address.toJson(),
+      }
+    };
+    String url = 'Patient';
+    try {
+      await authenticatorAPI(authModel);
+      HttpClientRequest request = await client
+          .postUrl(Uri.parse(settings.getUrl(url)))
+          .timeout(Duration(seconds: 10));
+      await settings.setHeaders(request);
+      await settings.setToken(request);
+      request.add(utf8.encode(json.encode(requestBody)));
+
+      HttpClientResponse response = await request.close();
+      String body = await response.transform(utf8.decoder).join();
+      Map jsonResponse = json.decode(body);
+      Map jsonData = jsonResponse['data'];
+
+      if (response.statusCode == 200) {
+        print('statusCode: ' + response.statusCode.toString());
+        return RegisterPatientModel.fromJson(jsonData);
+      } else {
+        print('statusCode: ' + response.statusCode.toString());
+        throw ServerException();
+      }
+    } on Exception catch (_) {
+      throw ServerException();
+    }
   }
 
   @override
   Future<CepInfoModel> viaCep(String cep) async {
     var viaCep = new via_cep();
-    print(cep);
     await viaCep.searchCEP(cep, 'json', '');
 
     if (viaCep.getResponse() == 200) {
@@ -88,6 +129,49 @@ class RegisterRemoteDataSourceImpl implements RegisterRemoteDataSource {
       print('Código de Retorno: ' + viaCep.getResponse().toString());
       print('Erro: ' + viaCep.getBody());
       throw ZipCodeException();
+    }
+  }
+
+  @override
+  Future<RegisterPatientEntity> updatePatient(
+      int patientID, CepInfo address) async {
+    var client = new HttpClient();
+    settings.certificateHost(client);
+
+    var requestAddress = {
+      'address': new CepInfoModel(
+        cep: address.cep,
+        neighborhood: address.neighborhood,
+        city: address.city,
+      ),
+    };
+
+    String url = 'Patient/$patientID';
+
+    print(url);
+    try {
+      await authenticatorAPI(authModel);
+      HttpClientRequest request = await client
+          .patchUrl(Uri.parse(settings.getUrl(url)))
+          .timeout(Duration(seconds: 10));
+      await settings.setHeaders(request);
+      await settings.setToken(request);
+      request.add(utf8.encode(json.encode(requestAddress)));
+
+      HttpClientResponse response = await request.close();
+      String body = await response.transform(utf8.decoder).join();
+      Map jsonResponse = json.decode(body);
+      Map jsonData = jsonResponse['data'];
+
+      if (response.statusCode == 200) {
+        print('statusCode: ' + response.statusCode.toString());
+        return RegisterPatientModel.fromJson(jsonData);
+      } else {
+        print('statusCode: ' + response.statusCode.toString());
+        throw ServerException();
+      }
+    } on Exception catch (_) {
+      throw ServerException();
     }
   }
 }

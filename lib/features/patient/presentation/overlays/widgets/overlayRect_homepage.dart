@@ -60,7 +60,7 @@ class _OverlayTestRectState extends State<OverlayTestRect> {
             Container(
               height: MediaQuery.of(context).size.height / 13.5,
               color: Colors.transparent,
-              child: _getClipPathOverlay(),
+              // child: _getClipPathOverlay(),
             ),
             Expanded(
               child: Container(
@@ -87,16 +87,13 @@ class _OverlayTestRectState extends State<OverlayTestRect> {
         heightClipper: widget.height,
         radiusClipper: widget.radius,
       ),
-      child: Container(
-        color: Colors.black38,
-      ),
     );
   }
 
   Positioned _getHint() {
     return Positioned(
       bottom: MediaQuery.of(context).size.height - widget.heightHint,
-      right: 80,
+      right: 100,
       child: Container(
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(

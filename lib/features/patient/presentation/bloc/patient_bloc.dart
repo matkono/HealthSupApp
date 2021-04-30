@@ -47,32 +47,36 @@ class PatientBloc extends Bloc<PatientEvent, PatientState> {
       );
 
       _patient = patientInfo;
-
-      var failureOrList = await listMedicalAppointment(MedicalAppointmentParams(
-        patientID: patientInfo.id,
-        pagination: _currentPagination,
-      ));
-      yield failureOrList.fold(
-        (failure) {
-          if (failure is ServerFailure)
-            return ErrorSearchedPatientState(message: failure.failureMessage);
-          else if (failure is NoInternetConnectionFailure)
-            return ErrorSearchedPatientState(message: failure.failureMessage);
-          else
-            return ErrorSearchedPatientState(message: 'Erro desconhecido');
-        },
-        (patient) {
-          if (patient != null) {
-            medicalAppointmentList = patient.medicalAppointment;
-            return SearchedPatientState(
-              patient: patientInfo,
-              medicalAppointmentList: patient.medicalAppointment,
-              totalRows: patient.totalRows,
-            );
-          } else
-            return ErrorSearchedPatientState(message: 'Código inválido');
-        },
-      );
+      if (patientInfo != null) {
+        var failureOrList =
+            await listMedicalAppointment(MedicalAppointmentParams(
+          patientID: patientInfo.id,
+          pagination: _currentPagination,
+        ));
+        yield failureOrList.fold(
+          (failure) {
+            if (failure is ServerFailure)
+              return ErrorSearchedPatientState(message: failure.failureMessage);
+            else if (failure is NoInternetConnectionFailure)
+              return ErrorSearchedPatientState(message: failure.failureMessage);
+            else
+              return ErrorSearchedPatientState(message: 'Erro desconhecido');
+          },
+          (patient) {
+            if (patient != null) {
+              medicalAppointmentList = patient.medicalAppointment;
+              return SearchedPatientState(
+                patient: patientInfo,
+                medicalAppointmentList: patient.medicalAppointment,
+                totalRows: patient.totalRows,
+              );
+            } else
+              return ErrorSearchedPatientState(message: 'Código inválido');
+          },
+        );
+      } else {
+        yield ErrorSearchedPatientState(message: 'Registro não encontrado!');
+      }
     } else if (event is GetNextAppointmentListEvent) {
       yield LoadingPatientState(patient: _patient);
 
@@ -110,6 +114,49 @@ class PatientBloc extends Bloc<PatientEvent, PatientState> {
           }
         },
       );
+    } else if (event is GetPatientInfoEvent) {
+      yield LoadingPatientState(patient: _patient);
+
+      _currentPagination = new Pagination(pageNumber: 1, pageSize: 10);
+
+      var failureOrNode = await searchPatient(ParamsSearchPatient(
+        registration: event.registration,
+      ));
+
+      var patientInfo = failureOrNode.fold(
+        (failure) => null,
+        (patient) => patient,
+      );
+
+      _patient = patientInfo;
+
+      var failureOrList = await listMedicalAppointment(MedicalAppointmentParams(
+        patientID: patientInfo.id,
+        pagination: _currentPagination,
+      ));
+      yield failureOrList.fold(
+        (failure) {
+          if (failure is ServerFailure)
+            return ErrorSearchedPatientState(message: failure.failureMessage);
+          else if (failure is NoInternetConnectionFailure)
+            return ErrorSearchedPatientState(message: failure.failureMessage);
+          else
+            return ErrorSearchedPatientState(message: 'Erro desconhecido');
+        },
+        (patient) {
+          if (patient != null) {
+            medicalAppointmentList = patient.medicalAppointment;
+            return PatientLoaded(
+              patient: patientInfo,
+              medicalAppointmentList: patient.medicalAppointment,
+              totalRows: patient.totalRows,
+            );
+          } else
+            return ErrorSearchedPatientState(message: 'Código inválido');
+        },
+      );
+    } else if (event is RefreshPatientEvent) {
+      this.add(GetPatientInfoEvent(registration: _patient.registration));
     }
   }
 }

@@ -21,8 +21,8 @@ class _OverlayHomePageState extends State<OverlayHomePage> {
       width: 215,
       height: 29,
       radius: 25,
-      heightHint: 550,
-      textHint: 'You can search more patients here',
+      heightHint: 640,
+      textHint: 'Você pode buscar pacientes aqui',
       iconHint: Icon(Icons.arrow_downward),
     ),
   ];
